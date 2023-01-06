@@ -2,6 +2,7 @@ const express = require("express");
 const crypt = require("crypto");
 const app = express();
 const mongoose = require("mongoose");
+app.use(cors);
 app.use(express.json());
 const port = process.env.PORT || 8080;
 const url =
@@ -15,23 +16,7 @@ const connect = mongoose.connect(url, {
 connect
   .then(() => {
     console.log("WTF!!!!!");
-    /*app.use("/pratos", async (req, res, next) => {
-      //verify authentication
-      const login = req.header("Authorization").split(" ")[1];
-      const plain = Buffer.from(login, "base64").toString("utf8");
-      console.log(plain);
-      const passCL = crypt
-        .createHash("sha256")
-        .update(plain.split(":")[1])
-        .digest("hex");
-      console.log(await users.find());
-      const userDB = await users.findOne({ user: plain.split(":")[0] });
-      if (userDB == null)
-        res.status(401).send("ERRO USER: " + req.header("Authorization"));
-      else if (userDB.pass == passCL) next();
-      else res.status(401).send("ERRO PASS: " + req.header("Authorization"));
-    });
-    app.use("/pratos", menu_do_dia);*/
+    app.use("/pratos", menu_do_dia);
     app.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch((erro) => console.log("Erro: " + erro));
