@@ -17,7 +17,6 @@ const connect = mongoose.connect(url, {
 connect
   .then(() => {
     console.log("WTF!!!!!");
-    app.use("/pratos", menu_do_dia);
     app.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch((erro) => console.log("Erro: " + erro));
