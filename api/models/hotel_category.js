@@ -14,4 +14,4 @@ const hotelCategorySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("hotel_category", hotelCategorySchema);
+module.exports = mongoose.model("hotel_categories", hotelCategorySchema);
