@@ -17,6 +17,7 @@ const connect = mongoose.connect(url, {
 connect
   .then(() => {
     console.log("WTF!!!!!");
+    app.use("/hotel", require("./controllers/hotel"));
     app.listen(port, () => console.log(`Listening on port ${port}`));
   })
   .catch((erro) => console.log("Erro: " + erro));
