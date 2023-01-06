@@ -1,6 +1,7 @@
 const express = require("express");
 const crypt = require("crypto");
 const app = express();
+const cors = require("cors");
 const mongoose = require("mongoose");
 app.use(cors);
 app.use(express.json());
