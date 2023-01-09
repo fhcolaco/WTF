@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const Hotel = require("../model/hotel");
+const Hotel = require("../models/hotel");
 
 //GET ALL method
 router.get("/", (req, res) => {
