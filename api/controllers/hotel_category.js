@@ -4,7 +4,6 @@ const HotelCategory = require("../models/hotel_category");
 
 //GET ALL method
 router.get("/", (req, res) => {
-  console.log("here1");
   HotelCategory.find().then((result) => {
     if (result === null) res.status(400).send("A categoria não foi encontrada");
     else res.status(200).send(result);
@@ -22,7 +21,6 @@ router.get("/:id", (req, res) => {
 
 //POST method
 router.post("/", (req, res) => {
-  console.log(req.body);
   HotelCategory.create({
     name: req.body.name,
     description: req.body.description,

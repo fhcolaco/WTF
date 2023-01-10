@@ -2,8 +2,24 @@ const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema(
   {
-    room_type: {
-      type: Number,
+    _reserve_room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "reserve_rooms",
+      required: true,
+    },
+    _hotel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "hotels",
+      required: true,
+    },
+    _room_category: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "room_categories",
+      required: true,
+    },
+    room_services: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "room_services",
       required: true,
     },
     hotel_id: {

@@ -6,6 +6,16 @@ const reserveSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    _hotel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "hotels",
+      required: true,
+    },
+    _room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "rooms",
+      required: true,
+    },
     start_date: {
       type: Date,
       required: true,
@@ -14,7 +24,7 @@ const reserveSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    discount_percent: {
+    discount_percentage: {
       type: Number,
       required: true,
     },
@@ -22,11 +32,11 @@ const reserveSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
-    isPaid: {
+    is_paid: {
       type: Boolean,
       required: true,
     },
-    isCanceled: {
+    is_canceled: {
       type: Boolean,
       required: true,
     },

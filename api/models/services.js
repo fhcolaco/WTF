@@ -7,6 +7,11 @@ const servicesSchema = new mongoose.Schema(
       ref: "service_categories",
       required: true,
     },
+    _service_room: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "room_services",
+      required: true,
+    },
     name: {
       type: String,
       required: true,

@@ -7,11 +7,6 @@ const roomDetailsSchema = new mongoose.Schema(
       ref: "rooms",
       required: true,
     },
-    _details_category: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "details_categories",
-      required: true,
-    },
     details: {
       type: [String],
       required: true,
