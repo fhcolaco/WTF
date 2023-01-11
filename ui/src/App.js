@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  redirect,
+} from "react-router-dom";
+import Dashboard from "./dashboard/dashboard";
+import "./styles/App.css";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Router>
+      <Routes>
+        <Route
+          exact
+          path="/"
+          element={
+            <body>
+              <h1 className="text-3xl font-bold">
+                Só estava a testar para ver se funcionava o tailwind :D
+              </h1>
+              <a href="/Dashboard">
+                <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
+                  Button
+                </button>
+              </a>
+            </body>
+          }
+        />
+        <Route path="/Dashboard" element={<Dashboard />} />
+
+        {/* Se todos falharem ele volta para o "home" */}
+        <Route path="*" element={redirect("/")} />
+      </Routes>
+    </Router>
   );
 }
 
