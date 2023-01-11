@@ -19,6 +19,11 @@ const hotelSchema = new mongoose.Schema(
       ref: "hotel_categories",
       required: true,
     },
+    _services: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "services",
+      required: false,
+    },
   },
   {
     timestamps: true,

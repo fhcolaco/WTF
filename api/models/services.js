@@ -24,6 +24,11 @@ const servicesSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+    _hotels: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "hotels",
+      required: false,
+    },
   },
   { timestamps: true }
 );

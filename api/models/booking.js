@@ -1,9 +1,10 @@
 const mongoose = require("mongoose");
 
-const reserveSchema = new mongoose.Schema(
+const bookingSchema = new mongoose.Schema(
   {
     _user: {
-      type: Number,
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "users",
       required: true,
     },
     _hotel: {
@@ -12,7 +13,7 @@ const reserveSchema = new mongoose.Schema(
       required: true,
     },
     _room: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "rooms",
       required: true,
     },
@@ -40,8 +41,12 @@ const reserveSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
+    undiscounted_amount: {
+      type: Number,
+      required: true,
+    },
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("reserve", reserveSchema);
+module.exports = mongoose.model("booking", bookingSchema);

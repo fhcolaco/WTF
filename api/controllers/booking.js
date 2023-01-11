@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const Reserve = require("../models/reserve");
+const Booking = require("../models/booking");
 
 //GET ALL method
 router.get("/", (req, res) => {
-  Reserve.find().then((result) => {
+  Booking.find().then((result) => {
     if (result === null) res.status(400).send("A reserva não foi encontrada");
     else res.status(200).send(result);
   });
@@ -12,7 +12,7 @@ router.get("/", (req, res) => {
 
 //GET ONE method
 router.get("/:id", (req, res) => {
-  Reserve.findById(req.params.id).then((result) => {
+  Booking.findById(req.params.id).then((result) => {
     if (result === null) res.status(400).send("A reserva não foi encontrada");
     else res.status(200).send(result);
   });
@@ -20,12 +20,13 @@ router.get("/:id", (req, res) => {
 
 //POST method
 router.post("/", (req, res) => {
-  Reserve.create({
+  Booking.create({
     _hotel: req.body.hotel,
     _user: req.body.user,
     _room: req.body.room,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
+    undiscounted_amount: req.body.undiscounted_amount,
     discount_percentage: req.body.discount_percentage,
     total_price: req.body.total_price,
     is_paid: req.body.is_paid,
@@ -41,12 +42,13 @@ router.post("/", (req, res) => {
 
 //PUT method
 router.put("/:id", (req, res) => {
-  Reserve.findByIdAndUpdate(req.params.id, {
+  Booking.findByIdAndUpdate(req.params.id, {
     _hotel: req.body.hotel,
     _user: req.body.user,
     _room: req.body.room,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
+    undiscounted_amount: req.body.undiscounted_amount,
     discount_percentage: req.body.discount_percentage,
     total_price: req.body.total_price,
     is_paid: req.body.is_paid,
@@ -62,7 +64,7 @@ router.put("/:id", (req, res) => {
 
 //DELETE method
 router.delete("/:id", (req, res) => {
-  Reserve.findByIdAndDelete(req.params.id).then((result) => {
+  Booking.findByIdAndDelete(req.params.id).then((result) => {
     if (result === null) res.status(400).send("A reserva não foi encontrada");
     else res.status(200).send(result);
   });

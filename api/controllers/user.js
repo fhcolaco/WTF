@@ -24,10 +24,15 @@ router.get("/:id", async (req, res) => {
 // POST method
 router.post("/", async (req, res) => {
   User.create({
+    user: req.body.user,
+    pass: req.body.pass,
+    is_admin: req.body.is_admin,
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password,
-    _user_type: req.body.user_type,
+    billing_address: req.body.billing_address,
+    phone: req.body.phone,
+    fiscal_number: req.body.fiscal_number,
+    credit_card: req.body.credit_card,
   })
     .then((user) => {
       res.status(200).send(user.nome + " foi adicionado à base de dados");
@@ -48,11 +53,18 @@ router.put("/:id", async (req, res) => {
       is_admin: req.body.is_admin,
       name: req.body.name,
       email: req.body.email,
+      billing_address: req.body.billing_address,
       phone: req.body.phone,
       fiscal_number: req.body.fiscal_number,
       credit_card: req.body.credit_card,
     }
-  );
+  )
+    .then((user) => {
+      res.status(200).send(user.nome + " foi atualizado");
+    })
+    .catch((error) => {
+      res.status(400).json({ message: error.message });
+    });
 });
 
 //DELETE method

@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 //GET ONE method
 router.get("/:id", (req, res) => {
   const ID = parseInt(req.params.id);
-  HotelCategory.findOne({ cod: ID }).then((result) => {
+  HotelCategory.findOne({ _id: ID }).then((result) => {
     if (result === null) res.status(400).send("A categoria não foi encontrada");
     else res.status(200).send(result);
   });
@@ -37,7 +37,7 @@ router.post("/", (req, res) => {
 router.put("/:id", (req, res) => {
   const ID = parseInt(req.params.id);
   HotelCategory.findOneAndUpdate(
-    { cod: ID },
+    { _id: ID },
     {
       name: req.body.name,
       description: req.body.description,
@@ -54,7 +54,7 @@ router.put("/:id", (req, res) => {
 //DELETE method
 router.delete("/:id", (req, res) => {
   const ID = parseInt(req.params.id);
-  HotelCategory.findOneAndDelete({ cod: ID }).then((result) => {
+  HotelCategory.findOneAndDelete({ _id: ID }).then((result) => {
     if (result === null) res.status(400).send("A categoria não foi encontrada");
     else res.status(200).send(result);
   });

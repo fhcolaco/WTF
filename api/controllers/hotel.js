@@ -13,7 +13,7 @@ router.get("/", (req, res) => {
 //GET ONE method
 router.get("/:id", async (req, res) => {
   const ID = parseInt(req.params.id);
-  Hotel.findOne({ cod: ID }).then((result) => {
+  Hotel.findOne({ _id: ID }).then((result) => {
     if (result === null) res.status(400).send("O hotel não foi encontrado");
     else res.status(200).send(result);
   });
@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
     location: req.body.location,
     description: req.body.description,
     _hotel_type: req.body.hotel_type,
+    _services: req.body.services,
   })
     .then((hotel) => {
       res.status(200).send(hotel.nome + " foi adicionado à base de dados");
@@ -39,12 +40,13 @@ router.post("/", async (req, res) => {
 router.put("/:id", async (req, res) => {
   const ID = parseInt(req.params.id);
   Hotel.findOneAndUpdate(
-    { cod: ID },
+    { _id: ID },
     {
       name: req.body.name,
       location: req.body.location,
       description: req.body.description,
       _hotel_type: req.body.hotel_type,
+      _services: req.body.services,
     }
   )
     .then((hotel) => {
@@ -58,7 +60,7 @@ router.put("/:id", async (req, res) => {
 //DELETE method
 router.delete("/:id", async (req, res) => {
   const ID = parseInt(req.params.id);
-  Hotel.findOneAndDelete({ cod: ID })
+  Hotel.findOneAndDelete({ _id: ID })
     .then((hotel) => {
       res.status(200).send(hotel.nome + " foi removido da base de dados");
     })

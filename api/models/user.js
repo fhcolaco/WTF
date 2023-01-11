@@ -23,6 +23,10 @@ const userSchema = new mongoose.Schema(
       required: true,
       type: String,
     },
+    billing_address: {
+      required: true,
+      type: String,
+    },
     phone: {
       required: true,
       type: String,
