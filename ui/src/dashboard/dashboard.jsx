@@ -1,11 +1,12 @@
 import React from "react";
+import Layout from "./components/Layout";
 import "./styles/dashboard.css"
 
-const Dashboard = () => {
+const Dashboard = ({ Components, pageProps }) => {
     return (
-        <div>
-            <h1 className="">WELCOME TO MY DASHBOARD</h1>
-        </div>
+        <Layout>
+            <Components {...pageProps} />
+        </Layout>
     );
 }
 

@@ -2,11 +2,6 @@ const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema(
   {
-    _reserve_room: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "reserve_rooms",
-      required: true,
-    },
     _hotel: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "hotels",
@@ -17,19 +12,14 @@ const roomSchema = new mongoose.Schema(
       ref: "room_categories",
       required: true,
     },
+    _room_details: {
+      type: [String],
+      required: true,
+    },
     _services: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "services",
       required: false,
-    },
-    room_services: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "room_services",
-      required: true,
-    },
-    hotel_id: {
-      type: Number,
-      required: true,
     },
     atual_price: {
       type: Number,

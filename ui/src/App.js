@@ -5,7 +5,7 @@ import {
   Route,
   redirect,
 } from "react-router-dom";
-import Dashboard from "./dashboard/dashboard";
+import Dashboard from "./dashboard/Dashboard";
 import "./styles/App.css";
 
 function App() {

@@ -28,11 +28,10 @@ connect
     app.use("/hotel_category", require("./controllers/hotel_category.js"));
     app.use("/hotel", require("./controllers/hotel.js"));
     app.use("/room_category", require("./controllers/room_category.js"));
-    app.use("/room_details", require("./controllers/room_details.js"));
     app.use("/room", require("./controllers/room.js"));
     app.use(
-      "/services_categories",
-      require("./controllers/services_categories.js")
+      "/services_category",
+      require("./controllers/services_category.js")
     );
     app.use("/services", require("./controllers/services.js"));
     app.use("/user", require("./controllers/user.js"));
