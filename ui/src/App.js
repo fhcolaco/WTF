@@ -23,12 +23,12 @@ function App() {
           </section>
         }
       />
-      <Route exact path="/Dashboard" element={<Layout />}>
-        <Route exact index path="" element={<Dashboard />} />
+      <Route path="/Dashboard" element={<Layout />}>
+        <Route index path="" element={<Dashboard />} />
         {/* Se todos falharem mostra uma mensagem de erro no dashboard" */}
         <Route exact path="*" element={<img src={error404} alt="404" />} />
       </Route>
-      <Route path="*" element={<h1>NOT FOUND</h1>} />
+      {/*<Route path="*" element={<h1>NOT FOUND</h1>} />*/}
     </Routes>
   );
 }
