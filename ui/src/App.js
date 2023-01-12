@@ -6,6 +6,7 @@ import {
   redirect,
 } from "react-router-dom";
 import { Dashboard } from "./dashboard/Dashboard";
+import { error404 } from "./dashboard/styles/images";
 import "./styles/App.css";
 
 function App() {
@@ -28,7 +29,9 @@ function App() {
             </section>
           }
         />
-        <Route path="/Dashboard/*" element={<Dashboard />} />
+        <Route path="/Dashboard/*" element={<Dashboard />}>
+          <Route path="*" element={<img src={error404} alt="404" />} />
+        </Route>
 
         {/* Se todos falharem ele volta para o "home" */}
         <Route path="*" element={redirect("/")} />
