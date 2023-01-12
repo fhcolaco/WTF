@@ -1,12 +1,12 @@
 import { Fragment } from "react";
-import { Bars3BottomLeftIcon, CheckIcon } from "@heroicons/react/24/solid";
+import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
 import {
   XCircleIcon,
   ChevronDownIcon,
   PencilIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
-import { Menu, Transition, Popover } from "@headlessui/react";
+import { Menu, Transition } from "@headlessui/react";
 import { Link } from "react-router-dom";
 import { adminAvatar } from "../styles/images";
 

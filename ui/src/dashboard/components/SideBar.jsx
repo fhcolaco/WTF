@@ -12,7 +12,11 @@ import {
 export const SideBar = forwardRef((props, ref) => {
   const router = useNavigate();
   return (
-    <div ref={ref} className="fixed w-56 bg-white shadow-sm">
+    <div
+      ref={ref}
+      className="fixed h-screen
+    w-56 bg-zinc-800 shadow-sm"
+    >
       <div className="mt-6 mb-14 flex justify-center">
         <img src={logo} alt="WTF_logo" className="h-auto w-32 " />
       </div>
