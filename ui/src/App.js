@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Layout from "./backend/components/Layout";
 import Dashboard from "./backend/components/Dashboard";
 import { error404 } from "./backend/styles/images";
@@ -8,7 +8,7 @@ import "./styles/App.css";
 function App() {
   return (
     <div>
-      <Router>
+      <BrowserRouter>
         <Routes>
           <Route
             path="/"
@@ -32,7 +32,7 @@ function App() {
           </Route>
           {/*<Route path="*" element={<h1>NOT FOUND</h1>} />*/}
         </Routes>
-      </Router>
+      </BrowserRouter>
     </div>
   );
 }
