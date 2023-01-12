@@ -27,6 +27,7 @@ router.post("/", async (req, res) => {
     description: req.body.description,
     _hotel_type: req.body.hotel_type,
     _services: req.body.services,
+    images: req.body.images,
   })
     .then((hotel) => {
       res.status(200).send(hotel.nome + " foi adicionado à base de dados");
@@ -47,6 +48,7 @@ router.put("/:id", async (req, res) => {
       description: req.body.description,
       _hotel_type: req.body.hotel_type,
       _services: req.body.services,
+      images: req.body.images,
     }
   )
     .then((hotel) => {

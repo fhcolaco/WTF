@@ -4,7 +4,6 @@ import {
   XCircleIcon,
   ChevronDownIcon,
   PencilIcon,
-  Cog8ToothIcon,
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import { Menu, Transition, Popover } from "@headlessui/react";
@@ -65,15 +64,6 @@ export const TopBar = (props) => {
                   >
                     <PencilIcon className="mr-2 h-4 w-4" />
                     Editar Perfil
-                  </Link>
-                </Menu.Item>
-                <Menu.Item>
-                  <Link
-                    to="#"
-                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-500 hover:text-white"
-                  >
-                    <Cog8ToothIcon className="mr-2 h-4 w-4" />
-                    Editar Perfil2
                   </Link>
                 </Menu.Item>
                 <Menu.Item>
