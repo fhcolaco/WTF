@@ -1,14 +1,16 @@
 import { useState, useEffect, Fragment } from "react";
-import SideBar from "./Sidebar";
-import TopBar from "./TopBar";
+import { SideBar } from "./SideBar";
+import { TopBar } from "./TopBar";
 import { Transition } from "@headlessui/react";
+import { Routes, Route } from "react-router-dom";
+import { error404 } from "../styles/images";
 
-export default function Layout({ children }) {
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+export const Layout = (props) => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   function handleResize() {
-    if (window.innerWidth <= 640) {
+    if (window.innerWidth <= 768) {
       setSidebarOpen(false);
       setIsMobile(true);
     } else {
@@ -23,7 +25,7 @@ export default function Layout({ children }) {
     }
     return () => {
       window.removeEventListener("resize", handleResize);
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -36,16 +38,29 @@ export default function Layout({ children }) {
 
   return (
     <>
-      <TopBar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-      <Transition as={Fragment} show={sidebarOpen} enter="transform transition duration-[400ms]" enterFrom="-translate-x-full"
-        enterTo="translate-x-0" leave="transform duration-[400ms] transition ease-in-out" leaveFrom="translate-x-0" leaveTo="-translate-x-full">
-        <SideBar sidebarOpen={sidebarOpen} />
+      <TopBar sideBarState={[sidebarOpen, setSidebarOpen]} />
+      <Transition
+        as={Fragment}
+        show={sidebarOpen}
+        enter="transform transition duration-[400ms]"
+        enterFrom="-translate-x-full"
+        enterTo="translate-x-0"
+        leave="transform duration-[400ms] transition ease-in-out"
+        leaveFrom="translate-x-0"
+        leaveTo="-translate-x-full"
+      >
+        <SideBar sidebar={sidebarOpen} />
       </Transition>
-      <main className={`pt-16 transition-all duration-[400ms] ${sidebarOpen && !isMobile ? "pl-56" : ""}`}>
-        <div className="px-4 md:px-16">
-          {children}
-        </div>
-      </main>
+      <Routes>
+        <Route
+          path="*"
+          element={
+            <div className="flex h-screen items-center justify-center">
+              <img src={error404} alt="404" />
+            </div>
+          }
+        />
+      </Routes>
     </>
   );
-}
+};

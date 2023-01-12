@@ -5,7 +5,7 @@ import {
   Route,
   redirect,
 } from "react-router-dom";
-import Dashboard from "./dashboard/Dashboard";
+import { Dashboard } from "./dashboard/Dashboard";
 import "./styles/App.css";
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
           exact
           path="/"
           element={
-            <body>
+            <section>
               <h1 className="text-3xl font-bold">
                 Só estava a testar para ver se funcionava o tailwind :D
               </h1>
@@ -25,10 +25,10 @@ function App() {
                   Button
                 </button>
               </a>
-            </body>
+            </section>
           }
         />
-        <Route path="/Dashboard" element={<Dashboard />} />
+        <Route path="/Dashboard/*" element={<Dashboard />} />
 
         {/* Se todos falharem ele volta para o "home" */}
         <Route path="*" element={redirect("/")} />
