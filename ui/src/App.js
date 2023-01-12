@@ -9,7 +9,6 @@ function App() {
   return (
     <Routes>
       <Route
-        exact
         path="/"
         element={
           <section>
@@ -29,8 +28,6 @@ function App() {
         {/* Se todos falharem mostra uma mensagem de erro no dashboard" */}
         <Route exact path="*" element={<img src={error404} alt="404" />} />
       </Route>
-
-      {/* Se todos falharem ele volta para o "home" */}
       <Route path="*" element={<h1>NOT FOUND</h1>} />
     </Routes>
   );
