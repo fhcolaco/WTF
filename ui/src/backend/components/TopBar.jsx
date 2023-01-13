@@ -1,4 +1,3 @@
-import { Fragment } from "react";
 import { Bars3BottomLeftIcon } from "@heroicons/react/24/solid";
 import {
   XCircleIcon,
@@ -14,7 +13,7 @@ export const TopBar = (props) => {
   const [sideBar, setSideBar] = props.sideBarState;
   return (
     <div
-      className={`item-center fixed flex h-16 w-full justify-between transition-all duration-[400ms] ${
+      className={`item-center fixed flex h-16 w-full justify-between bg-gray-200 transition-all duration-[400ms] ${
         sideBar ? "pl-56" : ""
       }`}
     >
@@ -47,7 +46,6 @@ export const TopBar = (props) => {
             </Menu.Button>
           </div>
           <Transition
-            as={Fragment}
             enter="transition ease-out duration-100"
             enterFrom="transform scale-95"
             enterTo="transform scale-100"
@@ -60,7 +58,7 @@ export const TopBar = (props) => {
                 <Menu.Item>
                   <Link
                     to="#"
-                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-500 hover:text-white"
+                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100 "
                   >
                     <PencilIcon className="mr-2 h-4 w-4" />
                     Editar Perfil
@@ -69,7 +67,7 @@ export const TopBar = (props) => {
                 <Menu.Item>
                   <Link
                     to="#"
-                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-500 hover:text-white"
+                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100 "
                   >
                     <ArrowRightOnRectangleIcon className="mr-2 h-4 w-4" />
                     Sair

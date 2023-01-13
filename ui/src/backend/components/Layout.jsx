@@ -48,7 +48,9 @@ export default function Layout(props) {
       >
         <SideBar sidebar={sidebarOpen} />
       </Transition>
-      <div className="flex h-screen items-center justify-center ">{outlet}</div>
+      <div className={`flex h-screen items-center justify-center  bg-gray-200`}>
+        {outlet}
+      </div>
     </>
   );
 }

@@ -1,6 +1,6 @@
 export default function Dashboard() {
   return (
-    <div className="h-auto w-2/3 rounded bg-slate-300 p-10">
+    <div className="h-auto w-2/3 rounded bg-orange-200 p-10">
       <p className="mt-6 mb-4 text-lg font-light leading-relaxed text-neutral-800">
         Esta é a página principal do dashboard. Aqui vai ser colocado:
       </p>
