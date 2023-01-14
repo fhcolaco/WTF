@@ -12,8 +12,7 @@ router.get("/", (req, res) => {
 
 //GET ONE method
 router.get("/:id", async (req, res) => {
-  const ID = parseInt(req.params.id);
-  Hotel.findOne({ _id: ID }).then((result) => {
+  Hotel.findOne({ _id: req.params.id }).then((result) => {
     if (result === null) res.status(400).send("O hotel não foi encontrado");
     else res.status(200).send(result);
   });
@@ -39,9 +38,8 @@ router.post("/", async (req, res) => {
 
 //PUT method
 router.put("/:id", async (req, res) => {
-  const ID = parseInt(req.params.id);
   Hotel.findOneAndUpdate(
-    { _id: ID },
+    { _id: req.params.id },
     {
       name: req.body.name,
       location: req.body.location,
@@ -61,8 +59,7 @@ router.put("/:id", async (req, res) => {
 
 //DELETE method
 router.delete("/:id", async (req, res) => {
-  const ID = parseInt(req.params.id);
-  Hotel.findOneAndDelete({ _id: ID })
+  Hotel.findOneAndDelete({ _id: req.params.id })
     .then((hotel) => {
       res.status(200).send(hotel.nome + " foi removido da base de dados");
     })

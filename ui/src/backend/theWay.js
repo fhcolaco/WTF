@@ -25,7 +25,7 @@ const theWay = [
       // Hotel
       { path: "hotel", element: <Hotel /> },
       { path: "hotel/criar", element: <HotelDetail /> },
-      { path: "hotel/editar/:id", element: <HotelDetail /> },
+      { path: "hotel/:id", element: <HotelDetail /> },
 
       // Hotel Category
       { path: "hotel/categoria", element: <HotelCategory /> },
@@ -33,7 +33,7 @@ const theWay = [
       // Room
       { path: "quarto", element: <Room /> },
       { path: "quarto/criar", element: <RoomDetail /> },
-      { path: "quarto/editar/:id", element: <RoomDetail /> },
+      { path: "quarto/:id", element: <RoomDetail /> },
 
       // Room Category
       { path: "quarto/categoria", element: <RoomCategory /> },
@@ -44,12 +44,12 @@ const theWay = [
       // Users
       { path: "utilizador", element: <Users /> },
       { path: "utilizador/criar", element: <UsersDetail /> },
-      { path: "utilizador/editar/:id", element: <UsersDetail /> },
+      { path: "utilizador/:id", element: <UsersDetail /> },
 
       // Services
       { path: "servico", element: <Services /> },
       { path: "servico/criar", element: <ServicesDetail /> },
-      { path: "servico/editar/:id", element: <ServicesDetail /> },
+      { path: "servico/:id", element: <ServicesDetail /> },
 
       // Services Category
       { path: "servico/categoria", element: <ServicesCategory /> },
