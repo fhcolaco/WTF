@@ -34,7 +34,7 @@ connect
     app.use("/services", require("./controllers/services.js"));
     app.use("/user", require("./controllers/user.js"));
     app.listen(port, () => console.log(`Listening on port ${port}`));
-    app.use((req, res, next) => {
+    app.use((req, res) => {
       res.send(
         "Bem vindo ao servidor WTF. Esperemos que a sua estadia seja curta e dispendiosa"
       );

@@ -29,7 +29,7 @@ router.post("/", async (req, res) => {
     images: req.body.images,
   })
     .then((hotel) => {
-      res.status(200).send(hotel.name + " foi adicionado à base de dados");
+      res.status(200).send(hotel);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });
@@ -50,7 +50,7 @@ router.put("/:id", async (req, res) => {
     }
   )
     .then((hotel) => {
-      res.status(200).send(hotel.nome + " foi atualizado");
+      res.status(200).send(hotel);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });
@@ -61,7 +61,7 @@ router.put("/:id", async (req, res) => {
 router.delete("/:id", async (req, res) => {
   Hotel.findOneAndDelete({ _id: req.params.id })
     .then((hotel) => {
-      res.status(200).send(hotel.nome + " foi removido da base de dados");
+      res.status(200).send(hotel);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });

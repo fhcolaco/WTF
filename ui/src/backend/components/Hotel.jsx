@@ -17,6 +17,13 @@ export default function Hotel() {
     });
   }, []);
 
+  const removeHotel = (id) => {
+    deleteHotel(id).then((data) => {
+      console.log(data);
+      setHotel(hotel.filter((hotel) => hotel._id !== id));
+    });
+  };
+
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <div className="bg-white pb-4 dark:bg-gray-900">
@@ -79,7 +86,7 @@ export default function Hotel() {
                   </Link>
                   <button
                     className="text-indigo-600 hover:text-indigo-900"
-                    onClick={() => deleteHotel(hotel._id)}
+                    onClick={() => removeHotel(hotel._id)}
                   >
                     <TrashIcon className="h-5 w-5" />
                   </button>
