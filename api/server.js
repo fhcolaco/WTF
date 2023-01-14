@@ -19,10 +19,8 @@ const connect = mongoose.connect(url, {
 connect
   .then(() => {
     console.log("WTF!!!!!");
-    app.use("/", (req, res) => {
-      res.send(
-        "Bem vindo ao servidor WTF. Esperemos que a sua estadia seja curta e dispendiosa"
-      );
+    app.use((req, res, next) => {
+      next();
     });
     app.use("/booking", require("./controllers/booking.js"));
     app.use("/hotel_category", require("./controllers/hotel_category.js"));
@@ -36,5 +34,10 @@ connect
     app.use("/services", require("./controllers/services.js"));
     app.use("/user", require("./controllers/user.js"));
     app.listen(port, () => console.log(`Listening on port ${port}`));
+    app.use((req, res, next) => {
+      res.send(
+        "Bem vindo ao servidor WTF. Esperemos que a sua estadia seja curta e dispendiosa"
+      );
+    });
   })
   .catch((erro) => console.log("Erro: " + erro));

@@ -17,7 +17,7 @@ const hotelSchema = new mongoose.Schema(
     _hotel_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "hotel_categories",
-      required: true,
+      required: false,
     },
     _services: {
       type: [mongoose.Schema.Types.ObjectId],
@@ -26,7 +26,7 @@ const hotelSchema = new mongoose.Schema(
     },
     images: {
       type: [String],
-      required: false,
+      required: true,
     },
   },
   {

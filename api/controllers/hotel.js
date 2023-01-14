@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     images: req.body.images,
   })
     .then((hotel) => {
-      res.status(200).send(hotel.nome + " foi adicionado à base de dados");
+      res.status(200).send(hotel.name + " foi adicionado à base de dados");
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });

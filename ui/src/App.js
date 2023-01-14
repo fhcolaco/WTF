@@ -1,23 +1,7 @@
 import React from "react";
-import { Routes, Route, BrowserRouter, useRoutes } from "react-router-dom";
-import Layout from "./backend/components/Layout";
-import Dashboard from "./backend/components/Dashboard";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
 import "./styles/App.css";
-import NotFound from "./backend/components/404";
-import { sideBarItems } from "./backend/components/SideBar";
-import Hotel from "./backend/components/Hotel";
-import HotelDetail from "./backend/components/HotelDetail";
-import HotelCategory from "./backend/components/HotelCategory";
-import Room from "./backend/components/Room";
-import RoomDetail from "./backend/components/RoomDetail";
-import RoomCategory from "./backend/components/RoomCategory";
-import Booking from "./backend/components/Booking";
-import Users from "./backend/components/Users";
-import UsersDetail from "./backend/components/UsersDetail";
-import Services from "./backend/components/Services";
-import ServicesDetail from "./backend/components/ServicesDetail";
-import ServicesCategory from "./backend/components/ServicesCategory";
-import Settings from "./backend/components/Settings";
+
 import theWay from "./backend/theWay";
 
 function App() {

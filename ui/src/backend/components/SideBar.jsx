@@ -98,7 +98,7 @@ export const SideBar = forwardRef((props, ref) => {
                   {item.cat.length !== 1 ? (
                     <Menu.Items className="my-2 w-56 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="py-1">
-                        {item.cat.map((subItem) => (
+                        {item.cat.map((subItem, index2) => (
                           <Menu.Item>
                             {({ active }) => (
                               <div
@@ -114,6 +114,7 @@ export const SideBar = forwardRef((props, ref) => {
                                 className={
                                   "mx-5 mb-3 cursor-pointer items-center rounded py-3 text-center text-orange-500 transition-colors hover:bg-orange-100"
                                 }
+                                key={`${index}${index2}`}
                               >
                                 {subItem}
                               </div>

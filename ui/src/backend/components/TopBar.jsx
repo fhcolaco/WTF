@@ -33,7 +33,7 @@ export const TopBar = (props) => {
       <div className="flex items-center pr-4 md:pr-16">
         <Menu as="div" className="relative inline-block text-left">
           <div>
-            <Menu.Button className="item-center inline-flex w-full justify-center">
+            <Menu.Button className="item-center inline-flex w-full items-center justify-center">
               <img
                 src={adminAvatar}
                 className="h-8 rounded-full border-2 border-white shadow-sm md:mr-4"
@@ -58,7 +58,7 @@ export const TopBar = (props) => {
                 <Menu.Item>
                   <Link
                     to="#"
-                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100 "
+                    className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100"
                   >
                     <PencilIcon className="mr-2 h-4 w-4" />
                     Editar Perfil
