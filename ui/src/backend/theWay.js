@@ -23,7 +23,14 @@ const theWay = [
     children: [
       { path: "", element: <Dashboard /> },
       // Hotel
-      { path: "hotel", element: <Hotel /> },
+      {
+        path: "hotel",
+        element: <Hotel />,
+        props: [
+          ["hotel", "[hotel, setHotel]"],
+          ["location", "[location, setLocation]"],
+        ],
+      },
       { path: "hotel/criar", element: <HotelDetail /> },
       { path: "hotel/:id", element: <HotelDetail /> },
 

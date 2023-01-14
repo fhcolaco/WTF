@@ -2,11 +2,10 @@ import { useState, useEffect, Fragment } from "react";
 import { SideBar } from "./SideBar";
 import { TopBar } from "./TopBar";
 import { Transition } from "@headlessui/react";
-import { useOutlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 
 export default function Layout(props) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const outlet = useOutlet();
 
   function handleResize() {
     if (window.innerWidth <= 768) {
@@ -49,7 +48,7 @@ export default function Layout(props) {
         <SideBar sidebar={sidebarOpen} />
       </Transition>
       <div className={`flex h-screen items-center justify-center  bg-gray-200`}>
-        {outlet}
+        <Outlet />
       </div>
     </>
   );
