@@ -11,47 +11,53 @@ import Geocode from "react-geocode";
 export default function Hotel(props) {
   const [loading, setLoading] = useState(true);
   const loader = props.loader;
-  const [hotel, setHotel] = props.hotel;
+  const [hotel, setHotel] = useState([]);
   const [location, setLocation] = useState([]);
+  const [filt, setFilt] = useState("");
 
   useEffect(() => {
-    setTimeout(() => {
-      hotel.map((hotel) => {
-        setLocation([]);
-        Geocode.setApiKey("AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg");
-        Geocode.setLanguage("pt");
-        Geocode.setRegion("pt");
-        let [lat, lng] = hotel.location.split(", ");
-        Geocode.fromLatLng(lat, lng).then(
-          (response) => {
-            const city =
-              response.results[0].address_components[2].long_name +
-              ", " +
-              response.results[0].address_components[4].long_name;
-            setLocation((location) => [
-              ...location,
-              { hotelID: hotel._id, city: city },
-            ]);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-      });
-    }, 1000);
-  }, [hotel]);
+    setHotel(props.hotel);
+    hotel.map((hotel) => {
+      setLocation([]);
+      Geocode.setApiKey("AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg");
+      Geocode.setLanguage("pt");
+      Geocode.setRegion("pt");
+      let [lat, lng] = hotel.location.split(", ");
+      Geocode.fromLatLng(lat, lng).then(
+        (response) => {
+          const city =
+            response.results[0].address_components[2].long_name +
+            ", " +
+            response.results[0].address_components[4].long_name;
+          setLocation((location) => [
+            ...location,
+            { hotelID: hotel._id, city: city },
+          ]);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    });
+  }, [props.hotel, hotel]);
 
   useEffect(() => {
-    if (location.length === hotel.length) {
+    if (hotel.length === location.length && hotel.length !== 0) {
       setLoading(false);
     }
-  }, [location]);
+  }, [hotel, location]);
 
   const removeHotel = (id) => {
-    deleteHotel(id).then((data) => {
+    deleteHotel(id).then(() => {
       setHotel(hotel.filter((hotel) => hotel._id !== id));
     });
   };
+
+  function search(rows) {
+    return rows.filter(
+      (row) => row.name.toLowerCase().indexOf(filt.toLowerCase()) > -1
+    );
+  }
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -70,10 +76,12 @@ export default function Hotel(props) {
               {/* COLOCAR AQUI O AJAX PARA MUDAR A LISTA ENQUANTO PROCURA - NÂO ESQUECER A PAGINAÇÃO */}
               <input
                 type="text"
-                id="serach-table "
-                name="serach-table"
+                id="search-table "
+                name="search-table"
                 className="bg-wblock block w-full rounded-md  border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Procurar"
+                value={filt}
+                onChange={(e) => setFilt(e.target.value)}
               />
             </div>
             <div className="relative mx-2 mt-1 flex flex-1 justify-end">
@@ -105,7 +113,7 @@ export default function Hotel(props) {
               </tr>
             </thead>
             <tbody>
-              {hotel.map((hotel) => (
+              {search(hotel).map((hotel) => (
                 <tr key={hotel._id} className="border-b bg-white">
                   <td className="w-32 p-4">
                     <img src={hotel.images[0]} alt="" className="w-full" />

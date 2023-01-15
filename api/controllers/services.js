@@ -27,9 +27,8 @@ router.post("/", async (req, res) => {
     _hotels: req.body.hotels,
     name: req.body.name,
     description: req.body.description,
-    price: req.body.price,
   }).then((service) => {
-    res.status(200).send(service.name + " foi adicionado à base de dados");
+    res.status(200).send(service);
   });
 });
 
@@ -43,11 +42,10 @@ router.put("/:id", async (req, res) => {
       _hotels: req.body.hotels,
       name: req.body.name,
       description: req.body.description,
-      price: req.body.price,
     }
   )
     .then((service) => {
-      res.status(200).send(service.name + " foi atualizado");
+      res.status(200).send(service);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });
@@ -57,7 +55,7 @@ router.put("/:id", async (req, res) => {
 //DELETE method
 router.delete("/:id", async (req, res) => {
   Services.findOneAndDelete({ _id: req.params.id }).then((service) => {
-    res.status(200).send(service.name + " foi removido da base de dados");
+    res.status(200).send(service);
   });
 });
 

@@ -26,9 +26,7 @@ router.post("/", async (req, res) => {
     name: req.body.name,
     description: req.body.description,
   }).then((room_category) => {
-    res
-      .status(200)
-      .send(room_category.name + " foi adicionado à base de dados");
+    res.status(200).send(room_category);
   });
 });
 
@@ -38,14 +36,14 @@ router.put("/:id", async (req, res) => {
     name: req.body.name,
     description: req.body.description,
   }).then((room_category) => {
-    res.status(200).send(room_category.name + " foi atualizado");
+    res.status(200).send(room_category);
   });
 });
 
 //DELETE method
 router.delete("/:id", async (req, res) => {
   RoomCategory.findByIdAndDelete(req.params.id).then((room_category) => {
-    res.status(200).send(room_category.name + " foi eliminado");
+    res.status(200).send(room_category);
   });
 });
 

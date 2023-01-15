@@ -5,7 +5,8 @@ const Hotel = require("../models/hotel");
 //GET ALL method
 router.get("/", (req, res) => {
   Hotel.find().then((result) => {
-    if (result === null) res.status(400).send("O hotel não foi encontrado");
+    if (result === null)
+      res.status(400).json({ error: "O hotel não foi encontrado" });
     else res.status(200).send(result);
   });
 });
@@ -13,7 +14,8 @@ router.get("/", (req, res) => {
 //GET ONE method
 router.get("/:id", async (req, res) => {
   Hotel.findOne({ _id: req.params.id }).then((result) => {
-    if (result === null) res.status(400).send("O hotel não foi encontrado");
+    if (result === null)
+      res.status(400).json({ error: "O hotel não foi encontrado" });
     else res.status(200).send(result);
   });
 });

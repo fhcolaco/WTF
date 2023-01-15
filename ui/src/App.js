@@ -25,7 +25,6 @@ function App() {
 
   useEffect(() => {
     getHotel().then((data) => {
-      console.log(data);
       setHotel(data);
     });
   }, []);
@@ -56,9 +55,7 @@ function App() {
           <Route path="" element={<Dashboard />} />
           <Route
             path="hotel"
-            element={
-              <Hotel hotel={[hotel, setHotel]} loader={loadingFunction} />
-            }
+            element={<Hotel hotel={hotel} loader={loadingFunction} />}
           />
           <Route path="hotel/criar" element={<HotelDetail />} />
           <Route path="hotel/:id" element={<HotelDetail />} />

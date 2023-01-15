@@ -5,12 +5,17 @@ const servicesSchema = new mongoose.Schema(
     _service_type: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "service_categories",
-      required: true,
+      required: false,
     },
     _service_room: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: [mongoose.Schema.Types.ObjectId],
       ref: "room_services",
-      required: true,
+      required: false,
+    },
+    _hotels: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "hotels",
+      required: false,
     },
     name: {
       type: String,
@@ -19,15 +24,6 @@ const servicesSchema = new mongoose.Schema(
     description: {
       type: String,
       required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    _hotels: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "hotels",
-      required: false,
     },
   },
   { timestamps: true }

@@ -5,16 +5,17 @@ const HotelCategory = require("../models/hotel_category");
 //GET ALL method
 router.get("/", (req, res) => {
   HotelCategory.find().then((result) => {
-    if (result === null) res.status(400).send("A categoria não foi encontrada");
+    if (result === null)
+      res.status(400).json({ error: "A categoria não foi encontrada" });
     else res.status(200).send(result);
   });
 });
 
 //GET ONE method
 router.get("/:id", (req, res) => {
-  const ID = parseInt(req.params.id);
-  HotelCategory.findOne({ _id: ID }).then((result) => {
-    if (result === null) res.status(400).send("A categoria não foi encontrada");
+  HotelCategory.findOne(req.params.id).then((result) => {
+    if (result === null)
+      res.status(400).json({ error: "A categoria não foi encontrada" });
     else res.status(200).send(result);
   });
 });
@@ -26,7 +27,7 @@ router.post("/", (req, res) => {
     description: req.body.description,
   })
     .then((result) => {
-      res.status(200).send(result.name + " foi adicionado à base de dados");
+      res.status(200).send(result);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });
@@ -35,16 +36,12 @@ router.post("/", (req, res) => {
 
 //PUT method
 router.put("/:id", (req, res) => {
-  const ID = parseInt(req.params.id);
-  HotelCategory.findOneAndUpdate(
-    { _id: ID },
-    {
-      name: req.body.name,
-      description: req.body.description,
-    }
-  )
+  HotelCategory.findOneAndUpdate(req.params.id, {
+    name: req.body.name,
+    description: req.body.description,
+  })
     .then((result) => {
-      hotel.status(200).send(result.name + " foi atualizado");
+      hotel.status(200).send(result);
     })
     .catch((error) => {
       error.status(400).json({ message: error.message });
@@ -53,8 +50,7 @@ router.put("/:id", (req, res) => {
 
 //DELETE method
 router.delete("/:id", (req, res) => {
-  const ID = parseInt(req.params.id);
-  HotelCategory.findOneAndDelete({ _id: ID }).then((result) => {
+  HotelCategory.findOneAndDelete(req.params.id).then((result) => {
     if (result === null) res.status(400).send("A categoria não foi encontrada");
     else res.status(200).send(result);
   });

@@ -20,6 +20,7 @@ connect
   .then(() => {
     console.log("WTF!!!!!");
     app.use((req, res, next) => {
+      //Authentication middleware goes here (JWT) - to be implemented
       next();
     });
     app.use("/booking", require("./controllers/booking.js"));
