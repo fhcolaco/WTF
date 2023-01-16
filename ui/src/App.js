@@ -21,6 +21,7 @@ import NotFound from "./backend/components/404";
 import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import { useForm } from "react-hook-form";
+import Header from "./components/Header";
 
 function App() {
   const [hotel, setHotel] = useState([]);
@@ -57,9 +58,7 @@ function App() {
           path="/"
           element={
             <section>
-              <h1 className="text-3xl font-bold">
-                Só estava a testar para ver se funcionava o tailwind :D
-              </h1>
+              <Header />
               <a href="/dashboard">
                 <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
                   Dashboard
