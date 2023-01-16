@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import Header from "./components/Header";
+import Content from "./components/Content";
 
 function App() {
   const [hotel, setHotel] = useState([]);
@@ -63,11 +64,7 @@ function App() {
           element={
             <section>
               <Header />
-              <a href="/dashboard">
-                <button className="rounded bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700">
-                  Dashboard
-                </button>
-              </a>
+              <Content />
             </section>
           }
         />
