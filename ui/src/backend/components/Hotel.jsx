@@ -8,6 +8,8 @@ import {
 import { Link } from "react-router-dom";
 import { deleteHotel } from "../../shared/hotelApi";
 import Geocode from "react-geocode";
+import Services from "./Services";
+import { getHotelCategory } from "../../shared/hotel_categoryApi";
 
 export const geocodeAPIKEY = () => {
   return Geocode.setApiKey("AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg");
@@ -18,8 +20,12 @@ export default function Hotel(props) {
   const [hotel, setHotel] = useState([]);
   const [location, setLocation] = useState([]);
   const [filt, setFilt] = useState("");
+  const [hotelType, setHotelType] = useState([]);
 
   useEffect(() => {
+    getHotelCategory().then((res) => {
+      setHotelType(res);
+    });
     setHotel(props.hotel);
     hotel.map((hotel) => {
       geocodeAPIKEY();
@@ -46,10 +52,14 @@ export default function Hotel(props) {
   }, [props.hotel, hotel]);
 
   useEffect(() => {
-    if (hotel.length === location.length && hotel.length !== 0) {
+    if (
+      hotel.length === location.length &&
+      hotel.length !== 0 &&
+      hotelType.length !== 0
+    ) {
       setLoading(false);
     }
-  }, [hotel, location]);
+  }, [hotel, hotelType, location]);
 
   const removeHotel = (id) => {
     deleteHotel(id).then(() => {
@@ -58,7 +68,6 @@ export default function Hotel(props) {
   };
 
   function search(rows) {
-    console.log(rows);
     return rows.filter(
       (row) => row.name.toLowerCase().indexOf(filt.toLowerCase()) > -1
     );
@@ -131,7 +140,9 @@ export default function Hotel(props) {
                     )}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
-                    {hotel._hotel_type}
+                    {hotelType.map((hotelType) =>
+                      hotelType._id === hotel._hotel_type ? hotelType.name : ""
+                    )}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
                     <div className="flex items-baseline space-x-4 text-sm">

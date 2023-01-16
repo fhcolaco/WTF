@@ -33,7 +33,7 @@ export default function Layout(props) {
   }, [sidebarOpen]);
 
   return (
-    <>
+    <div className="absolute h-screen w-screen">
       <TopBar sideBarState={[sidebarOpen, setSidebarOpen]} />
       <Transition
         as={Fragment}
@@ -47,9 +47,9 @@ export default function Layout(props) {
       >
         <SideBar sidebar={sidebarOpen} />
       </Transition>
-      <div className={`flex h-screen  justify-center  bg-gray-200`}>
+      <div className="relative flex h-full items-center justify-center bg-gray-200">
         <Outlet />
       </div>
-    </>
+    </div>
   );
 }

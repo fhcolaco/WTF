@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Layout from "./backend/components/Layout";
 import "./styles/App.css";
 import { getHotel, createHotel, updateHotel } from "./shared/hotelApi";
@@ -18,9 +18,6 @@ import ServicesDetail from "./backend/components/ServicesDetail";
 import ServicesCategory from "./backend/components/ServicesCategory";
 import Settings from "./backend/components/Settings";
 import NotFound from "./backend/components/404";
-import { useNavigate } from "react-router-dom";
-import Loader from "./Loader";
-import { useForm } from "react-hook-form";
 import Header from "./components/Header";
 import Content from "./components/Content";
 
@@ -40,10 +37,12 @@ function App() {
     console.log(data);
     if (data._id !== "" || data._id !== undefined) {
       updateHotel(data._id, data).then((data) => {
+        console.log(data);
         hotel.map((item) => {
           if (item._id === data._id) {
             item = data;
           }
+          console.log(item);
           return item;
         });
       });
