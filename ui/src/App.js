@@ -34,20 +34,19 @@ function App() {
   }, []);
 
   const onSubmitHotel = (data, event) => {
-    console.log(data);
     event.preventDefault();
     console.log(data);
-    // if (data._id !== "" || data._id !== undefined) {
-    //   updateHotel(data._id, data).then((data) => {
-    //     console.log(data);
-    //     setHotel([...hotel, data]);
-    //   });
-    // } else {
-    //   createHotel(data).then((data) => {
-    //     console.log(data);
-    //     setHotel([...hotel, data]);
-    //   });
-    // }
+    if (data._id !== "" || data._id !== undefined) {
+      updateHotel(data._id, data).then((data) => {
+        console.log(data);
+        setHotel([...hotel, data]);
+      });
+    } else {
+      createHotel(data).then((data) => {
+        console.log(data);
+        setHotel([...hotel, data]);
+      });
+    }
     navigate("/dashboard/hotel");
   };
 
@@ -76,7 +75,10 @@ function App() {
             path="hotel/criar"
             element={<HotelDetail submit={onSubmitHotel} />}
           />
-          <Route path="hotel/:id" element={<HotelDetail />} />
+          <Route
+            path="hotel/:id"
+            element={<HotelDetail submit={onSubmitHotel} />}
+          />
           <Route path="hotel/categoria" element={<HotelCategory />} />
           <Route path="quarto" element={<Room />} />
           <Route path="quarto/criar" element={<RoomDetail />} />

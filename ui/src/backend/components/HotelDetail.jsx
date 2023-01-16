@@ -125,7 +125,6 @@ export default function HotelDetail(props) {
       {loading ? (
         <Loader />
       ) : (
-        // <form className="w-2/3" onSubmit={handleSubmit(console.log)}>
         <form className="w-2/3" onSubmit={handleSubmit(props.submit)}>
           <div className="inline-block">
             <h2 className="mb-8 text-4xl font-extrabold">
@@ -199,13 +198,9 @@ export default function HotelDetail(props) {
               </div>
               <div className="relative z-0 my-8 w-full">
                 <input
-                  {...register("address", {
-                    shouldUnregister: true,
-                    value: address.street,
-                    name: "address",
-                    id: "address",
-                    onChange: handleChange,
-                  })}
+                  value={address.street}
+                  name="street"
+                  id="street"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   placeholder=" "
                 />
@@ -220,13 +215,9 @@ export default function HotelDetail(props) {
             <div className="grid md:grid-cols-3 md:gap-6">
               <div className="group relative z-0 my-8 w-full">
                 <input
-                  {...register("city", {
-                    shouldUnregister: true,
-                    value: address.city,
-                    name: "city",
-                    id: "city",
-                    onChange: handleChange,
-                  })}
+                  value={address.city}
+                  name={"city"}
+                  id={"city"}
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   placeholder=" "
                 />
@@ -239,13 +230,9 @@ export default function HotelDetail(props) {
               </div>
               <div className="group relative z-0 my-8 w-full">
                 <input
-                  {...register("country", {
-                    shouldUnregister: true,
-                    value: address.country,
-                    name: "country",
-                    id: "country",
-                    onChange: handleChange,
-                  })}
+                  value={address.country}
+                  name="country"
+                  id="country"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   placeholder=" "
                 />
@@ -258,13 +245,9 @@ export default function HotelDetail(props) {
               </div>
               <div className="group relative z-0 my-8 w-full">
                 <input
-                  {...register("zip", {
-                    shouldUnregister: true,
-                    value: address.zip,
-                    name: "zip",
-                    id: "zip",
-                    onChange: handleChange,
-                  })}
+                  value={address.zip}
+                  name="zip"
+                  id="zip"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   placeholder=" "
                 />

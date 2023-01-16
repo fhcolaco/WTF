@@ -58,6 +58,7 @@ export default function Hotel(props) {
   };
 
   function search(rows) {
+    console.log(rows);
     return rows.filter(
       (row) => row.name.toLowerCase().indexOf(filt.toLowerCase()) > -1
     );
@@ -77,7 +78,6 @@ export default function Hotel(props) {
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                 <MagnifyingGlassIcon className="h-5 w-5 text-gray-400" />
               </div>
-              {/* COLOCAR AQUI O AJAX PARA MUDAR A LISTA ENQUANTO PROCURA - NÂO ESQUECER A PAGINAÇÃO */}
               <input
                 type="text"
                 id="search-table "
