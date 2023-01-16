@@ -23,7 +23,7 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ storage: storage });
+const upload = multer(storage, fileFilter);
 
 //GET ALL method
 router.get("/", (req, res) => {
@@ -51,7 +51,7 @@ router.route("/").post(upload.single("images"), (req, res) => {
     description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
-    images: req.file.filename,
+    images: req.body.images,
   })
     .then((hotel) => {
       res.status(200).send(hotel);
