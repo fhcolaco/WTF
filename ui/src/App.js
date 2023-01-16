@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Layout from "./backend/components/Layout";
 import "./styles/App.css";
-import { getHotel } from "./shared/hotelApi";
+import { getHotel, createHotel, updateHotel } from "./shared/hotelApi";
 import Dashboard from "./backend/components/Dashboard";
 import Hotel from "./backend/components/Hotel";
 import HotelDetail from "./backend/components/HotelDetail";
@@ -18,23 +18,41 @@ import ServicesDetail from "./backend/components/ServicesDetail";
 import ServicesCategory from "./backend/components/ServicesCategory";
 import Settings from "./backend/components/Settings";
 import NotFound from "./backend/components/404";
+import { useNavigate } from "react-router-dom";
 import Loader from "./Loader";
+import { useForm } from "react-hook-form";
 
 function App() {
   const [hotel, setHotel] = useState([]);
+  const { unregister } = useForm();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getHotel().then((data) => {
       setHotel(data);
     });
   }, []);
-  // #### Change the loading state to false after loading the data
-  function loadingFunction() {
-    return <Loader />;
-  }
+
+  const onSubmitHotel = (data, event) => {
+    console.log(data);
+    event.preventDefault();
+    console.log(data);
+    // if (data._id !== "" || data._id !== undefined) {
+    //   updateHotel(data._id, data).then((data) => {
+    //     console.log(data);
+    //     setHotel([...hotel, data]);
+    //   });
+    // } else {
+    //   createHotel(data).then((data) => {
+    //     console.log(data);
+    //     setHotel([...hotel, data]);
+    //   });
+    // }
+    navigate("/dashboard/hotel");
+  };
 
   return (
-    <BrowserRouter>
+    <>
       <Routes>
         <Route
           path="/"
@@ -53,11 +71,11 @@ function App() {
         />
         <Route path="/dashboard" element={<Layout />}>
           <Route path="" element={<Dashboard />} />
+          <Route path="hotel" element={<Hotel hotel={hotel} />} />
           <Route
-            path="hotel"
-            element={<Hotel hotel={hotel} loader={loadingFunction} />}
+            path="hotel/criar"
+            element={<HotelDetail submit={onSubmitHotel} />}
           />
-          <Route path="hotel/criar" element={<HotelDetail />} />
           <Route path="hotel/:id" element={<HotelDetail />} />
           <Route path="hotel/categoria" element={<HotelCategory />} />
           <Route path="quarto" element={<Room />} />
@@ -77,7 +95,7 @@ function App() {
         </Route>
         <Route path="*" element={<h1>NOT FOUND</h1>} />
       </Routes>
-    </BrowserRouter>
+    </>
   );
 }
 

@@ -1,3 +1,4 @@
+import Loader from "../../Loader";
 import { useEffect, useState } from "react";
 import {
   MagnifyingGlassIcon,
@@ -8,9 +9,12 @@ import { Link } from "react-router-dom";
 import { deleteHotel } from "../../shared/hotelApi";
 import Geocode from "react-geocode";
 
+export const geocodeAPIKEY = () => {
+  return Geocode.setApiKey("AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg");
+};
+
 export default function Hotel(props) {
   const [loading, setLoading] = useState(true);
-  const loader = props.loader;
   const [hotel, setHotel] = useState([]);
   const [location, setLocation] = useState([]);
   const [filt, setFilt] = useState("");
@@ -18,8 +22,8 @@ export default function Hotel(props) {
   useEffect(() => {
     setHotel(props.hotel);
     hotel.map((hotel) => {
+      geocodeAPIKEY();
       setLocation([]);
-      Geocode.setApiKey("AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg");
       Geocode.setLanguage("pt");
       Geocode.setRegion("pt");
       let [lat, lng] = hotel.location.split(", ");
@@ -62,7 +66,7 @@ export default function Hotel(props) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {loading ? (
-        loader()
+        <Loader />
       ) : (
         <>
           <div className=" flex items-baseline bg-white pb-4">
