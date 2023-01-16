@@ -13,7 +13,7 @@ export const TopBar = (props) => {
   const [sideBar, setSideBar] = props.sideBarState;
   return (
     <div
-      className={`item-center fixed flex h-16 w-full justify-between bg-gray-200 transition-all duration-[400ms] ${
+      className={`item-center sticky flex h-16 w-full justify-between bg-gray-200 transition-all duration-[400ms] ${
         sideBar ? "pl-56" : ""
       }`}
     >

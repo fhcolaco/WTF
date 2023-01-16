@@ -19,13 +19,15 @@ import ServicesCategory from "./backend/components/ServicesCategory";
 import Settings from "./backend/components/Settings";
 import NotFound from "./backend/components/404";
 import { useNavigate } from "react-router-dom";
+<<<<<<< HEAD
 import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import Header from "./components/Header";
+=======
+>>>>>>> 5eb7c3b9c39fe002b88298001a671a4c31e24b04
 
 function App() {
   const [hotel, setHotel] = useState([]);
-  const { unregister } = useForm();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,11 +38,16 @@ function App() {
 
   const onSubmitHotel = (data, event) => {
     event.preventDefault();
+    console.log("submit");
     console.log(data);
     if (data._id !== "" || data._id !== undefined) {
       updateHotel(data._id, data).then((data) => {
-        console.log(data);
-        setHotel([...hotel, data]);
+        hotel.map((item) => {
+          if (item._id === data._id) {
+            item = data;
+          }
+          return item;
+        });
       });
     } else {
       createHotel(data).then((data) => {

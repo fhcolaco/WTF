@@ -50,8 +50,7 @@ export const SideBar = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="fixed z-10
-    h-screen w-56 bg-white shadow-sm"
+      className="fixed absolute top-0 left-0 z-10 h-screen w-56 bg-white shadow-sm"
     >
       <div className="mt-6 mb-14 flex justify-center">
         <img src={logo} alt="WTF_logo" className="h-auto w-32 " />
