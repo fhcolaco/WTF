@@ -21,10 +21,10 @@ router.get("/:id", async (req, res) => {
 //POST method
 router.post("/", async (req, res) => {
   Room.create({
-    _hotel: req.body.hotel,
-    _room_category: req.body.room_category,
-    _room_details: req.body.room_details,
-    _services: req.body.services,
+    _hotel: req.body._hotel,
+    _room_category: req.body._room_category,
+    _room_details: req.body._room_details,
+    _services: req.body._services,
     atual_price: req.body.atual_price,
     old_price: req.body.old_price,
     isDiscount: req.body.isDiscount,
@@ -40,10 +40,10 @@ router.put("/:id", async (req, res) => {
   Room.findOneAndUpdate(
     { _id: req.params.id },
     {
-      _hotel: req.body.hotel,
-      _room_category: req.body.room_category,
-      _room_details: req.body.room_details,
-      _services: req.body.services,
+      _hotel: req.body._hotel,
+      _room_category: req.body._room_category,
+      _room_details: req.body._room_details,
+      _services: req.body._services,
       atual_price: req.body.atual_price,
       old_price: req.body.old_price,
       isDiscount: req.body.isDiscount,

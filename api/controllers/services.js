@@ -22,9 +22,9 @@ router.get("/:id", async (req, res) => {
 //POST method
 router.post("/", async (req, res) => {
   Services.create({
-    _service_type: req.body.service_type,
-    _service_room: req.body.service_room,
-    _hotels: req.body.hotels,
+    _service_type: req.body._service_type,
+    _service_room: req.body._service_room,
+    _hotels: req.body._hotels,
     name: req.body.name,
     description: req.body.description,
   }).then((service) => {
@@ -37,9 +37,9 @@ router.put("/:id", async (req, res) => {
   Services.findOneAndUpdate(
     { _id: req.params.id },
     {
-      _service_type: req.body.service_type,
-      _service_room: req.body.service_room,
-      _hotels: req.body.hotels,
+      _service_type: req.body._service_type,
+      _service_room: req.body._service_room,
+      _hotels: req.body._hotels,
       name: req.body.name,
       description: req.body.description,
     }

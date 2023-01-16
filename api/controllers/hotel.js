@@ -26,8 +26,8 @@ router.post("/", async (req, res) => {
     name: req.body.name,
     location: req.body.location,
     description: req.body.description,
-    _hotel_type: req.body.hotel_type,
-    _services: req.body.services,
+    _hotel_type: req.body._hotel_type,
+    _services: req.body._services,
     images: req.body.images,
   })
     .then((hotel) => {

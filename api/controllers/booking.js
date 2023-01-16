@@ -21,9 +21,9 @@ router.get("/:id", (req, res) => {
 //POST method
 router.post("/", (req, res) => {
   Booking.create({
-    _hotel: req.body.hotel,
-    _user: req.body.user,
-    _room: req.body.room,
+    _hotel: req.body._hotel,
+    _user: req.body._user,
+    _room: req.body._room,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
     undiscounted_amount: req.body.undiscounted_amount,
@@ -43,9 +43,9 @@ router.post("/", (req, res) => {
 //PUT method
 router.put("/:id", (req, res) => {
   Booking.findByIdAndUpdate(req.params.id, {
-    _hotel: req.body.hotel,
-    _user: req.body.user,
-    _room: req.body.room,
+    _hotel: req.body._hotel,
+    _user: req.body._user,
+    _room: req.body._room,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
     undiscounted_amount: req.body.undiscounted_amount,
