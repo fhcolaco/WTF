@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", upload.single("images"), async (req, res) => {
+router.route("/").post(upload.single("images"), async (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
@@ -62,7 +62,7 @@ router.post("/", upload.single("images"), async (req, res) => {
 });
 
 //PUT method
-router.put("/:id", upload.single("images"), async (req, res) => {
+router.route("/:id").put(upload.single("images"), async (req, res) => {
   Hotel.findOneAndUpdate(
     { _id: req.params.id },
     {
