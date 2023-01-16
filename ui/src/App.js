@@ -19,12 +19,9 @@ import ServicesCategory from "./backend/components/ServicesCategory";
 import Settings from "./backend/components/Settings";
 import NotFound from "./backend/components/404";
 import { useNavigate } from "react-router-dom";
-<<<<<<< HEAD
 import Loader from "./Loader";
 import { useForm } from "react-hook-form";
 import Header from "./components/Header";
-=======
->>>>>>> 5eb7c3b9c39fe002b88298001a671a4c31e24b04
 
 function App() {
   const [hotel, setHotel] = useState([]);
