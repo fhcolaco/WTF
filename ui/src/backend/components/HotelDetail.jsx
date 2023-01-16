@@ -116,7 +116,6 @@ export default function HotelDetail(props) {
   };
 
   const isChecked = (e) => {
-    console.log(e.target.value);
     if (!hotel._services.includes(e.target.value)) {
       setHotel({ ...hotel, _services: [...hotel._services, e.target.value] });
     } else {
@@ -129,9 +128,13 @@ export default function HotelDetail(props) {
     }
   };
 
-  const handleImage = (e) => {
-    setHotel({ ...hotel, images: [...hotel.images, e.target.files[0]] });
+  useEffect(() => {
     console.log(hotel.images);
+  }, [hotel.images]);
+
+  const handleImage = (e) => {
+    console.log(e.target.files[0]);
+    setHotel({ ...hotel, images: [e.target.files[0].name] });
   };
 
   return (
@@ -366,13 +369,11 @@ export default function HotelDetail(props) {
             {/* create image input */}
             <div className="group relative z-0 my-8 w-full">
               <input
-                {...register("images", {
-                  placeholder: " ",
-                  onChange: handleImage,
-                  name: "image",
-                  id: "image",
-                })}
+                ref={images}
+                name="image"
+                id="image"
                 type="file"
+                onChange={handleImage}
                 accept="image/*"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
               />

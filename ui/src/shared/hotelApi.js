@@ -53,7 +53,7 @@ export const updateHotel = async (id, data) =>
     body: JSON.stringify(data),
   }).then((res) => {
     if (res.status !== 200) {
-      throw new Error("Something went wrong on api server!");
+      return res.json();
     }
     return res.json();
   });

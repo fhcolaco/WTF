@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "images");
+    cb(null, "/images");
   },
   filename: function (req, file, cb) {
     cb(null, uuidv4() + path.extname(file.originalname));
@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.route("/").post(upload.single("images"), (req, res) => {
+router.post("/", upload.single("images"), (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
@@ -62,7 +62,7 @@ router.route("/").post(upload.single("images"), (req, res) => {
 });
 
 //PUT method
-router.route("/:id").put(upload.single("images"), (req, res) => {
+router.put("/:id", upload.single("images"), (req, res) => {
   Hotel.findOneAndUpdate(
     { _id: req.params.id },
     {
