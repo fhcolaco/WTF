@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.route("/").post(upload.single("images"), async (req, res) => {
+router.route("/").post(upload.single("images"), (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
@@ -62,7 +62,7 @@ router.route("/").post(upload.single("images"), async (req, res) => {
 });
 
 //PUT method
-router.route("/:id").put(upload.single("images"), async (req, res) => {
+router.route("/:id").put(upload.single("images"), (req, res) => {
   Hotel.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -83,7 +83,7 @@ router.route("/:id").put(upload.single("images"), async (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", (req, res) => {
   Hotel.findOneAndDelete({ _id: req.params.id })
     .then((hotel) => {
       res.status(200).send(hotel);
