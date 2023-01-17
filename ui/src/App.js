@@ -27,6 +27,7 @@ function App() {
 
   useEffect(() => {
     getHotel().then((data) => {
+      console.log(data);
       setHotel(data);
     });
   }, []);

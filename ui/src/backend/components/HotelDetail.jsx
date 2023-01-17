@@ -1,4 +1,4 @@
-import { getHotelById } from "../../shared/hotelApi";
+import { getHotelById, updateHotel, createHotel } from "../../shared/hotelApi";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
 import { getServices } from "../../shared/servicesApi";
 import { useEffect, useState } from "react";
@@ -8,9 +8,9 @@ import Loader from "../../Loader";
 import { geocodeAPIKEY } from "./Hotel";
 import Geocode from "react-geocode";
 import { CheckIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 //falta criar o handler para a loacalização e acabar o carousel
-//Hotel -> só falta a parte das categorias
 
 export default function HotelDetail(props) {
   const [hotel, setHotel] = useState({});
@@ -19,7 +19,7 @@ export default function HotelDetail(props) {
   const [loading, setLoading] = useState(true);
   const params = useParams();
   const navigate = useNavigate();
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm({ mode: "all" });
   const [address, setAddress] = useState();
   const [images, setImages] = useState([]);
 
@@ -86,12 +86,9 @@ export default function HotelDetail(props) {
       address.length !== 0 &&
       (address.city !== "" || hotel.location === "")
     ) {
-      if (loading === true) {
-        setImages(hotel.images);
-      }
       setLoading(false);
     }
-  }, [hotelType, services, hotel, address, loading]);
+  }, [hotelType, services, hotel, address]);
 
   useEffect(() => {
     if (hotel._id !== undefined) {
@@ -129,13 +126,49 @@ export default function HotelDetail(props) {
   };
 
   useEffect(() => {
-    console.log(hotel.images);
+    if (loading === true && hotel.images !== undefined) {
+      let aux = [];
+      hotel.images.map((image) => {
+        aux.push(`http://localhost:4000/images/${image}`);
+      });
+      setImages(aux);
+    }
   }, [hotel.images]);
+
+  useEffect(() => {
+    console.log(images);
+  }, [images]);
 
   const handleImage = (e) => {
     console.log(e.target.files[0]);
-    setHotel({ ...hotel, images: [e.target.files[0].name] });
+    setHotel({ ...hotel, images: [e.target.files[0]] });
   };
+
+  // const send = (x, event) => {
+  //   event.preventDefault();
+  //   const data = new FormData();
+  //   data.append("name", hotel.name);
+  //   data.append("description", hotel.description);
+  //   data.append("location", hotel.location);
+  //   data.append("_hotel_type", hotel._hotel_type);
+  //   data.append("_services", hotel._services);
+  //   if (hotel._id !== "") {
+  //     data.append("_id", hotel._id);
+  //   }
+  //   data.append("images", hotel.images);
+  //   axios
+  //     .post("https://httpbin.org/anything", data, {
+  //       headers: {
+  //         "Content-Type": "multipart/form-data",
+  //       },
+  //     })
+  //     .then((res) => {
+  //       console.log(res);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
 
   return (
     <>
@@ -351,12 +384,11 @@ export default function HotelDetail(props) {
           </form>
           <div className="col-start-8 col-end-11 mx-5 mb-5 sm:px-0">
             <h1 className="mb-8 text-4xl font-extrabold">Imagens do Hotel</h1>
-            {images.length > 0 && images !== [] ? (
+            {images.length > 0 && hotel.images !== [""] ? (
               <ul className="flex gap-6 overflow-x-auto">
                 {images.map((image) => (
-                  <li key={`image${image[1]}`} className="">
+                  <li key={`${image}`} className="">
                     <img
-                      key={`image${image[-1]}`}
                       src={image}
                       className="h-auto max-w-full rounded-lg"
                       alt=""
@@ -370,16 +402,16 @@ export default function HotelDetail(props) {
             {/* create image input */}
             <div className="group relative z-0 my-8 w-full">
               <input
-                ref={images}
-                name="image"
-                id="image"
+                {...register("images")}
+                name="images"
+                id="images"
                 type="file"
                 onChange={handleImage}
                 accept="image/*"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
               />
               <label
-                htmlFor="image"
+                htmlFor="images"
                 className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
               >
                 Imagem
