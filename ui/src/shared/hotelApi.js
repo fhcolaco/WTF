@@ -1,4 +1,4 @@
-const url = "https://wtf-backend.onrender.com/hotel";
+const url = "http://localhost:4000/hotel";
 
 export const getHotel = async () =>
   fetch(url, {
@@ -53,7 +53,9 @@ export const updateHotel = async (id, data) =>
     body: JSON.stringify(data),
   }).then((res) => {
     if (res.status !== 200) {
-      throw new Error("Something went wrong on api server!");
+      return res.text().then((text) => {
+        return text;
+      });
     }
     return res.json();
   });

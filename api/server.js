@@ -1,5 +1,6 @@
 const express = require("express");
 const app = express();
+// const fileupload = require("express-fileupload");
 const cors = require("cors");
 const mongoose = require("mongoose");
 app.use(
@@ -7,6 +8,7 @@ app.use(
     origin: "*",
   })
 );
+// app.use(fileupload());
 app.use(express.json());
 const port = process.env.PORT || 4000;
 const url =
@@ -23,6 +25,7 @@ connect
       //Authentication middleware goes here (JWT) - to be implemented
       next();
     });
+    app.use("/images", express.static("images"));
     app.use("/booking", require("./controllers/booking.js"));
     app.use("/hotel_category", require("./controllers/hotel_category.js"));
     app.use("/hotel", require("./controllers/hotel.js"));

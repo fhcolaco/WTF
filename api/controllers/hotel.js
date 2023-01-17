@@ -7,7 +7,7 @@ const { v4: uuidv4 } = require("uuid");
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, "images");
+    cb(null, "./images");
   },
   filename: function (req, file, cb) {
     cb(null, uuidv4() + path.extname(file.originalname));
@@ -19,11 +19,11 @@ const fileFilter = (req, file, cb) => {
   if (allowedTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(null, false);
+    cb(null, cb(new Error("Tipo de arquivo inválido")));
   }
 };
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: storage }, fileFilter);
 
 //GET ALL method
 router.get("/", (req, res) => {
@@ -44,7 +44,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", upload.single("images"), async (req, res) => {
+router.post("/", upload.single("images"), (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
@@ -62,7 +62,7 @@ router.post("/", upload.single("images"), async (req, res) => {
 });
 
 //PUT method
-router.put("/:id", upload.single("images"), async (req, res) => {
+router.put("/:id", upload.array("images"), (req, res) => {
   Hotel.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -71,7 +71,7 @@ router.put("/:id", upload.single("images"), async (req, res) => {
       description: req.body.description,
       _hotel_type: req.body._hotel_type,
       _services: req.body._services,
-      images: req.file.filename,
+      images: req.files.map((file) => file.filename),
     }
   )
     .then((hotel) => {
@@ -83,7 +83,7 @@ router.put("/:id", upload.single("images"), async (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", (req, res) => {
   Hotel.findOneAndDelete({ _id: req.params.id })
     .then((hotel) => {
       res.status(200).send(hotel);

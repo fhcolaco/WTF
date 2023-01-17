@@ -27,31 +27,42 @@ function App() {
 
   useEffect(() => {
     getHotel().then((data) => {
+      console.log(data);
       setHotel(data);
     });
   }, []);
 
   const onSubmitHotel = (data, event) => {
     event.preventDefault();
-    console.log("submit");
+    console.log("inicio");
     console.log(data);
     if (data._id !== "" || data._id !== undefined) {
-      updateHotel(data._id, data).then((data) => {
-        console.log(data);
-        hotel.map((item) => {
-          if (item._id === data._id) {
-            item = data;
-          }
-          console.log(item);
-          return item;
+      console.log("update");
+      updateHotel(data._id, data)
+        .then((data) => {
+          console.log("data");
+          console.log(data);
+          hotel.map((item) => {
+            if (item._id === data._id) {
+              item = data;
+            }
+            console.log("item");
+            console.log(item);
+            return item;
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      });
     } else {
+      console.log("create");
       createHotel(data).then((data) => {
         console.log(data);
         setHotel([...hotel, data]);
       });
     }
+    console.log("fim");
+    console.log(hotel);
     navigate("/dashboard/hotel");
   };
 

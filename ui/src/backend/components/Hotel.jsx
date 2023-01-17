@@ -129,7 +129,11 @@ export default function Hotel(props) {
               {search(hotel).map((hotel) => (
                 <tr key={hotel._id} className="border-b bg-white">
                   <td className="w-32 p-4">
-                    <img src={hotel.images[0]} alt="" className="w-full" />
+                    <img
+                      src={`http://localhost:4000/images/${hotel.images[0]}`}
+                      alt=""
+                      className="w-full"
+                    />
                   </td>
                   <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                     {hotel.name}

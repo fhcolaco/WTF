@@ -1,3 +1,5 @@
+import { getHotel } from "../../shared/hotelApi";
+
 export default function Dashboard() {
   return (
     <div className="h-auto w-2/3 rounded bg-orange-200 p-10">
