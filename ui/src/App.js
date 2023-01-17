@@ -18,7 +18,7 @@ import ServicesDetail from "./backend/components/ServicesDetail";
 import ServicesCategory from "./backend/components/ServicesCategory";
 import Settings from "./backend/components/Settings";
 import NotFound from "./backend/components/404";
-import Header from "./components/Header";
+import Layout_Front from "./components/Layout_Front";
 import Content from "./components/Content";
 
 function App() {
@@ -58,15 +58,9 @@ function App() {
   return (
     <>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <section>
-              <Header />
-              <Content />
-            </section>
-          }
-        />
+        <Route path="/" element={<Layout_Front />}>
+          <Route path="" element={<Content />} />
+        </Route>
         <Route path="/dashboard" element={<Layout />}>
           <Route path="" element={<Dashboard />} />
           <Route path="hotel" element={<Hotel hotel={hotel} />} />
