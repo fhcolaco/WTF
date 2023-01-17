@@ -139,9 +139,9 @@ export default function HotelDetail(props) {
     console.log(images);
   }, [images]);
 
-  const handleImage = (e) => {
-    console.log(e.target.files[0]);
-    setHotel({ ...hotel, images: [e.target.files[0]] });
+  const handleImage = (event) => {
+    console.log(event.target.files[0]);
+    setHotel({ ...hotel, images: [event.target.files[0]] });
   };
 
   // const send = (x, event) => {
