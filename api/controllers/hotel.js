@@ -71,7 +71,7 @@ router.put("/:id", upload.single("images"), (req, res) => {
       description: req.body.description,
       _hotel_type: req.body._hotel_type,
       _services: req.body._services,
-      images: req.file.filename,
+      images: req.body.images,
     }
   )
     .then((hotel) => {

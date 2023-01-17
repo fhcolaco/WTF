@@ -144,6 +144,7 @@ export default function HotelDetail(props) {
       ) : (
         <div className="grid  md:grid-cols-10 md:gap-6">
           <form
+            enctype="multipart/form-data"
             className="col-start-3 col-end-8"
             onSubmit={handleSubmit(props.submit)}
           >
