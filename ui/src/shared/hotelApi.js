@@ -1,4 +1,4 @@
-const url = "http://localhost:4000/hotel";
+const url = "https://wtf-backend.onrender.com/hotel";
 
 export const getHotel = async () =>
   fetch(url, {

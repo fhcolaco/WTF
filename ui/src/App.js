@@ -20,6 +20,7 @@ import Settings from "./backend/components/Settings";
 import NotFound from "./backend/components/404";
 import Layout_Front from "./components/Layout_Front";
 import Content from "./components/Content";
+import Login from "./components/Login";
 
 function App() {
   const [hotel, setHotel] = useState([]);
@@ -72,6 +73,7 @@ function App() {
         <Route path="/" element={<Layout_Front />}>
           <Route path="" element={<Content />} />
         </Route>
+        <Route path="/login" element={<Login />}></Route>
         <Route path="/dashboard" element={<Layout />}>
           <Route path="" element={<Dashboard />} />
           <Route path="hotel" element={<Hotel hotel={hotel} />} />

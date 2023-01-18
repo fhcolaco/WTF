@@ -1,4 +1,4 @@
-const url = "http://localhost:4000/hotel_category";
+const url = "https://wtf-backend.onrender.com/hotel_category";
 
 export const getHotelCategory = async () =>
   fetch(url, {
