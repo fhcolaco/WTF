@@ -1,6 +1,5 @@
 const express = require("express");
 const app = express();
-// const fileupload = require("express-fileupload");
 const cors = require("cors");
 const mongoose = require("mongoose");
 app.use(
@@ -8,8 +7,9 @@ app.use(
     origin: "*",
   })
 );
-// app.use(fileupload());
+
 app.use(express.json());
+
 const port = process.env.PORT || 4000;
 const url =
   "mongodb://admin:admin0@ac-rqve9sw-shard-00-00.igqcjev.mongodb.net:27017,ac-rqve9sw-shard-00-01.igqcjev.mongodb.net:27017,ac-rqve9sw-shard-00-02.igqcjev.mongodb.net:27017/?ssl=true&replicaSet=atlas-75945x-shard-0&authSource=admin&retryWrites=true&w=majority";

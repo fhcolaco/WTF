@@ -22,6 +22,7 @@ export default function HotelDetail(props) {
   const { register, handleSubmit } = useForm({ mode: "all" });
   const [address, setAddress] = useState();
   const [images, setImages] = useState([]);
+  const [file, setFile] = useState();
 
   useEffect(() => {
     if (params.id === undefined) {
@@ -144,31 +145,32 @@ export default function HotelDetail(props) {
     setHotel({ ...hotel, images: [event.target.files[0]] });
   };
 
-  // const send = (x, event) => {
-  //   event.preventDefault();
-  //   const data = new FormData();
-  //   data.append("name", hotel.name);
-  //   data.append("description", hotel.description);
-  //   data.append("location", hotel.location);
-  //   data.append("_hotel_type", hotel._hotel_type);
-  //   data.append("_services", hotel._services);
-  //   if (hotel._id !== "") {
-  //     data.append("_id", hotel._id);
-  //   }
-  //   data.append("images", hotel.images);
-  //   axios
-  //     .post("https://httpbin.org/anything", data, {
-  //       headers: {
-  //         "Content-Type": "multipart/form-data",
-  //       },
-  //     })
-  //     .then((res) => {
-  //       console.log(res);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
+  const send = (x, event) => {
+    const data = new FormData();
+    data.append("name", hotel.name);
+    data.append("description", hotel.description);
+    data.append("location", hotel.location);
+    data.append("_hotel_type", hotel._hotel_type);
+    data.append("_services", hotel._services);
+    if (hotel._id !== "") {
+      data.append("_id", hotel._id);
+    }
+    data.append("images", hotel.images);
+    data.append("files", file);
+
+    axios
+      .post("https://httpbin.org/anything", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <>
@@ -179,7 +181,7 @@ export default function HotelDetail(props) {
           <form
             enctype="multipart/form-data"
             className="col-start-3 col-end-8"
-            onSubmit={handleSubmit(props.submit)}
+            onSubmit={handleSubmit(send)}
           >
             <div className="inline-block">
               <h2 className="mb-8 text-4xl font-extrabold">
@@ -406,7 +408,9 @@ export default function HotelDetail(props) {
                 name="images"
                 id="images"
                 type="file"
-                onChange={handleImage}
+                onChange={(e) => {
+                  setFile(e.target.files);
+                }}
                 accept="image/*"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
               />
