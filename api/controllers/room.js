@@ -30,9 +30,13 @@ router.post("/", async (req, res) => {
     isDiscount: req.body.isDiscount,
     isAvailable: req.body.isAvailable,
     description: req.body.description,
-  }).then((room) => {
-    res.status(200).send(room.name + " foi adicionado à base de dados");
-  });
+  })
+    .then((room) => {
+      res.status(200).send(room);
+    })
+    .catch((error) => {
+      res.status(400).json({ message: error.message });
+    });
 });
 
 //PUT method
