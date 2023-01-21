@@ -44,20 +44,20 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", upload.single("images"), (req, res) => {
+router.post("/", upload.array("images"), (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
     description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
-    images: req.file.filename,
+    images: req.files.map((file) => file.filename),
   })
     .then((hotel) => {
       res.status(200).send(hotel);
     })
     .catch((error) => {
-      res.status(400).json({ message: error.message });
+      res.status(400).send(error);
     });
 });
 
@@ -78,7 +78,7 @@ router.put("/:id", upload.array("images"), (req, res) => {
       res.status(200).send(hotel);
     })
     .catch((error) => {
-      res.status(400).json({ message: error.message });
+      res.status(400).send(error);
     });
 });
 

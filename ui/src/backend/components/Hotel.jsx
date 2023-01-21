@@ -8,7 +8,6 @@ import {
 import { Link } from "react-router-dom";
 import { deleteHotel } from "../../shared/hotelApi";
 import Geocode from "react-geocode";
-import Services from "./Services";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
 
 export const geocodeAPIKEY = () => {
@@ -130,7 +129,7 @@ export default function Hotel(props) {
                 <tr key={hotel._id} className="border-b bg-white">
                   <td className="w-32 p-4">
                     <img
-                      src={`http://localhost:4000/images/${hotel.images[0]}`}
+                      src={`https://wtf-backend.onrender.com/images/${hotel.images[0]}`}
                       alt=""
                       className="w-full"
                     />

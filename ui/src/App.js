@@ -37,7 +37,7 @@ function App() {
     event.preventDefault();
     console.log("inicio");
     console.log(data);
-    if (data._id !== "" || data._id !== undefined) {
+    if (data._id !== "") {
       console.log("update");
       updateHotel(data._id, data)
         .then((data) => {

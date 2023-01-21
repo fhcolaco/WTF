@@ -1,9 +1,8 @@
-import { getHotelById, updateHotel, createHotel } from "../../shared/hotelApi";
+import { getHotelById } from "../../shared/hotelApi";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
 import { getServices } from "../../shared/servicesApi";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
 import Loader from "../../Loader";
 import { geocodeAPIKEY } from "./Hotel";
 import Geocode from "react-geocode";
@@ -17,12 +16,11 @@ export default function HotelDetail(props) {
   const [services, setServices] = useState([]);
   const [hotelType, setHotelType] = useState([]);
   const [loading, setLoading] = useState(true);
-  const params = useParams();
-  const navigate = useNavigate();
-  const { register, handleSubmit } = useForm({ mode: "all" });
   const [address, setAddress] = useState();
   const [images, setImages] = useState([]);
-  const [file, setFile] = useState();
+  const [files, setFiles] = useState();
+  const params = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (params.id === undefined) {
@@ -91,12 +89,6 @@ export default function HotelDetail(props) {
     }
   }, [hotelType, services, hotel, address]);
 
-  useEffect(() => {
-    if (hotel._id !== undefined) {
-      register("_id", { value: hotel._id });
-    }
-  }, [hotel._id, register, handleSubmit]);
-
   useEffect(() => {}, [hotel._services]);
 
   const handleChange = (e) => {
@@ -130,44 +122,37 @@ export default function HotelDetail(props) {
     if (loading === true && hotel.images !== undefined) {
       let aux = [];
       hotel.images.map((image) => {
-        aux.push(`http://localhost:4000/images/${image}`);
+        return aux.push(`https://wtf-backend.onrender.com/images/${image}`);
       });
       setImages(aux);
     }
-  }, [hotel.images]);
+  }, [hotel.images, loading]);
 
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
-
-  const handleImage = (event) => {
-    console.log(event.target.files[0]);
-    setHotel({ ...hotel, images: [event.target.files[0]] });
-  };
-
-  const send = (x, event) => {
+  const send = (event) => {
+    event.preventDefault();
     const data = new FormData();
     data.append("name", hotel.name);
     data.append("description", hotel.description);
     data.append("location", hotel.location);
     data.append("_hotel_type", hotel._hotel_type);
     data.append("_services", hotel._services);
-    if (hotel._id !== "") {
-      data.append("_id", hotel._id);
+    data.append("_id", hotel._id);
+    if (files.length !== 0) {
+      data.append("images", files);
     }
-    data.append("images", hotel.images);
-    data.append("files", file);
-
+    // props.submit(data, event);
     axios
-      .post("https://httpbin.org/anything", data, {
+      .put(`https://wtf-backend.onrender.com/hotel/${hotel._id}`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
+        console.log("Success");
         console.log(res);
       })
       .catch((err) => {
+        console.log("Error");
         console.log(err);
       });
   };
@@ -181,7 +166,7 @@ export default function HotelDetail(props) {
           <form
             enctype="multipart/form-data"
             className="col-start-3 col-end-8"
-            onSubmit={handleSubmit(send)}
+            onSubmit={(e) => send(e)}
           >
             <div className="inline-block">
               <h2 className="mb-8 text-4xl font-extrabold">
@@ -192,13 +177,11 @@ export default function HotelDetail(props) {
             </div>
             <div className="group relative z-0 my-8 w-full">
               <input
-                {...register("name", {
-                  type: "text",
-                  value: hotel.name,
-                  name: "name",
-                  id: "name",
-                  onChange: handleChange,
-                })}
+                type="text"
+                name="name"
+                id="name"
+                value={hotel.name}
+                onChange={handleChange}
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                 placeholder=" "
               />
@@ -211,12 +194,10 @@ export default function HotelDetail(props) {
             </div>
             <div className="group relative z-0 my-8 w-full">
               <textarea
-                {...register("description", {
-                  value: hotel.description,
-                  name: "description",
-                  id: "description",
-                  onChange: handleChange,
-                })}
+                name="description"
+                id="description"
+                value={hotel.description}
+                onChange={handleChange}
                 rows="5"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                 placeholder=" "
@@ -230,12 +211,10 @@ export default function HotelDetail(props) {
               <div className="grid md:grid-cols-2 md:gap-6">
                 <div className="group relative z-0 my-8 w-full">
                   <select
-                    {...register("_hotel_type", {
-                      value: hotel._hotel_type,
-                      name: "_hotel_type",
-                      id: "_hotel_type",
-                      onChange: handleChange,
-                    })}
+                    value={hotel._hotel_type}
+                    name="_hotel_type"
+                    id="_hotel_type"
+                    onChange={handleChange}
                     defaultValue="default"
                     className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   >
@@ -342,9 +321,6 @@ export default function HotelDetail(props) {
                     >
                       {service.name}
                       <input
-                        {...register("_services", {
-                          value: service._id,
-                        })}
                         name="_services"
                         value={service._id}
                         onChange={(e) => isChecked(e)}
@@ -404,13 +380,13 @@ export default function HotelDetail(props) {
             {/* create image input */}
             <div className="group relative z-0 my-8 w-full">
               <input
-                {...register("images")}
                 name="images"
                 id="images"
                 type="file"
                 onChange={(e) => {
-                  setFile(e.target.files);
+                  setFiles(e.target.files);
                 }}
+                multiple
                 accept="image/*"
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
               />
