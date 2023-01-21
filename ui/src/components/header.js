@@ -37,11 +37,6 @@ export default function Header() {
         }`}
       >
         <a href="/">
-          {/* <img
-            src={logo}
-            alt="WTF logo"
-            className="m-5 inline-block h-auto w-40"
-          ></img> */}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             data-name="Layer 1"
@@ -60,22 +55,22 @@ export default function Header() {
               className={`m-2  py-2 px-4 font-bold  ${
                 location.pathname == "/"
                   ? "rounded text-white outline outline-1 outline-white"
-                  : "rounded text-white  hover:outline hover:outline-1 hover:outline-orange-500"
+                  : "hover:outline-outline-white rounded  text-white hover:outline hover:outline-1"
               }`}
             >
               Início
             </button>
           </NavLink>
           {/* TESTE TESTE TESTE */}
-          <NavLink to="/AAA">
+          <NavLink to="/about">
             <button
               className={`m-2 py-2 px-4 font-bold  ${
                 location.pathname == "/AAA"
                   ? "rounded text-white outline outline-1 outline-white"
-                  : "rounded text-white  hover:outline hover:outline-1 hover:outline-orange-500"
+                  : "rounded text-white  hover:outline hover:outline-1 hover:outline-white"
               }`}
             >
-              AAA
+              Sobre Nós
             </button>
           </NavLink>
 
@@ -84,7 +79,7 @@ export default function Header() {
               className={`m-2 py-2 px-4 font-bold  ${
                 location.pathname == "/AAA"
                   ? "rounded text-white outline outline-1 outline-white"
-                  : "rounded text-white  hover:outline hover:outline-1 hover:outline-orange-500"
+                  : "hover:outline-outline-white rounded  text-white hover:outline hover:outline-1"
               }`}
             >
               Dashboard

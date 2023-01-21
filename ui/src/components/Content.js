@@ -4,12 +4,24 @@ import { Combobox } from "@headlessui/react";
 import { geocodeAPIKEY } from "../backend/components/Hotel";
 import Geocode from "react-geocode";
 import { getHotel } from "../shared/hotelApi";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRange } from "react-date-range";
+import { format } from "date-fns";
 
 export default function Content() {
   const [selectedLocation, setSelectedLocation] = useState([]);
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [hotel, setHotel] = useState([]);
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
 
   const filteredLocation =
     query === ""
@@ -79,6 +91,24 @@ export default function Content() {
               ))}
             </Combobox.Options>
           </Combobox>
+          <div
+            className="rounded  bg-white px-4 align-middle text-gray-500 outline-none hover:cursor-pointer"
+            onClick={() => setOpenDate(!openDate)}
+          >
+            {`${format(date[0].startDate, "dd/MM/yyyy")} até ${format(
+              date[0].endDate,
+              "dd/MM/yyyy"
+            )}`}
+          </div>
+          {openDate && (
+            <DateRange
+              editableDateInputs={true}
+              onChange={(item) => setDate([item.selection])}
+              moveRangeOnFirstSelection={false}
+              ranges={date}
+              className="absolute top-36"
+            />
+          )}
         </form>
       </div>
       <div className="-mt-72 text-white">
