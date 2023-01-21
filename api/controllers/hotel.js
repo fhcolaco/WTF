@@ -63,7 +63,7 @@ router.post("/", upload.array("images"), (req, res) => {
 
 //PUT method
 router.put("/:id", upload.array("images"), (req, res) => {
-  console.log(req.files);
+  console.log(req);
   Hotel.findOneAndUpdate(
     { _id: req.params.id },
     {

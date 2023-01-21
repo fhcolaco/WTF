@@ -99,7 +99,7 @@ export default function HotelDetail(props) {
       name === "street" ||
       name === "zip"
     ) {
-      setAddress({ ...address, [name]: value });
+      setAddress({ [name]: value });
     } else {
       setHotel({ ...hotel, [name]: value });
     }
@@ -137,12 +137,11 @@ export default function HotelDetail(props) {
     data.append("_hotel_type", hotel._hotel_type);
     data.append("_services", hotel._services);
     data.append("_id", hotel._id);
-    if (files.length !== 0) {
-      data.append("images", files);
-    }
+    data.append("images", files);
     // props.submit(data, event);
     axios
       .put(`https://wtf-backend.onrender.com/hotel/${hotel._id}`, data, {
+        // .put("https://httpbin.org/anything", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
@@ -384,10 +383,10 @@ export default function HotelDetail(props) {
                 id="images"
                 type="file"
                 onChange={(e) => {
-                  setFiles(e.target.files);
+                  setFiles(e.target.files[0]);
                 }}
-                multiple
                 accept="image/*"
+                multiple
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
               />
               <label
