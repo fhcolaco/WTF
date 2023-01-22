@@ -20,10 +20,10 @@ const hotelSchema = new mongoose.Schema(
       required: false,
     },
     _services: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "services",
+      type: [String],
       required: false,
     },
+
     images: {
       type: [String],
       required: true,

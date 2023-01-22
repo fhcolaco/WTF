@@ -25,6 +25,10 @@ const servicesSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    isHotelService: {
+      type: Boolean,
+      required: true,
+    },
   },
   { timestamps: true }
 );
