@@ -36,7 +36,9 @@ function App() {
   const onSubmitHotel = (data, event) => {
     event.preventDefault();
     console.log("inicio");
-    console.log(data);
+    for (const [key, value] of data.entries()) {
+      console.log(`${key}: ${value}`);
+    }
     if (data._id !== "") {
       console.log("update");
       updateHotel(data._id, data)

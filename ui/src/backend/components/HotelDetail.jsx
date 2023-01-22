@@ -139,7 +139,9 @@ export default function HotelDetail(props) {
     data.append("description", hotel.description);
     data.append("location", hotel.location);
     data.append("_hotel_type", hotel._hotel_type);
-    data.append("_services", JSON.stringify(hotel._services));
+    hotel._services.forEach((service) => {
+      data.append("_services", service);
+    });
     data.append("_id", hotel._id);
     if (files.length !== 0) {
       data.append("images", files);
@@ -147,19 +149,17 @@ export default function HotelDetail(props) {
 
     console.log(data.get("_services"));
     // props.submit(data, event);
+
     axios
       .put(`http://localhost:4000/hotel/${hotel._id}`, data, {
-        // .put("https://httpbin.org/anything", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       })
       .then((res) => {
-        console.log("Success");
         console.log(res);
       })
       .catch((err) => {
-        console.log("Error");
         console.log(err);
       });
   };
