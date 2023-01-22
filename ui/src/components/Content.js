@@ -25,36 +25,53 @@ export default function Content() {
     },
   ]);
   const geocodeAPIKEY2 = "AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg";
-  const [placeId, setPlaceId] = useState("");
+  const [placeId, setPlaceId] = useState([]);
   const city = "New York";
   const [imageUrl, setImageUrl] = useState(null);
 
-  const getPlaceId = async () => {
-    const response = await fetch(
-      `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${geocodeAPIKEY2}`
-    );
-    const data = await response.json();
-    setPlaceId(data.results[0].place_id);
+  const getPlaceId = async (city) => {
+    setPlaceId([
+      await axios
+        .get(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${geocodeAPIKEY2}`
+        )
+        .then((data) => data.data.results[0].place_id),
+    ]);
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?place_id=${placeId}&key=${geocodeAPIKEY2}`
-      )
-      .then((response) => {
-        const data = response;
-        const photo_reference = data.result;
+    getPlaceId(city);
+  }, []);
+
+  useEffect(() => {
+    if (placeId !== "" && placeId !== undefined) {
+      placeId.map((place) => {
         axios
           .get(
-            `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo_reference}&key=${geocodeAPIKEY2}`
+            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place}&key=${geocodeAPIKEY2}`,
+            { headers: { "Access-Control-Allow-Origin": "*" } }
           )
           .then((response) => {
+            console.log("response");
+            console.log(response);
             const data = response;
-            setImageUrl(data.url);
-          });
+            const photo_reference = data.results[0].photos[0].photo_reference;
+            axios
+              .get(
+                `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo_reference}&key=${geocodeAPIKEY2}`,
+                { headers: { "Access-Control-Allow-Origin": "*" } }
+              )
+              .then((response) => {
+                const data = response;
+                console.log(response);
+                setImageUrl([...imageUrl, data.url]);
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
       });
-  }, []);
+    }
+  }, [placeId]);
 
   const filteredLocation =
     query === ""
@@ -102,7 +119,7 @@ export default function Content() {
     console.log(imageUrl);
     console.log(data);
     // console.log(photo_reference);
-  }, [placeId]);
+  }, [placeId, imageUrl]);
 
   return (
     <>
@@ -134,13 +151,13 @@ export default function Content() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
               className="mr-2 h-6 w-6 stroke-gray-500"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
               />
             </svg>
@@ -163,13 +180,13 @@ export default function Content() {
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              stroke-width="1.5"
+              strokeWidth="1.5"
               stroke="currentColor"
               className="mr-2 h-5 w-5"
             >
               <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
                 d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
               />
             </svg>
@@ -179,13 +196,13 @@ export default function Content() {
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
-            stroke-width="1.5"
+            strokeWidth="1.5"
             stroke="currentColor"
             className="ml-2 h-11 w-11 rounded-full bg-orange-500 stroke-white p-2 hover:cursor-pointer"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
             />
           </svg>
@@ -198,10 +215,15 @@ export default function Content() {
         />
         <h1>hjkelmwdç,sx</h1>
         <div>
-          <button onClick={getPlaceId}>Get Place ID</button>
-          {placeId && <p>Place ID: {placeId}</p>}
+          <button type="button" onClick={() => getPlaceId(city)}>
+            Get Place ID
+          </button>
+          <p>{`PLACE ID: ${placeId[0]}`}</p>
 
-          <img src={imageUrl} alt="City Photo" />
+          <img
+            src={imageUrl !== undefined && imageUrl !== null ? imageUrl[0] : ""}
+            alt="City Photo"
+          />
         </div>
       </div>
     </>

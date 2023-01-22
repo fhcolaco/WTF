@@ -1,6 +1,6 @@
 const url = "https://wtf-backend.onrender.com/hotel";
 
-export const getHotel = async () =>
+export const getHotel = () =>
   fetch(url, {
     method: "GET",
     headers: {
@@ -14,7 +14,7 @@ export const getHotel = async () =>
     return res.json();
   });
 
-export const getHotelById = async (id) =>
+export const getHotelById = (id) =>
   fetch(`${url}/${id}`, {
     method: "GET",
     headers: {
@@ -29,11 +29,10 @@ export const getHotelById = async (id) =>
   });
 
 export const createHotel = async (data) =>
-  fetch(url, {
+  await fetch(url, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
     },
     body: JSON.stringify(data),
   }).then((res) => {
@@ -43,24 +42,22 @@ export const createHotel = async (data) =>
     return res.json();
   });
 
-export const updateHotel = async (id, data) =>
-  fetch(`${url}/${id}`, {
+export const updateHotel = async (id, data) => {
+  await fetch(`${url}/${id}`, {
     method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "application/json",
-    },
     body: JSON.stringify(data),
   }).then((res) => {
     if (res.status !== 200) {
       return res.text().then((text) => {
-        return text;
+        throw new Error(text);
       });
     }
+    console.log(3);
     return res.json();
   });
+};
 
-export const deleteHotel = async (id) =>
+export const deleteHotel = (id) =>
   fetch(`${url}/${id}`, {
     method: "DELETE",
     headers: {

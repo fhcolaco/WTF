@@ -36,22 +36,18 @@ function App() {
   const onSubmitHotel = (data, event) => {
     event.preventDefault();
     console.log("inicio");
+    let id = data.get("_id");
     for (const [key, value] of data.entries()) {
       console.log(`${key}: ${value}`);
     }
     if (data._id !== "") {
-      console.log("update");
-      updateHotel(data._id, data)
-        .then((data) => {
-          console.log("data");
-          console.log(data);
-          hotel.map((item) => {
-            if (item._id === data._id) {
-              item = data;
-            }
-            console.log("item");
-            console.log(item);
-            return item;
+      updateHotel(id, data)
+        .then((teste) => {
+          console.log("update");
+          console.log(teste);
+          getHotel().then((res) => {
+            console.log(res);
+            setHotel(res);
           });
         })
         .catch((err) => {

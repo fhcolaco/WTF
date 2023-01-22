@@ -63,22 +63,21 @@ router.post("/", upload.array("images"), (req, res) => {
 
 //PUT method
 router.put("/:id", upload.array("images"), (req, res) => {
-  Hotel.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      name: req.body.name,
-      location: req.body.location,
-      description: req.body.description,
-      _hotel_type: req.body._hotel_type,
-      _services: req.body._services,
-      images: req.files.map((file) => file.filename),
-    }
-  )
+  test = {
+    name: req.body.name,
+    location: req.body.location,
+    description: req.body.description,
+    _hotel_type: req.body._hotel_type,
+    _services: req.body._services,
+  };
+  if (req.files.length > 0)
+    test["images"] = req.files.map((file) => file.filename);
+  Hotel.findOneAndUpdate({ _id: req.params.id }, test)
     .then((hotel) => {
       res.status(200).send(hotel);
     })
     .catch((error) => {
-      res.status(400).send(error);
+      res.status(400).send({ message: error.message });
     });
 });
 

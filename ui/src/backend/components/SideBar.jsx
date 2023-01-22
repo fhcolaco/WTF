@@ -30,7 +30,7 @@ export const sideBarItems = [
   },
   {
     name: "Servico",
-    cat: ["Criar", "Ver Todos", "Categoria"],
+    cat: ["Criar", "Ver Todos"],
   },
   { name: "Configuracao", cat: [""] },
 ];
@@ -50,7 +50,7 @@ export const SideBar = forwardRef((props, ref) => {
   return (
     <div
       ref={ref}
-      className="fixed absolute top-0 left-0 z-10 h-screen w-56 bg-white shadow-sm"
+      className="absolute inset-y-0 left-0 z-10 w-56 bg-white shadow-sm"
     >
       <div className="mt-6 mb-14 flex justify-center">
         <img src={logo} alt="WTF_logo" className="h-auto w-32 " />

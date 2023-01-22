@@ -119,10 +119,6 @@ export default function HotelDetail(props) {
   };
 
   useEffect(() => {
-    console.log(hotel._services);
-  }, [hotel._services]);
-
-  useEffect(() => {
     if (loading === true && hotel.images !== undefined) {
       let aux = [];
       hotel.images.map((image) => {
@@ -148,20 +144,20 @@ export default function HotelDetail(props) {
     }
 
     console.log(data.get("_services"));
-    // props.submit(data, event);
+    props.submit(data, event);
 
-    axios
-      .put(`http://localhost:4000/hotel/${hotel._id}`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios
+    //   .put(`https://wtf-backend.onrender.com//hotel/${hotel._id}`, data, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (

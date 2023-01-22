@@ -20,15 +20,17 @@ export default function Hotel(props) {
   const [location, setLocation] = useState([]);
   const [filt, setFilt] = useState("");
   const [hotelType, setHotelType] = useState([]);
+  useEffect(() => {
+    setLocation([]);
+    setHotel(props.hotel);
+  }, [props.hotel]);
 
   useEffect(() => {
     getHotelCategory().then((res) => {
       setHotelType(res);
     });
-    setHotel(props.hotel);
     hotel.map((hotel) => {
       geocodeAPIKEY();
-      setLocation([]);
       Geocode.setLanguage("pt");
       Geocode.setRegion("pt");
       let [lat, lng] = hotel.location.split(", ");
@@ -48,7 +50,7 @@ export default function Hotel(props) {
         }
       );
     });
-  }, [props.hotel, hotel]);
+  }, [hotel]);
 
   useEffect(() => {
     if (
@@ -56,6 +58,7 @@ export default function Hotel(props) {
       hotel.length !== 0 &&
       hotelType.length !== 0
     ) {
+      console.log(location);
       setLoading(false);
     }
   }, [hotel, hotelType, location]);
@@ -138,8 +141,8 @@ export default function Hotel(props) {
                     {hotel.name}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
-                    {location.map((location) =>
-                      location.hotelID === hotel._id ? location.city : ""
+                    {location?.map((location) =>
+                      location.hotelID === hotel._id ? location.city : null
                     )}
                   </td>
                   <td className="whitespace-nowrap px-6 py-4">
