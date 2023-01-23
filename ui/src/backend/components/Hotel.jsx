@@ -21,7 +21,6 @@ export default function Hotel(props) {
   const [filt, setFilt] = useState("");
   const [hotelType, setHotelType] = useState([]);
   useEffect(() => {
-    setLocation([]);
     setHotel(props.hotel);
   }, [props.hotel]);
 

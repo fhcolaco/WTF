@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import { Combobox } from "@headlessui/react";
 import { geocodeAPIKEY } from "../backend/components/Hotel";
-import Geocode, { setApiKey } from "react-geocode";
+import Geocode from "react-geocode";
 import { getHotel } from "../shared/hotelApi";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
@@ -25,19 +25,19 @@ export default function Content() {
       key: "selection",
     },
   ]);
-  const geocodeAPIKEY2 = "AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg";
   const [placeId, setPlaceId] = useState([]);
   const city = "New York";
+  const geocodeAPIKEY2 = "AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg";
   const [imageUrl, setImageUrl] = useState(null);
 
   const getPlaceId = async (city) => {
-    setPlaceId([
-      await axios
-        .get(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${geocodeAPIKEY2}`
-        )
-        .then((data) => data.data.results[0].place_id),
-    ]);
+    await axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${geocodeAPIKEY2}`
+      )
+      .then((data) =>
+        setPlaceId((place) => [...place, data.data.results[0].place_id])
+      );
   };
 
   useEffect(() => {
@@ -65,7 +65,7 @@ export default function Content() {
               .then((response) => {
                 const data = response;
                 console.log(response);
-                setImageUrl([...imageUrl, data.url]);
+                setImageUrl((image) => [...image, data.url]);
               })
               .catch((err) => console.log(err));
           })

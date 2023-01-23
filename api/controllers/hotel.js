@@ -63,7 +63,7 @@ router.post("/", upload.array("images"), (req, res) => {
 
 //PUT method
 router.put("/:id", upload.array("images"), (req, res) => {
-  test = {
+  hotelSave = {
     name: req.body.name,
     location: req.body.location,
     description: req.body.description,
@@ -71,8 +71,8 @@ router.put("/:id", upload.array("images"), (req, res) => {
     _services: req.body._services,
   };
   if (req.files.length > 0)
-    test["images"] = req.files.map((file) => file.filename);
-  Hotel.findOneAndUpdate({ _id: req.params.id }, test)
+    hotelSave["images"] = req.files.map((file) => file.filename);
+  Hotel.findOneAndUpdate({ _id: req.params.id }, hotelSave)
     .then((hotel) => {
       res.status(200).send(hotel);
     })

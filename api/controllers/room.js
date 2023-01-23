@@ -19,7 +19,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", async (req, res) => {
+router.post("/", upload.array("images"), (req, res) => {
   Room.create({
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
@@ -30,6 +30,7 @@ router.post("/", async (req, res) => {
     isDiscount: req.body.isDiscount,
     isAvailable: req.body.isAvailable,
     description: req.body.description,
+    images: req.files.map((file) => file.filename),
   })
     .then((room) => {
       res.status(200).send(room);
@@ -41,22 +42,22 @@ router.post("/", async (req, res) => {
 
 //PUT method
 router.put("/:id", async (req, res) => {
-  Room.findOneAndUpdate(
-    { _id: req.params.id },
-    {
-      _hotel: req.body._hotel,
-      _room_category: req.body._room_category,
-      _room_details: req.body._room_details,
-      _services: req.body._services,
-      atual_price: req.body.atual_price,
-      old_price: req.body.old_price,
-      isDiscount: req.body.isDiscount,
-      isAvailable: req.body.isAvailable,
-      description: req.body.description,
-    }
-  )
+  roomSave = {
+    _hotel: req.body._hotel,
+    _room_category: req.body._room_category,
+    _room_details: req.body._room_details,
+    _services: req.body._services,
+    atual_price: req.body.atual_price,
+    old_price: req.body.old_price,
+    isDiscount: req.body.isDiscount,
+    isAvailable: req.body.isAvailable,
+    description: req.body.description,
+  };
+  if (req.files.length > 0)
+    roomSave["images"] = req.files.map((file) => file.filename);
+  Room.findOneAndUpdate({ _id: req.params.id }, roomSave)
     .then((result) => {
-      res.status(200).send(result.name + " foi atualizado");
+      res.status(200).send(result);
     })
     .catch((err) => {
       res.status(400).send("O quarto não foi encontrado");
