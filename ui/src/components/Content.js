@@ -71,7 +71,7 @@ export default function Content() {
           .catch((err) => console.log(err));
       });
     }
-  }, [placeId]);
+  }, []);
 
   const filteredLocation =
     query === ""
