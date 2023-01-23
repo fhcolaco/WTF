@@ -31,7 +31,7 @@ export default function Header() {
     <>
       <div
         className={`fixed z-30 w-full font-sans italic ${
-          window.pageYOffset > 50
+          window.scrollY > 50
             ? "bg-black/10 backdrop-blur transition-colors duration-700"
             : "bg-transparent"
         }`}
@@ -61,7 +61,6 @@ export default function Header() {
               Início
             </button>
           </NavLink>
-          {/* TESTE TESTE TESTE */}
           <NavLink to="/about">
             <button
               className={`m-2 py-2 px-4 font-bold  ${

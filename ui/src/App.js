@@ -21,6 +21,8 @@ import NotFound from "./backend/components/404";
 import Layout_Front from "./components/Layout_Front";
 import Content from "./components/Content";
 import Login from "./components/Login";
+import Search from "./components/Search";
+import About from "./components/About";
 
 function App() {
   const [hotel, setHotel] = useState([]);
@@ -71,6 +73,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout_Front />}>
           <Route path="" element={<Content />} />
+          <Route path="/search" element={<Search />} />
+          <Route path="/about" element={<About />} />
         </Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/dashboard" element={<Layout />}>
