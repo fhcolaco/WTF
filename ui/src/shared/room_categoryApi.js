@@ -1,6 +1,6 @@
-const url = "http://localhost:3000/api/room_category";
+const url = "https://wtf-backend.onrender.com/room_category";
 
-const getRoomCategory = async () =>
+const getRoomCategory = () =>
   fetch(url, {
     method: "GET",
     headers: {

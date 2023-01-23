@@ -6,67 +6,36 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { getRoom } from "../../shared/roomApi";
 import Geocode from "react-geocode";
-import { geocodeAPIKEY } from "./Hotel";
+import { getRoom, deleteRoom } from "../../shared/roomApi";
+import { getHotel } from "../../shared/hotelApi";
 import { getRoomCategory } from "../../shared/room_categoryApi";
+import { geocodeAPIKEY } from "./Hotel";
 
-export default function Room(props) {
+export default function Room() {
   const [loading, setLoading] = useState(true);
-  const [room, setRoom] = useState([]);
   const [hotel, setHotel] = useState([]);
-  const [location, setLocation] = useState([]);
+  const [room, setRoom] = useState([]);
+  const [roomCategory, setRoomCategory] = useState([]);
   const [filt, setFilt] = useState("");
-  const [roomType, setRoomType] = useState([]);
 
-  //use effect para obter os dados da API
   useEffect(() => {
     getRoom().then((res) => {
       setRoom(res);
     });
+    getHotel().then((res) => {
+      setHotel(res);
+    });
     getRoomCategory().then((res) => {
-      setRoomType(res);
+      setRoomCategory(res);
     });
-    setHotel(props.hotel);
-    hotel.map((hotel) => {
-      geocodeAPIKEY();
-      setLocation([]);
-      Geocode.setLanguage("pt");
-      Geocode.setRegion("pt");
-      let [lat, lng] = hotel.location.split(", ");
-      Geocode.fromLatLng(lat, lng).then(
-        (response) => {
-          const city =
-            response.results[0].address_components[2].long_name +
-            ", " +
-            response.results[0].address_components[4].long_name;
-          setLocation((location) => [
-            ...location,
-            { hotelID: hotel._id, city: city },
-          ]);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    });
-  }, [props.hotel, hotel]);
+  }, []);
 
   useEffect(() => {
-    if (
-      hotel.length === location.length &&
-      room.length === hotel.length &&
-      roomType.length !== 0 &&
-      location.length !== 0
-    ) {
+    if (room.length !== 0 && hotel.length !== 0 && roomCategory.length !== 0) {
       setLoading(false);
     }
-  }, [hotel, location, room, roomType]);
-
-  const removeRoom = (id) => {
-    const newRoom = room.filter((room) => room._id !== id);
-    setRoom(newRoom);
-  };
+  }, [room, hotel, roomCategory]);
 
   function search(rows) {
     return rows.filter(
@@ -112,66 +81,77 @@ export default function Room(props) {
                 <th className="px-6 py-3" scope="col">
                   <span className="sr-only">Imagem</span>
                 </th>
-                <th className="px-6 py-3" scope="col">
-                  Nome
-                </th>
-                <th className="px-6 py-3" scope="col">
-                  Localização
-                </th>
-                <th className="px-6 py-3" scope="col">
-                  Tipo de quarto
-                </th>
-                <th className="px-6 py-3" scope="col">
+                <th className="px-6 py-4" scope="col">
                   Hotel
                 </th>
-                <th className="px-6 py-3" scope="col">
+                <th className="px-6 py-4" scope="col">
+                  Categoria do quarto
+                </th>
+                <th className="px-6 py-4" scope="col">
                   Disponibilidade
                 </th>
-                <th className="px-6 py-3" scope="col">
-                  Acções
+                <th className="px-6 py-4" scope="col">
+                  Desconto
+                </th>
+                <th className="px-6 py-4" scope="col">
+                  Preço
+                </th>
+                <th className="px-6 py-4" scope="col">
+                  Ações
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {search(room).map((hotel) => (
-                <tr key={room._id} className="border-b bg-white">
-                  <td className="w-32 p-4">
-                    <img
-                      src={`http://localhost:4000/images/${room.images[0]}`}
-                      alt=""
-                      className="w-full"
-                    />
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
-                    {room.name}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    {location.map((location) =>
-                      location.hotelID === hotel._id ? location.city : ""
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    {roomType.map((roomType) =>
-                      roomType._id === room._room_type ? roomType.name : ""
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    <div className="flex items-baseline space-x-4 text-sm">
-                      <Link to={`${room._id}`}>
-                        <button className="text-indigo-600 hover:text-indigo-900">
-                          <PencilSquareIcon className="h-5 w-5" />
-                        </button>
-                      </Link>
-                      <button
-                        className="text-indigo-600 hover:text-indigo-900"
-                        onClick={() => removeRoom(room._id)}
-                      >
-                        <TrashIcon className="h-5 w-5" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {search(hotel).map((hotel) => {
+                return room.map((room) => (
+                  <tr key={room.id}>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <img
+                        className="h-24 w-full object-cover"
+                        src={`https://wtf-backend.onrender.com/images/${
+                          room.images !== [""] ? room.images[0] : "no-image.png"
+                        }`}
+                        alt=""
+                      />
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {hotel.id === room.hotel_id && hotel.name
+                        ? hotel.name
+                        : ""}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {roomCategory
+                        .filter(
+                          (roomCategory) =>
+                            roomCategory.id === room.room_category_id
+                        )
+                        .map((roomCategory) => roomCategory.name)}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {room.availability ? "Sim" : "Não"}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {room.discount ? "Sim" : "Não"}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {room.atual_price} €
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="flex items-baseline space-x-4 text-sm">
+                        <Link to={`${room.id}`}>
+                          <button className="text-indigo-600 hover:text-indigo-900">
+                            <PencilSquareIcon className="h-5 w-5" />
+                          </button>
+                        </Link>
+                        <TrashIcon
+                          className="h-5 w-5 text-indigo-600 hover:text-indigo-900"
+                          onClick={() => deleteRoom(room.id)}
+                        />
+                      </div>
+                    </td>
+                  </tr>
+                ));
+              })}
             </tbody>
           </table>
         </>
