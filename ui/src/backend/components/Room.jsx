@@ -108,9 +108,7 @@ export default function Room() {
                     <td className="whitespace-nowrap px-6 py-4">
                       <img
                         className="h-24 w-full object-cover"
-                        src={`https://wtf-backend.onrender.com/images/${
-                          room.images !== [""] ? room.images[0] : "no-image.png"
-                        }`}
+                        src={`https://wtf-backend.onrender.com/images/${room.images[0]}`}
                         alt=""
                       />
                     </td>

@@ -38,12 +38,13 @@ const roomSchema = new mongoose.Schema(
       required: true,
     },
     description: {
-      type: Str ing,
+      type: String,
       required: false,
     },
     images: {
       type: [String],
       required: true,
+    },
   },
   { timestamps: true }
 );
