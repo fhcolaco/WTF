@@ -31,10 +31,7 @@ export const getHotelById = (id) =>
 export const createHotel = async (data) =>
   await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-    body: JSON.stringify(data),
+    body: data,
   }).then((res) => {
     if (res.status !== 200) {
       throw new Error("Something went wrong on api server!");
@@ -45,7 +42,7 @@ export const createHotel = async (data) =>
 export const updateHotel = async (id, data) => {
   await fetch(`${url}/${id}`, {
     method: "PUT",
-    body: JSON.stringify(data),
+    body: data,
   }).then((res) => {
     if (res.status !== 200) {
       return res.text().then((text) => {

@@ -51,6 +51,7 @@ function App() {
           });
         })
         .catch((err) => {
+          console.log("error");
           console.log(err);
         });
     } else {

@@ -143,11 +143,10 @@ export default function HotelDetail(props) {
       data.append("images", files);
     }
 
-    console.log(data.get("_services"));
     props.submit(data, event);
 
     // axios
-    //   .put(`https://wtf-backend.onrender.com//hotel/${hotel._id}`, data, {
+    //   .put(`https://wtf-backend.onrender.com/hotel/${hotel._id}`, data, {
     //     headers: {
     //       "Content-Type": "multipart/form-data",
     //     },
@@ -215,6 +214,7 @@ export default function HotelDetail(props) {
             <div className="grid md:grid-cols-2 md:gap-6">
               <div className="group relative z-0 my-8 w-full">
                 <select
+                  required
                   value={hotel._hotel_type}
                   name="_hotel_type"
                   id="_hotel_type"
