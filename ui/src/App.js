@@ -93,7 +93,7 @@ function App() {
           <Route path="quarto/criar" element={<RoomDetail />} />
           <Route path="quarto/:id" element={<RoomDetail />} />
           <Route path="quarto/categoria" element={<RoomCategory />} />
-          <Route path="reserva" element={<Booking />} />
+          <Route path="reserva" element={<Booking hotel={hotel} />} />
           <Route path="utilizador" element={<Users />} />
           <Route path="servico" element={<Services />} />
           <Route path="servico/criar" element={<ServicesDetail />} />

@@ -92,7 +92,7 @@ export default function Hotel(props) {
                 type="text"
                 id="search-table "
                 name="search-table"
-                className="bg-wblock block w-full rounded-md  border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
+                className="block w-full rounded-md  border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Procurar"
                 value={filt}
                 onChange={(e) => setFilt(e.target.value)}

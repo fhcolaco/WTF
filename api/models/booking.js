@@ -37,12 +37,8 @@ const bookingSchema = new mongoose.Schema(
       type: Boolean,
       required: true,
     },
-    is_canceled: {
+    is_cancelled: {
       type: Boolean,
-      required: true,
-    },
-    undiscounted_amount: {
-      type: Number,
       required: true,
     },
   },

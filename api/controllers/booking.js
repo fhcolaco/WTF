@@ -26,14 +26,13 @@ router.post("/", (req, res) => {
     _room: req.body._room,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
-    undiscounted_amount: req.body.undiscounted_amount,
     discount_percentage: req.body.discount_percentage,
     total_price: req.body.total_price,
     is_paid: req.body.is_paid,
     is_cancelled: req.body.is_cancelled,
   })
     .then((result) => {
-      res.status(200).send(result._hotel + " foi adicionado à base de dados");
+      res.status(200).send(result);
     })
     .catch((error) => {
       res.status(400).json({ message: error.message });
@@ -48,14 +47,13 @@ router.put("/:id", (req, res) => {
     _room: req.body._room,
     start_date: req.body.start_date,
     end_date: req.body.end_date,
-    undiscounted_amount: req.body.undiscounted_amount,
     discount_percentage: req.body.discount_percentage,
     total_price: req.body.total_price,
     is_paid: req.body.is_paid,
     is_cancelled: req.body.is_cancelled,
   })
     .then((result) => {
-      hotel.status(200).send(result._hotel + " foi atualizado");
+      hotel.status(200).send(result._id + " foi atualizado");
     })
     .catch((error) => {
       error.status(400).json({ message: error.message });
