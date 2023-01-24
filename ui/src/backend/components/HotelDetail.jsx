@@ -214,7 +214,7 @@ export default function HotelDetail(props) {
             <div className="grid md:grid-cols-2 md:gap-6">
               <div className="group relative z-0 my-8 w-full">
                 <select
-                  requiredn
+                  required
                   value={hotel._hotel_type}
                   name="_hotel_type"
                   id="_hotel_type"

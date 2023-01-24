@@ -21,21 +21,17 @@ const roomSchema = new mongoose.Schema(
       ref: "services",
       required: false,
     },
-    atual_price: {
+    price: {
       type: Number,
       required: true,
     },
-    old_price: {
+    discount: {
       type: Number,
-      required: false,
-    },
-    isDiscount: {
-      type: Boolean,
       required: true,
     },
     isAvailable: {
       type: Boolean,
-      required: true,
+      required: false,
     },
     description: {
       type: String,
@@ -43,7 +39,7 @@ const roomSchema = new mongoose.Schema(
     },
     images: {
       type: [String],
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }

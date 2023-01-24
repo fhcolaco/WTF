@@ -126,46 +126,59 @@ export default function Hotel(props) {
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {search(hotel).map((hotel) => (
-                <tr key={hotel._id} className="border-b bg-white">
-                  <td className="w-32 p-4">
-                    <img
-                      src={`https://wtf-backend.onrender.com/images/${hotel.images[0]}`}
-                      alt=""
-                      className="w-full"
-                    />
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
-                    {hotel.name}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    {location?.map((location) =>
-                      location.hotelID === hotel._id ? location.city : null
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    {hotelType.map((hotelType) =>
-                      hotelType._id === hotel._hotel_type ? hotelType.name : ""
-                    )}
-                  </td>
-                  <td className="whitespace-nowrap px-6 py-4">
-                    <div className="flex items-baseline space-x-4 text-sm">
-                      <Link to={`${hotel._id}`}>
-                        <button className="text-indigo-600 hover:text-indigo-900">
-                          <PencilSquareIcon className="h-5 w-5" />
+            <tbody className="border-b bg-white">
+              {search(hotel).length !== 0 ? (
+                search(hotel).map((hotel) => (
+                  <tr key={hotel._id}>
+                    <td className="w-32 p-4">
+                      <img
+                        src={`https://wtf-backend.onrender.com/images/${hotel.images[0]}`}
+                        alt=""
+                        className="w-full"
+                      />
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
+                      {hotel.name}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {location?.map((location) =>
+                        location.hotelID === hotel._id ? location.city : null
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {hotelType.map((hotelType) =>
+                        hotelType._id === hotel._hotel_type
+                          ? hotelType.name
+                          : ""
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="flex items-baseline space-x-4 text-sm">
+                        <Link to={`${hotel._id}`}>
+                          <button className="text-indigo-600 hover:text-indigo-900">
+                            <PencilSquareIcon className="h-5 w-5" />
+                          </button>
+                        </Link>
+                        <button
+                          className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => removeHotel(hotel._id)}
+                        >
+                          <TrashIcon className="h-5 w-5" />
                         </button>
-                      </Link>
-                      <button
-                        className="text-indigo-600 hover:text-indigo-900"
-                        onClick={() => removeHotel(hotel._id)}
-                      >
-                        <TrashIcon className="h-5 w-5" />
-                      </button>
-                    </div>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr key="err">
+                  <td
+                    className="whitespace-nowrap px-6 py-4 text-center"
+                    colSpan="10"
+                  >
+                    Não existem quartos com esses parâmetros...
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </>

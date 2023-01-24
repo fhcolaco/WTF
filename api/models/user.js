@@ -3,41 +3,45 @@ const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema(
   {
     user: {
-      required: true,
+      required: false,
       type: String,
       unique: true,
     },
     pass: {
-      required: true,
+      required: false,
       type: String,
     },
     is_admin: {
-      required: true,
+      required: false,
       type: Boolean,
     },
     name: {
-      required: true,
+      required: false,
       type: String,
     },
     email: {
-      required: true,
+      required: false,
       type: String,
     },
     billing_address: {
-      required: true,
+      required: false,
       type: String,
     },
     phone: {
-      required: true,
-      type: String,
+      required: false,
+      type: Number,
     },
     fiscal_number: {
-      required: true,
+      required: false,
       type: Number,
     },
     credit_card: {
       required: false,
       type: Number,
+    },
+    image: {
+      required: false,
+      type: String,
     },
   },
   {

@@ -1,29 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Hotel = require("../models/hotel");
-const multer = require("multer");
-const path = require("path");
-const { v4: uuidv4 } = require("uuid");
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, uuidv4() + path.extname(file.originalname));
-  },
-});
-
-const fileFilter = (req, file, cb) => {
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (allowedTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(null, cb(new Error("Tipo de arquivo inválido")));
-  }
-};
-
-const upload = multer({ storage: storage }, fileFilter);
+const upload = require("../middleware/upload");
 
 //GET ALL method
 router.get("/", (req, res) => {

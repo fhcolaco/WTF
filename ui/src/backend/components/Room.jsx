@@ -6,18 +6,16 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import Geocode from "react-geocode";
 import { getRoom, deleteRoom } from "../../shared/roomApi";
 import { getHotel } from "../../shared/hotelApi";
 import { getRoomCategory } from "../../shared/room_categoryApi";
-import { geocodeAPIKEY } from "./Hotel";
 
 export default function Room() {
   const [loading, setLoading] = useState(true);
   const [hotel, setHotel] = useState([]);
   const [room, setRoom] = useState([]);
   const [roomCategory, setRoomCategory] = useState([]);
-  const [filt, setFilt] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     getRoom().then((res) => {
@@ -37,10 +35,23 @@ export default function Room() {
     }
   }, [room, hotel, roomCategory]);
 
-  function search(rows) {
-    return rows.filter(
-      (row) => row.name.toLowerCase().indexOf(filt.toLowerCase()) > -1
-    );
+  function removeRoom(id) {
+    deleteRoom(id).then((res) => {
+      if (res.status === 200) {
+        setRoom(room.filter((room) => room.id !== id));
+      }
+    });
+  }
+
+  function filt(rows) {
+    return rows.filter((row) => {
+      return hotel.some((hotel) => {
+        return (
+          hotel._id === row._hotel &&
+          hotel.name.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+    });
   }
 
   return (
@@ -63,8 +74,8 @@ export default function Room() {
                 name="search-table"
                 className="bg-wblock block w-full rounded-md  border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Procurar"
-                value={filt}
-                onChange={(e) => setFilt(e.target.value)}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
             </div>
             <div className="relative mx-2 mt-1 flex flex-1 justify-end">
@@ -102,9 +113,9 @@ export default function Room() {
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200 bg-white">
-              {search(hotel).map((hotel) => {
-                return room.map((room) => (
-                  <tr key={room.id}>
+              {filt(room) !== undefined && filt(room).length !== 0 ? (
+                filt(room).map((room) => (
+                  <tr key={room._id}>
                     <td className="whitespace-nowrap px-6 py-4">
                       <img
                         className="h-24 w-full object-cover"
@@ -113,9 +124,11 @@ export default function Room() {
                       />
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {hotel.id === room.hotel_id && hotel.name
-                        ? hotel.name
-                        : ""}
+                      {hotel.map((hotel) => {
+                        if (hotel._id === room._hotel) {
+                          return hotel.name;
+                        }
+                      })}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {roomCategory
@@ -126,30 +139,46 @@ export default function Room() {
                         .map((roomCategory) => roomCategory.name)}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {room.availability ? "Sim" : "Não"}
+                      {room.isAvailable ? "Sim" : "Não"}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {room.discount ? "Sim" : "Não"}
+                      {room.discount !== 0 ? room.discount + "%" : "Não"}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {room.atual_price} €
+                    <td className="  whitespace-nowrap px-6 py-4">
+                      {room.discount !== 0 ? (
+                        <p className="text-red-500 line-through">
+                          {room.price} €
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                      {`${room.price - (room.price * room.discount) / 100} €`}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <div className="flex items-baseline space-x-4 text-sm">
-                        <Link to={`${room.id}`}>
+                        <Link to={`${room._id}`}>
                           <button className="text-indigo-600 hover:text-indigo-900">
                             <PencilSquareIcon className="h-5 w-5" />
                           </button>
                         </Link>
                         <TrashIcon
                           className="h-5 w-5 text-indigo-600 hover:text-indigo-900"
-                          onClick={() => deleteRoom(room.id)}
+                          onClick={() => removeRoom(room._id)}
                         />
                       </div>
                     </td>
                   </tr>
-                ));
-              })}
+                ))
+              ) : (
+                <tr key="err">
+                  <td
+                    className="whitespace-nowrap px-6 py-4 text-center"
+                    colSpan="10"
+                  >
+                    Não existem quartos com esses parâmetros...
+                  </td>
+                </tr>
+              )}
             </tbody>
           </table>
         </>
