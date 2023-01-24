@@ -11,6 +11,13 @@ import { format } from "date-fns";
 import axios from "axios";
 import { data } from "autoprefixer";
 import { NavLink } from "react-router-dom";
+import {
+  CalendarIcon,
+  MagnifyingGlassIcon,
+  MapPinIcon,
+  StarIcon,
+  UsersIcon,
+} from "@heroicons/react/24/outline";
 
 export default function Content() {
   const [selectedLocation, setSelectedLocation] = useState([]);
@@ -30,19 +37,19 @@ export default function Content() {
   const geocodeAPIKEY2 = "AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg";
   const [imageUrl, setImageUrl] = useState(null);
 
-  const getPlaceId = async (city) => {
-    await axios
-      .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${geocodeAPIKEY2}`
-      )
-      .then((data) =>
-        setPlaceId((place) => [...place, data.data.results[0].place_id])
-      );
-  };
+  // const getPlaceId = async (city) => {
+  //   await axios
+  //     .get(
+  //       `https://maps.googleapis.com/maps/api/geocode/json?address=${city}&key=${geocodeAPIKEY2}`
+  //     )
+  //     .then((data) =>
+  //       setPlaceId((place) => [...place, data.data.results[0].place_id])
+  //     );
+  // };
 
-  useEffect(() => {
-    getPlaceId(city);
-  }, []);
+  // useEffect(() => {
+  //   getPlaceId(city);
+  // }, []);
 
   useEffect(() => {
     if (placeId !== "" && placeId !== undefined) {
@@ -114,13 +121,12 @@ export default function Content() {
       });
   }, [hotel]);
 
-  useEffect(() => {
-    console.log(city);
-    console.log(placeId);
-    console.log(imageUrl);
-    console.log(data);
-    // console.log(photo_reference);
-  }, [placeId, imageUrl]);
+  // useEffect(() => {
+  //   console.log(city);
+  //   console.log(placeId);
+  //   console.log(imageUrl);
+  //   console.log(data);
+  // }, [placeId, imageUrl]);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -142,49 +148,54 @@ export default function Content() {
 
   return (
     <>
-      <div className="inset-x-0 top-0 mt-64 ">
+      <div className="inset-x-0 top-0 mt-64">
         <div className="mb-10 snap-start text-center text-5xl text-white">
           <h1>Descubra o seu próximo Hotel!</h1>
         </div>
-        <form className="flex flex-row justify-center">
-          <Combobox as="div" onChange={setSelectedLocation}>
+        <form className="flex justify-center">
+          <Combobox
+            as="div"
+            onChange={setSelectedLocation}
+            className="relative"
+            onClick={() => setOpenDate(setOpenDate)}
+          >
+            <div className="absolute inset-y-0 left-0 mb-1 flex items-center pl-3">
+              <MapPinIcon className="h-6 w-6 text-gray-500" />
+            </div>
             <Combobox.Input
+              id="city"
+              name="city"
               onChange={(event) => setQuery(event.target.value)}
-              className="h-10 w-56 rounded border-white px-4 outline outline-1 outline-black"
+              className="block w-56 rounded border-none pl-10 outline outline-1 outline-black focus:ring-orange-500 "
               placeholder={"cidade"}
             ></Combobox.Input>
-            <Combobox.Options className="absolute w-56 rounded-b bg-white px-2">
+            <Combobox.Options className="absolute mt-1 w-56 rounded bg-white">
               {filteredLocation.map((location, index) => (
-                <Combobox.Option key={index} value={location}>
+                <Combobox.Option
+                  key={index}
+                  value={location}
+                  className="pl-4 hover:rounded hover:bg-blue-100"
+                >
                   {location}
                 </Combobox.Option>
               ))}
             </Combobox.Options>
           </Combobox>
-
-          <div
-            className="mx-0.5 flex h-10 flex-row rounded bg-white px-4 py-2 align-middle text-gray-500 outline outline-1 outline-black hover:cursor-pointer"
+          <button
+            type="button"
+            className={`mx-0.5 flex h-10 flex-row rounded bg-white px-4 py-2 align-middle text-gray-500  hover:cursor-pointer ${
+              openDate
+                ? "ring-1 ring-orange-500"
+                : "outline outline-1 outline-black"
+            }`}
             onClick={() => setOpenDate(!openDate)}
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="mr-2 h-6 w-6 stroke-gray-500"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-              />
-            </svg>
+            <CalendarIcon className="mr-2 h-6 w-6" />
             {`${format(date[0].startDate, "dd/MM/yyyy")} até ${format(
               date[0].endDate,
               "dd/MM/yyyy"
             )}`}
-          </div>
+          </button>
           {openDate && (
             <DateRange
               editableDateInputs={true}
@@ -195,38 +206,11 @@ export default function Content() {
             />
           )}
           <div className="flex h-10 rounded bg-white py-2 px-4 align-middle text-gray-500 outline outline-1 outline-black hover:cursor-pointer">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="mr-2 h-5 w-5"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"
-              />
-            </svg>
-            2 adultos 2 crianças 1 quarto
+            <UsersIcon className="mr-2 h-5 w-5" />2 adultos 2 crianças 1 quarto
           </div>
           <div>
             <NavLink to="/search">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth="1.5"
-                stroke="currentColor"
-                className="ml-2 h-11 w-11 rounded-full bg-orange-500 stroke-white p-2 hover:cursor-pointer hover:bg-orange-600"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                />
-              </svg>
+              <MagnifyingGlassIcon className="ml-2 h-11 w-11 rounded-full bg-orange-500 stroke-white p-2 hover:cursor-pointer hover:bg-orange-600" />
             </NavLink>
           </div>
         </form>
@@ -236,23 +220,19 @@ export default function Content() {
           isVisible
             ? "opacity-100 transition-opacity duration-500"
             : "opacity-0 transition-opacity duration-500"
-        } mt-64`}
+        } mt-44`}
       >
-        <div className=" flex flex-row justify-center rounded-lg  py-6 px-4 ">
+        <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
+          Destaques
+        </p>
+        <div className=" flex flex-row justify-center rounded-lg  py-6 ">
           <a
             href="#"
             class="relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1592&q=80)] bg-cover bg-center bg-no-repeat"
           >
             <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
               4.5
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="ml-1.5 h-4 w-4 text-yellow-300"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
+              <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
             </span>
 
             <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white">
@@ -267,14 +247,7 @@ export default function Content() {
           >
             <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
               4.5
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="ml-1.5 h-4 w-4 text-yellow-300"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
+              <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
             </span>
 
             <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white">
@@ -289,14 +262,7 @@ export default function Content() {
           >
             <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
               4.5
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="ml-1.5 h-4 w-4 text-yellow-300"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-              </svg>
+              <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
             </span>
 
             <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white">
@@ -307,11 +273,10 @@ export default function Content() {
           </a>
         </div>
 
-        <p className="mb-5 mt-28 w-full text-center text-4xl font-bold text-white">
+        <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
           Tipos de Alojamento
         </p>
-        {/* bg-white/10 backdrop-blur */}
-        <div className=" flex flex-row justify-center rounded-lg  py-6 px-4 ">
+        <div className=" flex flex-row justify-center rounded-lg  py-6 ">
           <div class="mx-2 max-w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
             <img
               src="https://habanamotel.com/wp-content/uploads/2023/01/suite-com-baloico-cancan-baloico-quarto-motel.jpg"
@@ -359,81 +324,91 @@ export default function Content() {
             </div>
           </div>
         </div>
+        <p className="mb-5 mt-28 w-full text-right text-4xl font-bold text-white">
+          Vem à descoberta
+        </p>
+        <div className="flex flex-row">
+          <div class=" h-96 w-full bg-white p-12 text-center">
+            <p class="text-sm font-semibold uppercase tracking-widest">
+              Run with the pack
+            </p>
 
-        <div class="mx-auto  overflow-hidden rounded-lg bg-white shadow">
-          <ul class="divide-y divide-gray-100 py-2 px-4">
-            <li class="flex py-4">
-              <div class="mr-4 flex-1">
-                <h4 class="text-lg font-medium text-gray-900">
-                  The Bank of England Risks Hiking Too Far Ahead
-                </h4>
-                <div class="mt-1 text-sm text-gray-400">
-                  <span>Business</span> • <time>18 Nov 2022</time>
-                </div>
-              </div>
-              <div>
-                <img
-                  src="https://images.unsplash.com/photo-1631016800696-5ea8801b3c2a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=927&q=80"
-                  class="h-40 w-80 rounded-lg object-cover"
-                  alt=""
-                />
-              </div>
-            </li>
-            <li class="flex py-4">
-              <div class="mr-4 flex-1">
-                <h4 class="text-lg font-medium text-gray-900">
-                  The Bank of England Risks Hiking Too Far Ahead
-                </h4>
-                <div class="mt-1 text-sm text-gray-400">
-                  <span>Business</span> • <time>18 Nov 2022</time>
-                </div>
-              </div>
-              <div>
-                <img
-                  src="https://images.unsplash.com/photo-1550510537-89d5433de5cb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1974&q=80"
-                  class="h-20 w-20 rounded-lg object-cover"
-                  alt=""
-                />
-              </div>
-            </li>
-            <li class="flex py-4">
-              <div class="mr-4 flex-1">
-                <h4 class="text-lg font-medium text-gray-900">
-                  The Bank of England Risks Hiking Too Far Ahead
-                </h4>
-                <div class="mt-1 text-sm text-gray-400">
-                  <span>Business</span> • <time>18 Nov 2022</time>
-                </div>
-              </div>
-              <div>
-                <img
-                  src="https://images.unsplash.com/photo-1587614380862-0294308ae58b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80"
-                  class="h-20 w-20 rounded-lg object-cover"
-                  alt=""
-                />
-              </div>
-            </li>
-          </ul>
-        </div>
+            <h2 class="mt-6 font-black uppercase">
+              <span class="text-5xl font-black sm:text-6xl">
+                Até 30% de desconto
+              </span>
+              <span class="mt-2 block text-sm">Em alojamentos WTF</span>
+            </h2>
 
-        <div>
-          <h1>wertyhgfd</h1>
-          <img
-            src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=Aap_uEA7vb0DDYVJWEaX3O-AtYp77AaswQKSGtDaimt3gt7QCNpdjp1BkdM6acJ96xTec3tsV_ZJNL_JP-lqsVxydG3nh739RE_hepOOL05tfJh2_ranjMadb3VoBYFvF0ma6S24qZ6QJUuV6sSRrhCskSBP5C1myCzsebztMfGvm7ij3gZT&key=${geocodeAPIKEY2}`}
-          />
-          <h1>hjkelmwdç,sx</h1>
-          <div>
-            <button type="button" onClick={() => getPlaceId(city)}>
-              Get Place ID
-            </button>
-            <p>{`PLACE ID: ${placeId[0]}`}</p>
+            <a
+              class="mt-8 inline-block w-full bg-black py-4 text-sm font-bold uppercase tracking-widest text-white"
+              href=""
+            >
+              Ver Promoções
+            </a>
 
-            <img
-              src={
-                imageUrl !== undefined && imageUrl !== null ? imageUrl[0] : ""
-              }
-              alt="City Photo"
-            />
+            <p class="mt-12 text-xs font-medium uppercase text-gray-400">
+              Offer valid until 24th March, 2021 *
+            </p>
+          </div>
+
+          <div class=" ml-10 w-full  overflow-hidden rounded-lg bg-white shadow">
+            <ul class="divide-y divide-gray-300 py-2 px-4">
+              <li class="flex py-4 hover:cursor-pointer">
+                <div class="mr-4 flex-1">
+                  <h4 class="text-lg font-medium text-gray-900">Viseu</h4>
+                  <div class="mt-1 text-sm text-gray-400">
+                    <p className="text-gray-700">a 0Km de si</p>
+                    <br />
+                    <p>1 000 alojamentos</p>
+                    <p>Preço Médio - 57€</p>
+                  </div>
+                </div>
+                <div>
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/S%C3%A9_de_Viseu_%282%29_%28cropped%29.jpg/1200px-S%C3%A9_de_Viseu_%282%29_%28cropped%29.jpg"
+                    class="h-40 w-80 rounded-lg object-cover"
+                    alt=""
+                  />
+                </div>
+              </li>
+              <li class="flex py-4 hover:cursor-pointer">
+                <div class="mr-4 flex-1">
+                  <h4 class="text-lg font-medium text-gray-900">Braga</h4>
+                  <div class="mt-1 text-sm text-gray-400">
+                    <p className="text-gray-700">a 0Km de si</p>
+                    <br />
+                    <p>1 000 alojamentos</p>
+                    <p>Preço Médio - 57€</p>
+                  </div>
+                </div>
+                <div>
+                  <img
+                    src="https://www.bloom-consulting.com/journal/wp-content/uploads/2020/01/bloom_consulting_braga-the-city-brand-that-brings-history-to-the-future.jpg"
+                    class="h-40 w-80 rounded-lg object-cover"
+                    alt=""
+                  />
+                </div>
+              </li>
+              <li class="flex py-4 hover:cursor-pointer">
+                <div class="mr-4 flex-1">
+                  <h4 class="text-lg font-medium text-gray-900">Lado Nenhum</h4>
+                  <div class="mt-1 text-sm text-gray-400">
+                    <p className="text-gray-700">a 0Km de si</p>
+                    <br />
+                    <p>1 000 alojamentos</p>
+                    <p>Preço Médio - 57€</p>
+                  </div>
+                </div>
+                <div>
+                  <img
+                    src="https://www.bloom-consulting.com/journal/wp-content/uploads/2020/01/bloom_consulting_braga-the-city-brand-that-brings-history-to-the-future.jpg"
+                    class="h-40 w-80 rounded-lg object-cover"
+                    alt=""
+                  />
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
