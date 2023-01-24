@@ -4,6 +4,8 @@ import {
   MagnifyingGlassIcon,
   PencilSquareIcon,
   TrashIcon,
+  EnvelopeIcon,
+  PhoneIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { getUsers, deleteUser } from "../../shared/userApi";
@@ -21,7 +23,6 @@ export default function Users() {
 
   useEffect(() => {
     if (users.length !== 0) {
-      console.log(users);
       setLoading(false);
     }
   }, [users]);
@@ -61,7 +62,7 @@ export default function Users() {
                 type="text"
                 id="search-table "
                 name="search-table"
-                className="bg-wblock block w-full rounded-md  border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
+                className="block w-full rounded-md border  border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Procurar"
                 value={search.name}
                 onChange={(e) =>
@@ -117,7 +118,13 @@ export default function Users() {
                   Nome
                 </th>
                 <th className="px-6 py-4" scope="col">
+                  Utilizador
+                </th>
+                <th className="px-6 py-4" scope="col">
                   Categoria
+                </th>
+                <th className="px-6 py-4" scope="col">
+                  Contactos
                 </th>
                 <th className="px-6 py-4" scope="col">
                   Ações
@@ -138,18 +145,46 @@ export default function Users() {
                     <td className="whitespace-nowrap px-6 py-4">
                       {user.name.split(" ")[1] + ", " + user.name.split(" ")[0]}
                     </td>
+                    <td className="whitespace-nowrap px-6 py-4">{user.user}</td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {user.is_admin ? "Administrador" : "Utilizador"}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      <div className="flex items-baseline space-x-4 text-sm">
+                    <td className=" whitespace-nowrap px-6 py-4">
+                      <div className="flex items-baseline justify-around space-x-4">
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            window.location.href = `mailto:${user.email}`;
+                            e.preventDefault();
+                          }}
+                        >
+                          <button className="text-indigo-600 hover:text-indigo-900">
+                            <EnvelopeIcon className="h-5 w-5" />
+                          </button>
+                        </Link>
+                        <Link
+                          to="#"
+                          onClick={(e) => {
+                            window.location.href = `tel:+351${user.phone}`;
+                            e.preventDefault();
+                          }}
+                          dataP
+                        >
+                          <button className="text-indigo-600 hover:text-indigo-900">
+                            <PhoneIcon className="h-5 w-5" />
+                          </button>
+                        </Link>
+                      </div>
+                    </td>
+                    <td className=" whitespace-nowrap px-6 py-4">
+                      <div className="flex items-baseline justify-around space-x-4">
                         <Link to={`${user._id}`}>
                           <button className="text-indigo-600 hover:text-indigo-900">
                             <PencilSquareIcon className="h-5 w-5" />
                           </button>
                         </Link>
                         <TrashIcon
-                          className="h-5 w-5 text-indigo-600 hover:text-indigo-900"
+                          className="h-5 w-5 cursor-pointer text-indigo-600 hover:text-indigo-900"
                           onClick={() => removeUser(user._id)}
                         />
                       </div>
