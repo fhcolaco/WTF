@@ -23,6 +23,7 @@ import Content from "./components/Content";
 import Login from "./components/Login";
 import Search from "./components/Search";
 import About from "./components/About";
+import Hotel_Detail from "./components/Hotel_Detail";
 
 function App() {
   const [hotel, setHotel] = useState([]);
@@ -75,6 +76,7 @@ function App() {
           <Route path="" element={<Content />} />
           <Route path="/search" element={<Search />} />
           <Route path="/about" element={<About />} />
+          <Route path="/hoteldetail" element={<Hotel_Detail />} />
         </Route>
         <Route path="/login" element={<Login />}></Route>
         <Route path="/dashboard" element={<Layout />}>

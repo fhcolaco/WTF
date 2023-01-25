@@ -18,24 +18,13 @@ import {
   StarIcon,
   UsersIcon,
 } from "@heroicons/react/24/outline";
+import { getHotelCategory } from "../shared/hotel_categoryApi";
 
 export default function Content() {
-  const [selectedLocation, setSelectedLocation] = useState([]);
-  const [query, setQuery] = useState("");
-  const [locationList, setLocationList] = useState([]);
-  const [hotel, setHotel] = useState([]);
-  const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
-  const [placeId, setPlaceId] = useState([]);
-  const city = "New York";
-  const geocodeAPIKEY2 = "AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg";
-  const [imageUrl, setImageUrl] = useState(null);
+  // const [placeId, setPlaceId] = useState([]);
+  // const city = "New York";
+  // const geocodeAPIKEY2 = "AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg";
+  // const [imageUrl, setImageUrl] = useState(null);
 
   // const getPlaceId = async (city) => {
   //   await axios
@@ -51,35 +40,69 @@ export default function Content() {
   //   getPlaceId(city);
   // }, []);
 
-  useEffect(() => {
-    if (placeId !== "" && placeId !== undefined) {
-      placeId.map((place) => {
-        axios
-          .get(
-            `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place}&key=${geocodeAPIKEY2}`,
-            { headers: { "Access-Control-Allow-Origin": "*" } }
-          )
-          .then((response) => {
-            console.log("response");
-            console.log(response);
-            const data = response;
-            const photo_reference = data.results[0].photos[0].photo_reference;
-            axios
-              .get(
-                `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo_reference}&key=${geocodeAPIKEY2}`,
-                { headers: { "Access-Control-Allow-Origin": "*" } }
-              )
-              .then((response) => {
-                const data = response;
-                console.log(response);
-                setImageUrl((image) => [...image, data.url]);
-              })
-              .catch((err) => console.log(err));
-          })
-          .catch((err) => console.log(err));
-      });
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (placeId !== "" && placeId !== undefined) {
+  //     placeId.map((place) => {
+  //       axios
+  //         .get(
+  //           `https://maps.googleapis.com/maps/api/place/details/json?place_id=${place}&key=${geocodeAPIKEY2}`,
+  //           { headers: { "Access-Control-Allow-Origin": "*" } }
+  //         )
+  //         .then((response) => {
+  //           console.log("response");
+  //           console.log(response);
+  //           const data = response;
+  //           const photo_reference = data.results[0].photos[0].photo_reference;
+  //           axios
+  //             .get(
+  //               `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${photo_reference}&key=${geocodeAPIKEY2}`,
+  //               { headers: { "Access-Control-Allow-Origin": "*" } }
+  //             )
+  //             .then((response) => {
+  //               const data = response;
+  //               console.log(response);
+  //               setImageUrl((image) => [...image, data.url]);
+  //             })
+  //             .catch((err) => console.log(err));
+  //         })
+  //         .catch((err) => console.log(err));
+  //     });
+  //   }
+  // }, []);
+
+  const [selectedLocation, setSelectedLocation] = useState([]);
+  const [query, setQuery] = useState("");
+  const [locationList, setLocationList] = useState([]);
+  const [hotel, setHotel] = useState([]);
+  const [hotelCategory, setHotelCategory] = useState([]);
+  const [openDate, setOpenDate] = useState(false);
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+
+  const [openQuantityOptions, setOpenQuantityOptions] = useState(false);
+  const [quantityOptions, setQuantityOptions] = useState({
+    pessoas: 2,
+    quartos: 1,
+  });
+
+  const handleQuantityOption = (item, operacao) => {
+    setQuantityOptions((prev) => {
+      return {
+        ...prev,
+        [item]:
+          operacao === "mais"
+            ? quantityOptions[item] + 1
+            : quantityOptions[item] - 1,
+      };
+    });
+  };
+
+  const [topHoteis, setTopHoteis] = useState([0, 1]);
 
   const filteredLocation =
     query === ""
@@ -95,6 +118,14 @@ export default function Content() {
       })
       .catch((err) => console.log(err));
   }, []);
+
+  // useEffect(() => {
+  //   getHotelCategory()
+  //     .then((cat) => {
+  //       setHotelCategory(cat);
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   useEffect(() => {
     if (hotel !== [])
@@ -121,12 +152,9 @@ export default function Content() {
       });
   }, [hotel]);
 
-  // useEffect(() => {
-  //   console.log(city);
-  //   console.log(placeId);
-  //   console.log(imageUrl);
-  //   console.log(data);
-  // }, [placeId, imageUrl]);
+  useEffect(() => {
+    console.log(hotel);
+  }, []);
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -157,7 +185,7 @@ export default function Content() {
             as="div"
             onChange={setSelectedLocation}
             className="relative"
-            onClick={() => setOpenDate(setOpenDate)}
+            onClick={() => setOpenDate(false)}
           >
             <div className="absolute inset-y-0 left-0 mb-1 flex items-center pl-3">
               <MapPinIcon className="h-6 w-6 text-gray-500" />
@@ -205,9 +233,63 @@ export default function Content() {
               className="absolute top-36 z-10 mr-5"
             />
           )}
-          <div className="flex h-10 rounded bg-white py-2 px-4 align-middle text-gray-500 outline outline-1 outline-black hover:cursor-pointer">
-            <UsersIcon className="mr-2 h-5 w-5" />2 adultos 2 crianças 1 quarto
-          </div>
+          <button
+            className={`flex h-10 rounded bg-white py-2 px-8 align-middle text-gray-500 hover:cursor-pointer ${
+              openQuantityOptions
+                ? "ring-1 ring-orange-500"
+                : "outline outline-1 outline-black"
+            }`}
+            type="button"
+            onClick={() => setOpenQuantityOptions(!openQuantityOptions)}
+          >
+            <UsersIcon className="mr-2 h-5 w-5" />
+            {quantityOptions.pessoas} Pessoas {quantityOptions.quartos} Quartos
+          </button>
+          {openQuantityOptions && (
+            <div className="absolute top-32 left-2/4 ml-24 mt-0.5 w-60 rounded bg-white p-2">
+              <div className="m-2 flex  justify-between">
+                <p>Pessoas</p>
+                <div className="flex items-center gap-5">
+                  <button
+                    className="h-6 w-6 border border-black hover:border-orange-500"
+                    type="button"
+                    onClick={() => handleQuantityOption("pessoas", "menos")}
+                  >
+                    -
+                  </button>
+                  <span>{quantityOptions.pessoas}</span>
+                  <button
+                    className="h-6 w-6 border border-black hover:border-orange-500"
+                    type="button"
+                    onClick={() => handleQuantityOption("pessoas", "mais")}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+              <div className="m-2 flex justify-between">
+                <p>Quartos</p>
+                <div className="flex items-center gap-5">
+                  <button
+                    className="h-6 w-6 border border-black hover:border-orange-500"
+                    type="button"
+                    onClick={() => handleQuantityOption("quartos", "menos")}
+                  >
+                    -
+                  </button>
+                  <span>{quantityOptions.quartos}</span>
+                  <button
+                    className="h-6 w-6 border border-black hover:border-orange-500"
+                    type="button"
+                    onClick={() => handleQuantityOption("quartos", "mais")}
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           <div>
             <NavLink to="/search">
               <MagnifyingGlassIcon className="ml-2 h-11 w-11 rounded-full bg-orange-500 stroke-white p-2 hover:cursor-pointer hover:bg-orange-600" />
@@ -225,8 +307,44 @@ export default function Content() {
         <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
           Destaques
         </p>
-        <div className=" flex flex-row justify-center rounded-lg  py-6 ">
-          <a
+        {/* console.log(hotel[index])) */}
+        <div className=" flex flex-row justify-center rounded-lg py-6 ">
+          {topHoteis.map((index) => {
+            return (
+              <a
+                href="#"
+                class={`relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://www.kayak.pt/rimg/himg/9f/e7/f6/arbisoftimages-59430-Facade-lower-image.jpg?width=1366&height=768&xhint=832&yhint=377&crop=true)] bg-cover bg-center bg-no-repeat`}
+              >
+                <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+                  4.5
+                  <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
+                </span>
+                <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
+                  <h3 class="text-2xl font-bold">{hotel[index].name}</h3>
+                  <p class="text-sm">Italy</p>
+                </div>
+              </a>
+            );
+          })}
+          {
+            //     return (
+            // <a
+            //   href="#"
+            //   class={`relative mx-2 block w-full overflow-hidden rounded-xl bg-[url()] bg-cover bg-center bg-no-repeat`}
+            // >
+            //   <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+            //     4.5
+            //     <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
+            //   </span>
+            //   <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white">
+            //     <h3 class="text-2xl font-bold">{hoteis.name}</h3>
+            //     <p class="text-sm">Italy</p>
+            //   </div>
+            // </a>
+            //     );
+            // })}
+          }
+          {/* <a
             href="#"
             class="relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1592&q=80)] bg-cover bg-center bg-no-repeat"
           >
@@ -240,37 +358,7 @@ export default function Content() {
 
               <p class="text-sm">Italy</p>
             </div>
-          </a>
-          <a
-            href="#"
-            class="relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1592&q=80)] bg-cover bg-center bg-no-repeat"
-          >
-            <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
-              4.5
-              <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
-            </span>
-
-            <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white">
-              <h3 class="text-2xl font-bold">Rome</h3>
-
-              <p class="text-sm">Italy</p>
-            </div>
-          </a>
-          <a
-            href="#"
-            class="relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://images.unsplash.com/photo-1552832230-c0197dd311b5?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1592&q=80)] bg-cover bg-center bg-no-repeat"
-          >
-            <span class="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
-              4.5
-              <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
-            </span>
-
-            <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white">
-              <h3 class="text-2xl font-bold">Rome</h3>
-
-              <p class="text-sm">Italy</p>
-            </div>
-          </a>
+          </a>  */}
         </div>
 
         <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
