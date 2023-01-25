@@ -320,7 +320,7 @@ export default function Content() {
                   <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
                 </span>
                 <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
-                  <h3 class="text-2xl font-bold">{hotel[index].name}</h3>
+                  <h3 class="text-2xl font-bold">a</h3>
                   <p class="text-sm">Italy</p>
                 </div>
               </a>
