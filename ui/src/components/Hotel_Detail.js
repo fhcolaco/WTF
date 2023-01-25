@@ -1,6 +1,5 @@
 import React from "react";
 import { Fragment, useState } from "react";
-import { Carousel } from "flowbite";
 import { ShoppingCartIcon, StarIcon } from "@heroicons/react/24/outline";
 import { NavLink } from "react-router-dom";
 import { Listbox, Transition } from "@headlessui/react";

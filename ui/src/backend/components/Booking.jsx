@@ -15,7 +15,6 @@ import { Combobox } from "@headlessui/react";
 import { getUsers } from "../../shared/userApi";
 import { getRoomById } from "../../shared/roomApi";
 import { getRoomCategoryById } from "../../shared/room_categoryApi";
-import { format } from "date-fns";
 
 export default function Booking(props) {
   const [loading, setLoading] = useState(true);
@@ -24,7 +23,7 @@ export default function Booking(props) {
   const [search, setSearch] = useState("");
   const [selected, setSelected] = useState("");
   const [users, setUsers] = useState([]);
-  const [countRoomBooking, setCountRoomBooking] = useState([]);
+  const [countRoom, setCountRoom] = useState({});
 
   useEffect(() => {
     getBookings().then((res) => {
@@ -36,32 +35,42 @@ export default function Booking(props) {
   }, []);
 
   useEffect(() => {
-    if (booking.length !== 0) {
-      let count = {};
-      let exist = false;
-      let id = "";
+    if (
+      booking.length !== [] &&
+      Object.keys(countRoom).length !== booking.length
+    ) {
+      let aux = {};
       booking.map((book) => {
-        exist = false;
-        count = {};
+        let exist = false;
+        let count = [];
         book._room.map((r) => {
           getRoomById(r).then((room) => {
             getRoomCategoryById(room._room_category).then((roomCategory) => {
-              count[roomCategory.name] = count[roomCategory.name]
-                ? count[roomCategory.name] + 1
-                : 1;
+              if (!count.includes(roomCategory.name))
+                count.push([roomCategory.name, 1]);
+              else
+                count[
+                  count.findIndex((x) => x[0] === roomCategory.name)
+                ][1] += 1;
             });
           });
-          id = book._id;
-          for (const element of countRoomBooking) {
-            if (element[id]) {
-              exist = true;
-            }
+          let id = book._id;
+          console.log(countRoom);
+          console.log(id);
+          console.log(count);
+          if (!countRoom[id] === undefined) {
+            console.log("existe");
+            exist = true;
+          } else {
+            console.log("n existe");
+            exist = false;
           }
           if (!exist) {
-            setCountRoomBooking((element) => [...element, { [id]: count }]);
+            aux[id] = count;
           }
         });
       });
+      setCountRoom(aux);
     }
   }, [booking]);
 
@@ -71,19 +80,18 @@ export default function Booking(props) {
 
   useEffect(() => {
     if (
+      loading &&
       booking.length !== 0 &&
       hotel.length !== 0 &&
       users.length !== 0 &&
-      countRoomBooking.length === booking.length &&
-      countRoomBooking.length !== 0
+      Object.keys(countRoom).length === booking.length &&
+      Object.keys(countRoom).length !== 0
     ) {
       setLoading(false);
     } else {
-      console.log(countRoomBooking.length === booking.length);
-      console.log(booking.length);
-      console.log(countRoomBooking);
+      console.log(Object.keys(countRoom).length);
     }
-  }, [booking, countRoomBooking, hotel, users]);
+  }, [booking, countRoom, hotel, users]);
 
   const filt = (rows) => {
     return rows.filter(
@@ -213,7 +221,7 @@ export default function Booking(props) {
                 .filter((book) => {
                   return book._hotel === selected || selected === "";
                 })
-                .map((book) => (
+                .map((book, index) => (
                   <tr key={book._id}>
                     <td className="whitespace-nowrap px-6 py-4">
                       {hotel.map((hotel) =>
@@ -226,15 +234,16 @@ export default function Booking(props) {
                       )}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {countRoomBooking.map((index) =>
-                        Object.keys(index).map((key) =>
-                          key === book._id
-                            ? Object.keys(index[key]).map(
-                                (room) => `${room} ${index[key][room]}x`
-                              )
-                            : null
-                        )
+                      {countRoom[book._id].map(
+                        (room) => `${room[0]} - ${room[1]}x`
                       )}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {new Date(book.start_date).toLocaleDateString("pt-PT")} -{" "}
+                      {new Date(book.end_date).toLocaleDateString("pt-PT")}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {book.total_price}€
                     </td>
                   </tr>
                 ))}

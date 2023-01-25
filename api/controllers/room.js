@@ -21,7 +21,7 @@ router.get("/:id", async (req, res) => {
 
 //POST method
 router.post("/", upload.array("images"), (req, res) => {
-  roomSave = {
+  let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
     _room_details: req.body._room_details,
@@ -44,7 +44,7 @@ router.post("/", upload.array("images"), (req, res) => {
 
 //PUT method
 router.put("/:id", upload.array("images"), (req, res) => {
-  roomSave = {
+  let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
     _room_details: req.body._room_details,

@@ -41,9 +41,11 @@ router.post("/", upload.array("images"), (req, res) => {
 
 //PUT method
 router.put("/:id", upload.array("images"), (req, res) => {
-  hotelSave = {
+  let hotelSave = {
     name: req.body.name,
     location: req.body.location,
+    address: req.body.address,
+    postal_code: req.body.postal_code,
     description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,

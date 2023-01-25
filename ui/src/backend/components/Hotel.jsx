@@ -9,58 +9,25 @@ import { Link } from "react-router-dom";
 import { deleteHotel } from "../../shared/hotelApi";
 import Geocode from "react-geocode";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
-
-export const geocodeAPIKEY = () => {
-  return Geocode.setApiKey("AIzaSyCuUAUZGSEYbCM6KbC-0LSB7e0AMV8_Rzg");
-};
+import locationList from "../../shared/locationList";
 
 export default function Hotel(props) {
   const [loading, setLoading] = useState(true);
   const [hotel, setHotel] = useState([]);
-  const [location, setLocation] = useState([]);
   const [filt, setFilt] = useState("");
   const [hotelType, setHotelType] = useState([]);
   useEffect(() => {
     setHotel(props.hotel);
+    getHotelCategory().then((data) => {
+      setHotelType(data);
+    });
   }, [props.hotel]);
 
   useEffect(() => {
-    getHotelCategory().then((res) => {
-      setHotelType(res);
-    });
-    hotel.map((hotel) => {
-      geocodeAPIKEY();
-      Geocode.setLanguage("pt");
-      Geocode.setRegion("pt");
-      let [lat, lng] = hotel.location.split(", ");
-      Geocode.fromLatLng(lat, lng).then(
-        (response) => {
-          const city =
-            response.results[0].address_components[2].long_name +
-            ", " +
-            response.results[0].address_components[4].long_name;
-          setLocation((location) => [
-            ...location,
-            { hotelID: hotel._id, city: city },
-          ]);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    });
-  }, [hotel]);
-
-  useEffect(() => {
-    if (
-      hotel.length === location.length &&
-      hotel.length !== 0 &&
-      hotelType.length !== 0
-    ) {
-      console.log(location);
+    if (hotel.length !== 0 && hotelType.length !== 0) {
       setLoading(false);
     }
-  }, [hotel, hotelType, location]);
+  }, [hotel, hotelType]);
 
   const removeHotel = (id) => {
     deleteHotel(id).then(() => {
@@ -140,11 +107,7 @@ export default function Hotel(props) {
                     <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                       {hotel.name}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">
-                      {location?.map((location) =>
-                        location.hotelID === hotel._id ? location.city : null
-                      )}
-                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">{`askdl`}</td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {hotelType.map((hotelType) =>
                         hotelType._id === hotel._hotel_type

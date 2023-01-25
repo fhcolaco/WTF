@@ -4,7 +4,6 @@ import { getServices } from "../../shared/servicesApi";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../Loader";
-import { geocodeAPIKEY } from "./Hotel";
 import Geocode from "react-geocode";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
@@ -46,35 +45,6 @@ export default function HotelDetail(props) {
     getServices().then((res) => {
       setServices(res);
     });
-    if (hotel.location !== undefined && hotel.location !== "") {
-      geocodeAPIKEY();
-      Geocode.setLanguage("pt");
-      Geocode.setRegion("pt");
-      let [lat, lng] = hotel.location.split(", ");
-      Geocode.fromLatLng(lat, lng).then(
-        (response) => {
-          return setAddress({
-            city: response.results[0].address_components[2].long_name,
-            country: response.results[0].address_components[4].long_name,
-            street:
-              response.results[0].address_components[1].long_name +
-              ", " +
-              response.results[0].address_components[0].long_name,
-            zip: response.results[0].address_components[5].long_name,
-          });
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-    } else {
-      setAddress({
-        city: "",
-        country: "",
-        street: "",
-        zip: "",
-      });
-    }
   }, [hotel.location, params.id]);
 
   useEffect(() => {
@@ -144,19 +114,6 @@ export default function HotelDetail(props) {
     }
 
     props.submit(data, event);
-
-    // axios
-    //   .put(`https://wtf-backend.onrender.com/hotel/${hotel._id}`, data, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   return (

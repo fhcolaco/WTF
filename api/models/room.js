@@ -41,6 +41,10 @@ const roomSchema = new mongoose.Schema(
       type: [String],
       required: false,
     },
+    rating: {
+      type: [String],
+      required: false,
+    },
   },
   { timestamps: true }
 );

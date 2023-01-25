@@ -128,31 +128,6 @@ export default function Content() {
   // }, []);
 
   useEffect(() => {
-    if (hotel !== [])
-      hotel.map((hot) => {
-        if (hot.location !== undefined && hot.location !== "") {
-          geocodeAPIKEY();
-          Geocode.setLanguage("pt");
-          Geocode.setRegion("pt");
-          let [lat, lng] = hot.location.split(", ");
-          let toAdd = "";
-          Geocode.fromLatLng(lat, lng).then(
-            (response) => {
-              toAdd = response.results[0].address_components[2].long_name;
-              if (!locationList.includes(toAdd))
-                return setLocationList((prev) => [...prev, toAdd]);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        } else {
-          console.log(2);
-        }
-      });
-  }, [hotel]);
-
-  useEffect(() => {
     console.log(hotel);
   }, []);
 

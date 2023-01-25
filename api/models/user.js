@@ -23,9 +23,17 @@ const userSchema = new mongoose.Schema(
       required: false,
       type: String,
     },
-    billing_address: {
-      required: false,
+    location: {
       type: String,
+      required: true,
+    },
+    address: {
+      type: String,
+      required: true,
+    },
+    postal_code: {
+      type: String,
+      required: true,
     },
     phone: {
       required: false,
