@@ -19,6 +19,7 @@ import {
   UsersIcon,
 } from "@heroicons/react/24/outline";
 import { getHotelCategory } from "../shared/hotel_categoryApi";
+import Loader from "../Loader";
 
 export default function Content() {
   // const [placeId, setPlaceId] = useState([]);
@@ -71,6 +72,7 @@ export default function Content() {
   // }, []);
 
   const [selectedLocation, setSelectedLocation] = useState([]);
+  const [loading, setloading] = useState (true);
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [hotel, setHotel] = useState([]);
@@ -151,6 +153,9 @@ export default function Content() {
 
   return (
     <>
+    <div> 
+    <Loader className=" w-full h-screen justify-center inset-x-0" />
+    </div>
       <div className="inset-x-0 top-0 mt-64">
         <div className="mb-10 snap-start text-center text-5xl text-white">
           <h1>Descubra o seu próximo Hotel!</h1>
@@ -295,7 +300,7 @@ export default function Content() {
                   <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
                 </span>
                 <div class="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
-                  <h3 class="text-2xl font-bold">a</h3>
+                  <h3 class="text-2xl font-bold"></h3>
                   <p class="text-sm">Italy</p>
                 </div>
               </a>
