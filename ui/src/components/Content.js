@@ -259,29 +259,44 @@ export default function Content() {
                     </span>
                     <div className="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
                       <h3 className="text-2xl font-bold">
-                        {/* {hotel[index].name} */}
+                        {hotel[index].name}
+                        {console.log("INDEX: ", index)}
                       </h3>
-                      <p className="text-sm">Italy</p>
+                      <p className="text-sm">Localização</p>
                     </div>
                   </a>
                 );
               })}
+              <a
+                href="#"
+                className={`relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://www.rivierahotel.pt/media/riviera-hotel-carcavelos-bannerfachada22.jpg)] bg-cover bg-center bg-no-repeat`}
+              >
+                <span className="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
+                  4.5
+                  <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
+                </span>
+                <div className="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
+                  <h3 className="text-2xl font-bold">Demo Information</h3>
+                  <p className="text-sm">Localização</p>
+                </div>
+              </a>
             </div>
             <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
               Tipos de Alojamento
             </p>
             <div className=" flex flex-row justify-center rounded-lg py-6 ">
-              {hotelCategory.map((index) => {
+              {hotelCategory.map((category) => {
                 return (
-                  <div class="mx-2 max-w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
+                  <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
                     <img
                       src="https://upload.wikimedia.org/wikipedia/commons/7/79/Ponta_Negra_Beach_Hotel.jpg"
-                      class="aspect-video w-full object-cover"
+                      class="aspect-video h-52 w-full object-cover"
                       alt=""
                     />
                     <div class="p-4">
                       <h3 class="text-xl font-medium text-gray-900">
-                        {/* {hotelCategory[index].name} */}
+                        {category.name}
+                        {console.log("TESTE")}
                       </h3>
 
                       <p class="mt-1 text-gray-500">1 000 alojamentos</p>
@@ -289,52 +304,47 @@ export default function Content() {
                   </div>
                 );
               })}
-              {/* <div class="mx-2 max-w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
+              <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
                 <img
-                  src="https://habanamotel.com/wp-content/uploads/2023/01/suite-com-baloico-cancan-baloico-quarto-motel.jpg"
-                  class="aspect-video w-full object-cover"
+                  src="https://img.freepik.com/premium-photo/image-planet-outer-space-mixed-media-elements-image-furnished-by-nasa_641298-3434.jpg?w=2000"
+                  class="aspect-video h-52 w-full object-cover"
                   alt=""
                 />
                 <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">Hotel</h3>
+                  <h3 class="text-xl font-medium text-gray-900">
+                    Demo Information
+                  </h3>
 
-                  <p class="mt-1 text-gray-500">1 000 alojamentos</p>
+                  <p class="mt-1 text-gray-500">Demo Information</p>
                 </div>
               </div>
-              <div class="mx-2 max-w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
+              <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
                 <img
-                  src="https://habanamotel.com/wp-content/uploads/2023/01/suite-com-baloico-cancan-baloico-quarto-motel.jpg"
-                  class="aspect-video w-full object-cover hover:cursor-pointer"
+                  src="https://www.momondo.pt/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true"
+                  class="aspect-video h-52 w-full object-cover hover:cursor-pointer"
                   alt=""
                 />
                 <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">Motel</h3>
+                  <h3 class="text-xl font-medium text-gray-900">
+                    Demo Information
+                  </h3>
 
-                  <p class="mt-1 text-gray-500">1 000 alojamentos</p>
+                  <p class="mt-1 text-gray-500">Demo Information</p>
                 </div>
               </div>
-              <div class="mx-2 max-w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
+              <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
                 <img
-                  src="https://habanamotel.com/wp-content/uploads/2023/01/suite-com-baloico-cancan-baloico-quarto-motel.jpg"
-                  class="aspect-video w-full object-cover hover:cursor-pointer"
+                  src="https://pesweb.azureedge.net/spimg/hotelbannerimages/pestana-cr7-hotels/cr7-lisboa-building.jpg?scale=downscaleonly&encoder=freeimage&progressive=true&quality=50&w=1440&h=780&mode=crop&anchor=bottomcenter"
+                  class="aspect-video h-52 w-full object-cover hover:cursor-pointer"
                   alt=""
                 />
                 <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">Hostel</h3>
-                  <p class="mt-1 text-gray-500">1 000 alojamentos</p>
+                  <h3 class="text-xl font-medium text-gray-900">
+                    Demo Information
+                  </h3>
+                  <p class="mt-1 text-gray-500">Demo Information</p>
                 </div>
               </div>
-              <div class="mx-2 max-w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
-                <img
-                  src="https://habanamotel.com/wp-content/uploads/2023/01/suite-com-baloico-cancan-baloico-quarto-motel.jpg"
-                  class="aspect-video w-full object-cover hover:cursor-pointer"
-                  alt=""
-                />
-                <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">Aparthotel</h3>
-                  <p class="mt-1 text-gray-500">1 000 alojamentos</p>
-                </div>
-              </div> */}
             </div>
             <p className="mb-5 mt-28 w-full text-right text-4xl font-bold text-white">
               Vem à descoberta

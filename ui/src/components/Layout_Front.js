@@ -28,7 +28,6 @@ export default function Layout_Front() {
         </div>
       </div>
       <div className="fixed h-screen w-full bg-[url('https://images.pexels.com/photos/2325446/pexels-photo-2325446.jpeg')] bg-cover  bg-no-repeat" />
-      <div className="fixed inset-0 -z-10 bg-orange-500" />
       <div className="fixed inset-0  h-screen bg-gradient-to-t from-black bg-cover" />
       <div
         className={`fixed h-screen w-full ${

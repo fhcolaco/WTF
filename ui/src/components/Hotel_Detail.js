@@ -12,7 +12,7 @@ export default function Hotel_Detail() {
         <a class="mb-4 flex h-full w-full rounded-lg bg-white">
           <img
             class="h-full rounded-lg object-cover p-4"
-            src="https://cdn.guiademoteis.com.br/Images/moteis/2115-Intense-Motel/suites/16845-Infinity-Erotica/fotos/268a9a04-3600-49d3-b53a-340a38d5814f-suites.jpg"
+            src="https://rhotelgeelong.com.au/wp-content/uploads/2021/03/R-Hotel-Geelong-Hotel-Room-11.jpg"
             alt=""
           />
           <div className="flex h-full w-full flex-col p-4">

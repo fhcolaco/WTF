@@ -6,8 +6,8 @@ import { NavLink } from "react-router-dom";
 export default function Search() {
   return (
     <>
-      <div className=" w-full">
-        <div className="fixed h-auto w-3/12 rounded-lg bg-white p-4">
+      <div className="flex w-full flex-row">
+        <div className="fixed mr-6 h-auto w-3/12 rounded-lg bg-white p-4">
           <p className="text-2xl font-bold">Filtrar</p>
           <Combobox>
             <Combobox.Input
@@ -16,12 +16,11 @@ export default function Search() {
             ></Combobox.Input>
           </Combobox>
         </div>
-        {/* items-center */}
-        <div className="absolute ml-96 flex w-9/12 flex-col">
+        <div className="w-full flex-col">
           <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
             <img
               class="h-full w-96 rounded-l-lg object-cover"
-              src="https://cdn.guiademoteis.com.br/Images/moteis/2115-Intense-Motel/suites/16845-Infinity-Erotica/fotos/268a9a04-3600-49d3-b53a-340a38d5814f-suites.jpg"
+              src="https://aquashowpark.com/wp-content/uploads/2022/03/Hotelae%CC%81rio-65-e1646846021885.jpg"
               alt=""
             />
             <div className="flex h-full w-full flex-col p-4">
@@ -61,7 +60,7 @@ export default function Search() {
           <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
             <img
               class="h-full w-96 rounded-l-lg object-cover"
-              src="https://cdn.guiademoteis.com.br/Images/moteis/2115-Intense-Motel/suites/16845-Infinity-Erotica/fotos/268a9a04-3600-49d3-b53a-340a38d5814f-suites.jpg"
+              src="https://aquashowpark.com/wp-content/uploads/2022/03/Hotelae%CC%81rio-65-e1646846021885.jpg"
               alt=""
             />
             <div className="flex h-full w-full flex-col p-4">
@@ -101,7 +100,7 @@ export default function Search() {
           <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
             <img
               class="h-full w-96 rounded-l-lg object-cover"
-              src="https://cdn.guiademoteis.com.br/Images/moteis/2115-Intense-Motel/suites/16845-Infinity-Erotica/fotos/268a9a04-3600-49d3-b53a-340a38d5814f-suites.jpg"
+              src="https://aquashowpark.com/wp-content/uploads/2022/03/Hotelae%CC%81rio-65-e1646846021885.jpg"
               alt=""
             />
             <div className="flex h-full w-full flex-col p-4">
@@ -141,7 +140,7 @@ export default function Search() {
           <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
             <img
               class="h-full w-96 rounded-l-lg object-cover"
-              src="https://cdn.guiademoteis.com.br/Images/moteis/2115-Intense-Motel/suites/16845-Infinity-Erotica/fotos/268a9a04-3600-49d3-b53a-340a38d5814f-suites.jpg"
+              src="https://aquashowpark.com/wp-content/uploads/2022/03/Hotelae%CC%81rio-65-e1646846021885.jpg"
               alt=""
             />
             <div className="flex h-full w-full flex-col p-4">
