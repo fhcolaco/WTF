@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Header from "./Header";
 import { Outlet } from "react-router-dom";
+import Footer from "./Footer";
 
 export default function Layout_Front() {
   const [isVisible, setIsVisible] = useState(false);
@@ -23,8 +24,11 @@ export default function Layout_Front() {
     <>
       <Header />
       <div className="absolute inset-0 pt-40">
-        <div className="relative z-10 mx-40">
+        <div className="relative z-10 mx-40 min-h-screen">
           <Outlet />
+        </div>
+        <div className="relative bottom-0 z-10 mt-10 w-full">
+          <Footer />
         </div>
       </div>
       <div className="fixed h-screen w-full bg-[url('https://images.pexels.com/photos/2325446/pexels-photo-2325446.jpeg')] bg-cover  bg-no-repeat" />

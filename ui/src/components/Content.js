@@ -1,5 +1,4 @@
-import React, { useEffect, Fragment } from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import { geocodeAPIKEY } from "../backend/components/Hotel";
 import Geocode from "react-geocode";
@@ -12,11 +11,13 @@ import axios from "axios";
 import { data } from "autoprefixer";
 import { NavLink } from "react-router-dom";
 import {
+  ChevronLeftIcon,
   CalendarIcon,
   MagnifyingGlassIcon,
   MapPinIcon,
   StarIcon,
   UsersIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/24/outline";
 import { getHotelCategory } from "../shared/hotel_categoryApi";
 import Loader from "../Loader";
@@ -36,13 +37,11 @@ export default function Content() {
       key: "selection",
     },
   ]);
-
   const [openQuantityOptions, setOpenQuantityOptions] = useState(false);
   const [quantityOptions, setQuantityOptions] = useState({
     pessoas: 2,
     quartos: 1,
   });
-
   const handleQuantityOption = (item, operacao) => {
     setQuantityOptions((prev) => {
       return {
@@ -54,9 +53,7 @@ export default function Content() {
       };
     });
   };
-
   const [topHoteis, setTopHoteis] = useState([0, 1]);
-
   const filteredLocation =
     query === ""
       ? locationList
@@ -103,6 +100,53 @@ export default function Content() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
+  }, []);
+
+  //-----------------------CARROSSEL--------------------
+
+  const maxScrollWidth = useRef(0);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const carousel = useRef(null);
+
+  const movePrev = () => {
+    if (currentIndex > 0) {
+      setCurrentIndex((prevState) => prevState - 1);
+    }
+  };
+
+  const moveNext = () => {
+    if (
+      carousel.current !== null &&
+      carousel.current.offsetWidth * currentIndex <= maxScrollWidth.current
+    ) {
+      setCurrentIndex((prevState) => prevState + 1);
+    }
+  };
+
+  // const isDisabled = (direction) => {
+  //   if (direction === "prev") {
+  //     return currentIndex <= 0;
+  //   }
+
+  //   if (direction === "next" && carousel.current !== null) {
+  //     return (
+  //       carousel.current.offsetWidth * currentIndex >= maxScrollWidth.current
+  //     );
+  //   }
+
+  //   return false;
+  // };
+
+  useEffect(() => {
+    if (carousel !== null && carousel.current !== null) {
+      carousel.current.scrollLeft = carousel.current.offsetWidth * currentIndex;
+    }
+  }, [currentIndex]);
+
+  useEffect(() => {
+    maxScrollWidth.current = carousel.current
+      ? carousel.current.scrollWidth - carousel.current.offsetWidth
+      : 0;
   }, []);
 
   return (
@@ -281,7 +325,62 @@ export default function Content() {
                 </div>
               </a>
             </div>
-            <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
+
+            {/* -----------------------------CARROSSEL--------------------- */}
+
+            <div className="carousel my-12 mx-auto">
+              <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
+                Tipos de Alojamento
+              </p>
+              <div className="relative overflow-hidden">
+                <div className="top left absolute flex h-full w-full justify-between">
+                  <button
+                    onClick={movePrev}
+                    className="z-10 ml-2 h-full w-16 rounded-l-lg text-center text-white transition-all duration-300 ease-in-out hover:bg-white/25 hover:opacity-100"
+                    // disabled={isDisabled("prev")}
+                  >
+                    <ChevronLeftIcon />
+                    <span className="sr-only">Prev</span>
+                  </button>
+                  <button
+                    onClick={moveNext}
+                    className="z-10 mr-2 h-full w-16 rounded-r-lg p-0 text-center text-white transition-all duration-300 ease-in-out hover:bg-white/25 hover:opacity-100"
+                    // disabled={isDisabled("next")}
+                  >
+                    <ChevronRightIcon />
+                    <span className="sr-only">Next</span>
+                  </button>
+                </div>
+                <div
+                  ref={carousel}
+                  className="carousel-container relative z-0 flex touch-pan-x snap-x snap-mandatory gap-1 overflow-hidden scroll-smooth"
+                >
+                  {hotelCategory.map((category, index) => {
+                    return (
+                      <div
+                        key={index}
+                        class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer"
+                      >
+                        <img
+                          src="https://upload.wikimedia.org/wikipedia/commons/7/79/Ponta_Negra_Beach_Hotel.jpg"
+                          class="aspect-video h-52 w-full object-cover"
+                          alt=""
+                        />
+                        <div class="p-4">
+                          <h3 class="text-xl font-medium text-gray-900">
+                            {category.name}
+                            {console.log("TESTE")}
+                          </h3>
+                          <p class="mt-1 text-gray-500">1 000 alojamentos</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
               Tipos de Alojamento
             </p>
             <div className=" flex flex-row justify-center rounded-lg py-6 ">
@@ -345,7 +444,7 @@ export default function Content() {
                   <p class="mt-1 text-gray-500">Demo Information</p>
                 </div>
               </div>
-            </div>
+            </div> */}
             <p className="mb-5 mt-28 w-full text-right text-4xl font-bold text-white">
               Vem à descoberta
             </p>
