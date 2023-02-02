@@ -21,13 +21,15 @@ import {
 } from "@heroicons/react/24/outline";
 import { getHotelCategory } from "../shared/hotel_categoryApi";
 import Loader from "../Loader";
+import Hotel_Category from "./Hotel_Category";
+import Destaques from "./Destaques";
 
 export default function Content() {
   const [selectedLocation, setSelectedLocation] = useState([]);
   const [loading, setloading] = useState(true);
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
-  const [hotel, setHotel] = useState({});
+  const [hotel, setHotel] = useState([]);
   const [hotelCategory, setHotelCategory] = useState([]);
   const [openDate, setOpenDate] = useState(false);
   const [date, setDate] = useState([
@@ -53,7 +55,7 @@ export default function Content() {
       };
     });
   };
-  const [topHoteis, setTopHoteis] = useState([0, 1]);
+
   const filteredLocation =
     query === ""
       ? locationList
@@ -102,58 +104,11 @@ export default function Content() {
     };
   }, []);
 
-  //-----------------------CARROSSEL--------------------
-
-  const maxScrollWidth = useRef(0);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const carousel = useRef(null);
-
-  const movePrev = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex((prevState) => prevState - 1);
-    }
-  };
-
-  const moveNext = () => {
-    if (
-      carousel.current !== null &&
-      carousel.current.offsetWidth * currentIndex <= maxScrollWidth.current
-    ) {
-      setCurrentIndex((prevState) => prevState + 1);
-    }
-  };
-
-  // const isDisabled = (direction) => {
-  //   if (direction === "prev") {
-  //     return currentIndex <= 0;
-  //   }
-
-  //   if (direction === "next" && carousel.current !== null) {
-  //     return (
-  //       carousel.current.offsetWidth * currentIndex >= maxScrollWidth.current
-  //     );
-  //   }
-
-  //   return false;
-  // };
-
-  useEffect(() => {
-    if (carousel !== null && carousel.current !== null) {
-      carousel.current.scrollLeft = carousel.current.offsetWidth * currentIndex;
-    }
-  }, [currentIndex]);
-
-  useEffect(() => {
-    maxScrollWidth.current = carousel.current
-      ? carousel.current.scrollWidth - carousel.current.offsetWidth
-      : 0;
-  }, []);
-
   return (
     <>
       {loading ? (
-        <div className="bg-black/10">
-          <Loader className=" relative h-screen w-screen" />
+        <div className=" bg-black/10">
+          <Loader />
         </div>
       ) : (
         <div>
@@ -211,7 +166,7 @@ export default function Content() {
                   onChange={(item) => setDate([item.selection])}
                   moveRangeOnFirstSelection={false}
                   ranges={date}
-                  className="absolute top-36 z-10 mr-5"
+                  className="absolute top-36 z-40 mr-5"
                 />
               )}
               <button
@@ -287,164 +242,11 @@ export default function Content() {
                 : "opacity-0 transition-opacity duration-500"
             } mt-44`}
           >
-            <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
-              Destaques
-            </p>
-            <div className=" flex flex-row justify-center rounded-lg py-6 ">
-              {topHoteis.map((index) => {
-                return (
-                  <a
-                    href="#"
-                    className={`relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://www.kayak.pt/rimg/himg/9f/e7/f6/arbisoftimages-59430-Facade-lower-image.jpg?width=1366&height=768&xhint=832&yhint=377&crop=true)] bg-cover bg-center bg-no-repeat`}
-                  >
-                    <span className="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
-                      4.5
-                      <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
-                    </span>
-                    <div className="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
-                      <h3 className="text-2xl font-bold">
-                        {hotel[index].name}
-                        {console.log("INDEX: ", index)}
-                      </h3>
-                      <p className="text-sm">Localização</p>
-                    </div>
-                  </a>
-                );
-              })}
-              <a
-                href="#"
-                className={`relative mx-2 block w-full overflow-hidden rounded-xl bg-[url(https://www.rivierahotel.pt/media/riviera-hotel-carcavelos-bannerfachada22.jpg)] bg-cover bg-center bg-no-repeat`}
-              >
-                <span className="absolute right-4 top-4 z-10 inline-flex items-center rounded-full bg-black px-3 py-1 text-xs font-semibold text-white">
-                  4.5
-                  <StarIcon class="ml-1.5 h-4 w-4 fill-yellow-300 text-yellow-300" />
-                </span>
-                <div className="relative bg-black bg-opacity-40 p-8 pt-40 text-white hover:bg-opacity-10">
-                  <h3 className="text-2xl font-bold">Demo Information</h3>
-                  <p className="text-sm">Localização</p>
-                </div>
-              </a>
-            </div>
+            <Destaques hotel_list={[hotel, setHotel]} />
 
-            {/* -----------------------------CARROSSEL--------------------- */}
-
-            <div className="carousel my-12 mx-auto">
-              <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
-                Tipos de Alojamento
-              </p>
-              <div className="relative overflow-hidden">
-                <div className="top left absolute flex h-full w-full justify-between">
-                  <button
-                    onClick={movePrev}
-                    className="z-10 ml-2 h-full w-16 rounded-l-lg text-center text-white transition-all duration-300 ease-in-out hover:bg-white/25 hover:opacity-100"
-                    // disabled={isDisabled("prev")}
-                  >
-                    <ChevronLeftIcon />
-                    <span className="sr-only">Prev</span>
-                  </button>
-                  <button
-                    onClick={moveNext}
-                    className="z-10 mr-2 h-full w-16 rounded-r-lg p-0 text-center text-white transition-all duration-300 ease-in-out hover:bg-white/25 hover:opacity-100"
-                    // disabled={isDisabled("next")}
-                  >
-                    <ChevronRightIcon />
-                    <span className="sr-only">Next</span>
-                  </button>
-                </div>
-                <div
-                  ref={carousel}
-                  className="carousel-container relative z-0 flex touch-pan-x snap-x snap-mandatory gap-1 overflow-hidden scroll-smooth"
-                >
-                  {hotelCategory.map((category, index) => {
-                    return (
-                      <div
-                        key={index}
-                        class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer"
-                      >
-                        <img
-                          src="https://upload.wikimedia.org/wikipedia/commons/7/79/Ponta_Negra_Beach_Hotel.jpg"
-                          class="aspect-video h-52 w-full object-cover"
-                          alt=""
-                        />
-                        <div class="p-4">
-                          <h3 class="text-xl font-medium text-gray-900">
-                            {category.name}
-                            {console.log("TESTE")}
-                          </h3>
-                          <p class="mt-1 text-gray-500">1 000 alojamentos</p>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* <p className="mb-5 mt-28 ml-6 w-full text-4xl font-bold text-white">
-              Tipos de Alojamento
-            </p>
-            <div className=" flex flex-row justify-center rounded-lg py-6 ">
-              {hotelCategory.map((category) => {
-                return (
-                  <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
-                    <img
-                      src="https://upload.wikimedia.org/wikipedia/commons/7/79/Ponta_Negra_Beach_Hotel.jpg"
-                      class="aspect-video h-52 w-full object-cover"
-                      alt=""
-                    />
-                    <div class="p-4">
-                      <h3 class="text-xl font-medium text-gray-900">
-                        {category.name}
-                        {console.log("TESTE")}
-                      </h3>
-
-                      <p class="mt-1 text-gray-500">1 000 alojamentos</p>
-                    </div>
-                  </div>
-                );
-              })}
-              <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
-                <img
-                  src="https://img.freepik.com/premium-photo/image-planet-outer-space-mixed-media-elements-image-furnished-by-nasa_641298-3434.jpg?w=2000"
-                  class="aspect-video h-52 w-full object-cover"
-                  alt=""
-                />
-                <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">
-                    Demo Information
-                  </h3>
-
-                  <p class="mt-1 text-gray-500">Demo Information</p>
-                </div>
-              </div>
-              <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
-                <img
-                  src="https://www.momondo.pt/rimg/himg/47/ec/7e/ice-115522-63352612_3XL-307131.jpg?width=1366&height=768&crop=true"
-                  class="aspect-video h-52 w-full object-cover hover:cursor-pointer"
-                  alt=""
-                />
-                <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">
-                    Demo Information
-                  </h3>
-
-                  <p class="mt-1 text-gray-500">Demo Information</p>
-                </div>
-              </div>
-              <div class="mx-2 w-full overflow-hidden rounded-lg bg-white shadow hover:cursor-pointer">
-                <img
-                  src="https://pesweb.azureedge.net/spimg/hotelbannerimages/pestana-cr7-hotels/cr7-lisboa-building.jpg?scale=downscaleonly&encoder=freeimage&progressive=true&quality=50&w=1440&h=780&mode=crop&anchor=bottomcenter"
-                  class="aspect-video h-52 w-full object-cover hover:cursor-pointer"
-                  alt=""
-                />
-                <div class="p-4">
-                  <h3 class="text-xl font-medium text-gray-900">
-                    Demo Information
-                  </h3>
-                  <p class="mt-1 text-gray-500">Demo Information</p>
-                </div>
-              </div>
-            </div> */}
+            <Hotel_Category
+              hotel_category={[hotelCategory, setHotelCategory]}
+            />
             <p className="mb-5 mt-28 w-full text-right text-4xl font-bold text-white">
               Vem à descoberta
             </p>
