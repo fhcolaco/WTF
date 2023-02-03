@@ -5,6 +5,7 @@ import {
   UsersIcon,
   MapPinIcon,
   CalendarIcon,
+  CurrencyEuroIcon,
 } from "@heroicons/react/24/outline";
 import React from "react";
 import { NavLink } from "react-router-dom";
@@ -80,7 +81,7 @@ export default function Search() {
       ) : (
         <div className="flex">
           <div className=" mr-6 h-full w-4/12 rounded-lg border border-gray-300 bg-white p-4">
-            <p className="text-2xl font-bold">Filtrar</p>
+            <p className="text-2xl font-bold">Filtros</p>
             <form className="mt-6">
               <h6>Destino</h6>
               <Combobox
@@ -194,7 +195,67 @@ export default function Search() {
                   </div>
                 </div>
               )}
-
+              <hr class="col-span-6 my-8 h-px border-0 bg-gray-300" />
+              <div>
+                <h6>Preço</h6>
+                <div></div>
+                <Combobox
+                  as="div"
+                  onChange={setSelectedLocation}
+                  className="relative"
+                  onClick={() => setOpenDate(false)}
+                >
+                  <div className="absolute inset-y-0 left-0 mb-1 flex items-center pl-3">
+                    <CurrencyEuroIcon className="h-6 w-6 text-gray-500" />
+                  </div>
+                  <Combobox.Input
+                    id="minPrice"
+                    name="minPrice"
+                    onChange={(event) => setQuery(event.target.value)}
+                    className="block rounded border-none pl-10 outline outline-1 outline-black focus:ring-orange-500 "
+                    placeholder={"MIN"}
+                  ></Combobox.Input>
+                  <Combobox.Options className="absolute mt-1 w-56 rounded bg-white">
+                    {filteredLocation.map((location, index) => (
+                      <Combobox.Option
+                        key={index}
+                        value={location}
+                        className="pl-4 hover:rounded hover:bg-blue-100"
+                      >
+                        {location}
+                      </Combobox.Option>
+                    ))}
+                  </Combobox.Options>
+                </Combobox>
+                <Combobox
+                  as="div"
+                  onChange={setSelectedLocation}
+                  className="relative"
+                  onClick={() => setOpenDate(false)}
+                >
+                  <div className="absolute inset-y-0 left-0 mb-1 flex items-center pl-3">
+                    <CurrencyEuroIcon className="h-6 w-6 text-gray-500" />
+                  </div>
+                  <Combobox.Input
+                    id="maxPrice"
+                    name="maxPrice"
+                    onChange={(event) => setQuery(event.target.value)}
+                    className="block rounded border-none pl-10 outline outline-1 outline-black focus:ring-orange-500 "
+                    placeholder={"MAX"}
+                  ></Combobox.Input>
+                  <Combobox.Options className="absolute mt-1 w-56 rounded bg-white">
+                    {filteredLocation.map((location, index) => (
+                      <Combobox.Option
+                        key={index}
+                        value={location}
+                        className="pl-4 hover:rounded hover:bg-blue-100"
+                      >
+                        {location}
+                      </Combobox.Option>
+                    ))}
+                  </Combobox.Options>
+                </Combobox>
+              </div>
               <div>
                 <button
                   type="button"
