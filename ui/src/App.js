@@ -76,7 +76,7 @@ function App() {
           <Route path="" element={<Content />} />
           <Route path="/search" element={<Search />} />
           <Route path="/about" element={<About />} />
-          <Route path="/hoteldetail" element={<Hotel_Detail />} />
+          <Route path="/hoteldetail/:id" element={<Hotel_Detail />} />
           <Route path="*" element={<NotFound />} />
         </Route>
         <Route path="/login" element={<Login />}></Route>

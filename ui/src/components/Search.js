@@ -197,7 +197,7 @@ export default function Search() {
               )}
               <hr class="col-span-6 mt-8 mb-4 h-px border-0 bg-gray-300" />
               <div>
-                <h6>Preço</h6>
+                <h6>Preço (por noite)</h6>
                 <div className="flex">
                   <select className="mr-1 w-full rounded">
                     <option value="" disabled selected hidden>
@@ -240,9 +240,12 @@ export default function Search() {
                     <div>
                       <h5 class="mb-3 text-2xl font-bold text-gray-900">
                         {hotel[index].name}
-                        Default Name
                       </h5>
-                      <p>Hotel Category - Location</p>
+                      {hotelCategory.map((category) => {
+                        // console.log(category.name, category);
+                        if (hotel[index]._hotel_type.includes(category._id))
+                          return <p>{category.name} - Location</p>;
+                      })}
                       <div className="flex">
                         <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
                         <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
@@ -250,14 +253,11 @@ export default function Search() {
                         <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
                       </div>
                     </div>
-                    <div className="py-3">
-                      <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                        sed do eiusmod tempor incididunt ut labore et dolore
-                        magna aliqua. Ut enim ad minim veniam, quis nostrud
-                        exercitation ullamco laboris nisi ut aliquip ex ea
-                        commodo consequat.
-                      </p>
+                    <div className="flex py-3">
+                      <div className="w-96 overflow-hidden text-clip whitespace-nowrap">
+                        {hotel[index].description}
+                      </div>
+                      ...
                     </div>
                     <div className="inset-0 flex items-end">
                       <div class="flex w-full items-center">
@@ -268,7 +268,7 @@ export default function Search() {
                       </div>
                       <div className="grid w-full justify-items-end">
                         <p>demo price €</p>
-                        <NavLink to="/hoteldetail">
+                        <NavLink to={`/hoteldetail/${hotel[index]._id}`}>
                           <button
                             type="button"
                             class="rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl"

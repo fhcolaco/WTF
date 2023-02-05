@@ -1,7 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function Login() {
+  const navigate = useNavigate();
+
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
@@ -126,22 +130,9 @@ export default function Login() {
             </form>
           </div>
           <div className="absolute inset-y-0 right-0 m-10 lg:bg-white">
-            <NavLink to="/">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="h-6 w-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </NavLink>
+            <button onClick={() => navigate(-1)}>
+              <XMarkIcon className="h-6 w-6"></XMarkIcon>
+            </button>
           </div>
         </main>
       </div>
