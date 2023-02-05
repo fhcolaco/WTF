@@ -9,7 +9,7 @@ import { Calendar, DateRange } from "react-date-range";
 import { format } from "date-fns";
 import axios from "axios";
 import { data } from "autoprefixer";
-import { NavLink } from "react-router-dom";
+import { Routes, Route, useNavigate, NavLink } from "react-router-dom";
 import {
   ChevronLeftIcon,
   CalendarIcon,
@@ -23,6 +23,7 @@ import { getHotelCategory } from "../shared/hotel_categoryApi";
 import Loader from "../Loader";
 import Hotel_Category from "./Hotel_Category";
 import Destaques from "./Destaques";
+import Search from "./Search";
 
 export default function Content() {
   const [selectedLocation, setSelectedLocation] = useState([]);

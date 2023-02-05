@@ -9,13 +9,13 @@ export default function Hotel_Detail() {
   return (
     <>
       <div className="w-full rounded-lg bg-white">
-        <a class="mb-4 flex h-full w-full rounded-lg bg-white">
+        <div class="mb-4 flex w-full flex-row rounded-lg bg-white">
           <img
-            class="h-full rounded-lg object-cover p-4"
+            class="w-6/12 rounded-lg object-cover p-4"
             src="https://rhotelgeelong.com.au/wp-content/uploads/2021/03/R-Hotel-Geelong-Hotel-Room-11.jpg"
             alt=""
           />
-          <div className="flex h-full w-full flex-col p-4">
+          <div className="flex flex-col p-4">
             <div>
               <h5 class="mb-3 text-2xl font-bold text-gray-900">
                 CASA DA AVÓ ZIRINHA
@@ -37,7 +37,7 @@ export default function Hotel_Detail() {
               </div>
             </div>
           </div>
-        </a>
+        </div>
 
         <div class="relative p-4 shadow-md sm:rounded-lg">
           <table class="w-full text-left text-sm text-gray-500">
