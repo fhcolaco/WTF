@@ -43,13 +43,12 @@ export default function About() {
             </span>
           </summary>
 
-          <p class="mt-4 leading-relaxed text-gray-700 text-justify">
-          Nós, WTF, surgimos como resultado de um projeto universitário que tinha como objetivo criar um site de reservas de quartos simples e fácil de usar. 
+          <p class="mx-4 leading-relaxed text-gray-700 text-justify">
+          O WTF, surgiu como resultado de um projeto universitário que tinha como objetivo criar um site de reservas de quartos simples e fácil de usar. 
           A equipa envolvida no projeto, composta por estudantes apaixonados por viagens e novas experiências, decidiu tornar-nos uma plataforma intuitiva e
           acessível para as pessoas encontrarem quartos inusitados em todo o mundo.
 
-          Assim nascemos nós, o WTF, um site de reservas de quartos fácil de usar e intuitivo, que permite às pessoas encontrar e reservar facilmente quartos
-          inusitados em todo o mundo. Desde então, temos vindo a crescer em popularidade e somos agora um dos principais sites de reservas de quartos do mundo,
+          Desde então, temos vindo a crescer em popularidade e somos agora um dos principais sites de reservas de quartos do mundo,
           oferecendo a conveniência de uma plataforma de reservas simples e eficiente.
           </p>
         </details>
@@ -80,11 +79,9 @@ export default function About() {
             </span>
           </summary>
 
-          <p class="mt-4 leading-relaxed text-gray-700 text-justify">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis
-            molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt
-            voluptate dicta quo officiis explicabo consequuntur distinctio corporis
-            earum similique!
+          <p class="mx-4 leading-relaxed text-gray-700 text-justify">
+            O nosso objetivo é oferecer ao nosso público um site de reservas de quartos fácil de usar e intuitivo, 
+            que permite às pessoas encontrar e reservar facilmente quartos inusitados em todo o mundo aos melhores preços.
           </p>
         </details>
 
@@ -114,12 +111,35 @@ export default function About() {
             </span>
           </summary>
 
-          <p class="mt-4 leading-relaxed text-gray-700 text-justify">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis
-            molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt
-            voluptate dicta quo officiis explicabo consequuntur distinctio corporis
-            earum similique!
-          </p>
+          <p class="mx-4 leading-relaxed text-gray-700 text-justify">
+          <div class="flex flex-col text-lg font-medium">
+          <div class="flex items-center mb-2">
+            <span class="inline-block w-6 h-6 mr-2">
+              <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="phone-icon">
+                <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+              </svg>
+            </span>
+            <span class="mr-2">+351 232 456 789</span>
+            <p class="mx-1 leading-relaxed text-gray-700 text-justify">|  (Atendimento 24h)</p>
+          </div>
+          <div class="flex items-center mb-2">
+            <span class="inline-block w-6 h-6 mr-2">
+              <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" class="envelope-icon">
+                <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+              </svg>
+            </span>
+            <span class="mr-2">wtf@gmail.com</span>
+          </div>
+          <div class="flex items-center">
+            <span class="inline-block w-6 h-6 mr-2">
+            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" className="map-icon">
+              <path d="M3 10l6-4.8a1 1 0 011.44 0L13 10m-2-4a2 2 0 10 4 0 2 2 0 00-4 0zm7 4a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            </svg>
+            </span>
+            <span>Av. Cor. José Maria Vale de Andrade <br></br> Campus Politécnico Santa Maria  <br></br> 3504-510 Viseu</span>
+          </div>
+        </div>
+        </p>
         </details>
     </div>
 </div>
