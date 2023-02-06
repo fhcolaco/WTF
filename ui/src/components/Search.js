@@ -16,8 +16,10 @@ import Loader from "../Loader";
 import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 
-export default function Search() {
-  const [selectedLocation, setSelectedLocation] = useState([]);
+export default function Search(props) {
+  const [selectedLocation, setSelectedLocation] = props.selectedLocation;
+  const [quantityOptions, setQuantityOptions] = props.quantityOptions;
+  const [date, setDate] = props.date;
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [hotelSearch, setHotelSearch] = useState([0, 1]);
@@ -25,18 +27,7 @@ export default function Search() {
   const [hotelCategory, setHotelCategory] = useState([]);
   const [loading, setloading] = useState(true);
   const [openQuantityOptions, setOpenQuantityOptions] = useState(false);
-  const [quantityOptions, setQuantityOptions] = useState({
-    pessoas: 2,
-    quartos: 1,
-  });
   const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
   const filteredLocation =
     query === ""
       ? locationList
@@ -253,12 +244,10 @@ export default function Search() {
                         <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
                       </div>
                     </div>
-                    <div className="flex py-3">
-                      <div className="w-96 overflow-hidden text-clip whitespace-nowrap">
-                        {hotel[index].description}
-                      </div>
-                      ...
-                    </div>
+                    <p className="h-12 overflow-hidden text-clip">
+                      {hotel[index].description}
+                    </p>
+                    (...)
                     <div className="inset-0 flex items-end">
                       <div class="flex w-full items-center">
                         <span class=" rounded-lg bg-gray-800 p-4">
