@@ -69,12 +69,47 @@ function App() {
     navigate("/dashboard/hotel");
   };
 
+  // ------------------------- FILTROS DE PESQUISA  -------------------------
+
+  const [selectedLocation, setSelectedLocation] = useState([]);
+  const [quantityOptions, setQuantityOptions] = useState({
+    pessoas: 2,
+    quartos: 1,
+  });
+  const [date, setDate] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+
+  // -----------------------------------------------------------------------------
+
   return (
     <>
       <Routes>
         <Route path="/" element={<Layout_Front />}>
-          <Route path="" element={<Content />} />
-          <Route path="/search" element={<Search />} />
+          <Route
+            path=""
+            element={
+              <Content
+                selectedLocation={[selectedLocation, setSelectedLocation]}
+                quantityOptions={[quantityOptions, setQuantityOptions]}
+                date={[date, setDate]}
+              />
+            }
+          />
+          <Route
+            path="/search"
+            element={
+              <Search
+                selectedLocation={[selectedLocation, setSelectedLocation]}
+                quantityOptions={[quantityOptions, setQuantityOptions]}
+                date={[date, setDate]}
+              />
+            }
+          />
           <Route path="/about" element={<About />} />
           <Route path="/hoteldetail/:id" element={<Hotel_Detail />} />
           <Route path="*" element={<NotFound />} />

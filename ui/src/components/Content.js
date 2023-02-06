@@ -25,26 +25,17 @@ import Hotel_Category from "./Hotel_Category";
 import Destaques from "./Destaques";
 import Search from "./Search";
 
-export default function Content() {
-  const [selectedLocation, setSelectedLocation] = useState([]);
+export default function Content(props) {
+  const [selectedLocation, setSelectedLocation] = props.selectedLocation;
+  const [quantityOptions, setQuantityOptions] = props.quantityOptions;
+  const [date, setDate] = props.date;
   const [loading, setloading] = useState(true);
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [hotel, setHotel] = useState([]);
   const [hotelCategory, setHotelCategory] = useState([]);
   const [openDate, setOpenDate] = useState(false);
-  const [date, setDate] = useState([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
-  ]);
   const [openQuantityOptions, setOpenQuantityOptions] = useState(false);
-  const [quantityOptions, setQuantityOptions] = useState({
-    pessoas: 2,
-    quartos: 1,
-  });
   const handleQuantityOption = (item, operacao) => {
     setQuantityOptions((prev) => {
       return {
