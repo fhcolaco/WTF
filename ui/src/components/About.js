@@ -4,29 +4,87 @@ import { warningTravelFreak } from "../backend/styles/images";
 export default function About() {
   return (
     <div>
-      <img
-        src={warningTravelFreak}
-        alt="Warning: Travel Freak on the way"
-        className="mx-auto h-96"
-      />
-     <br></br>
-     <div className="bg-orange-500 p-8">
-            <h1 className="text-center text-4xl font-medium text-white ">Sobre Nós</h1>
-            <div className="bg-white p-8 rounded-lg">
-              <h1 className="text-lg font-medium">Como surgimos?</h1>
-                <p className="text-lg">Aqui vai a história da empresa</p>
-              <h1 className="text-lg font-medium">Qual o nosso objetivo?</h1>
-                <p className="text-lg">Aqui vai a missão da empresa</p>
-              <h1 className="text-lg font-medium">Como surgimos?</h1>
-                <p className="text-lg">Aqui vai a visão da empresa</p>
-                <h2 className="text-lg font-medium">Equipe</h2>
-                <ul>
-                    <li className="text-lg">Membro 1</li>
-                    <li className="text-lg">Membro 2</li>
-                    <li className="text-lg">Membro 3</li>
-                </ul>
-            </div>
-        </div>
+        <img
+          src={warningTravelFreak}
+          alt="Warning: Travel Freak on the way"
+          className="ml-auto h-48 text-right"
+        />
+        <br></br>
+
+        <h1 className="text-center text-7xl font-medium text-white">Sobre Nós</h1>
+
+        <br></br>
+
+        <div class="space-y-4 ">
+        <details
+          class="group border-l-4 border-orange-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden"
+          open
+        >
+          <summary class="flex items-center justify-between cursor-pointer">
+            <h2 class="text-lg font-medium text-gray-900">
+            Como surgimos?
+            </h2>
+
+            <span
+              class="ml-1.5 flex-shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="flex-shrink-0 w-5 h-5 transition duration-300 group-open:-rotate-45"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </span>
+          </summary>
+
+          <p class="mt-4 leading-relaxed text-gray-700">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis
+            molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt
+            voluptate dicta quo officiis explicabo consequuntur distinctio corporis
+            earum similique!
+          </p>
+        </details>
+
+        <details
+          class="group border-l-4 border-orange-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden"
+        >
+          <summary class="flex items-center justify-between cursor-pointer">
+            <h2 class="text-lg font-medium text-gray-900">
+            Qual o nosso objetivo?
+            </h2>
+
+            <span
+              class="ml-1.5 flex-shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="flex-shrink-0 w-5 h-5 transition duration-300 group-open:-rotate-45"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </span>
+          </summary>
+
+          <p class="mt-4 leading-relaxed text-gray-700">
+            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ab hic veritatis
+            molestias culpa in, recusandae laboriosam neque aliquid libero nesciunt
+            voluptate dicta quo officiis explicabo consequuntur distinctio corporis
+            earum similique!
+          </p>
+        </details>
     </div>
+</div>
   );
 }
