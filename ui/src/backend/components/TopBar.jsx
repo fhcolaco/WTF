@@ -25,9 +25,10 @@ export const TopBar = (props) => {
     if (!sessionStorage.getItem("token")) {
       console.log("Não tem token");
       navigate("/");
+    } else {
+      const session = sessionStorage.getItem("token").split(".")[1];
+      setSession(JSON.parse(atob(session)));
     }
-    const session = sessionStorage.getItem("token").split(".")[1];
-    setSession(JSON.parse(atob(session)));
   }, []);
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export const TopBar = (props) => {
           <div>
             <Menu.Button className="item-center inline-flex w-full items-center justify-center">
               <img
-                src={`/images/${userImage}`}
+                src={`https://wtf-backend.onrender.com/images/${userImage}`}
                 className="h-8 rounded-full border-2 border-white shadow-sm md:mr-4"
                 alt="Avatar"
               />

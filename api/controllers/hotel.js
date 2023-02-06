@@ -23,7 +23,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", isAuth, upload.array("images"), (req, res) => {
+router.post("/", isAuth, upload.array("files"), (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
@@ -32,7 +32,7 @@ router.post("/", isAuth, upload.array("images"), (req, res) => {
     description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
-    images: req.files.map((file) => file.filename),
+    images: req.files.map((file) => [...req.body.images, file.filename]),
   })
     .then((hotel) => {
       res.status(200).send(hotel);
@@ -43,21 +43,26 @@ router.post("/", isAuth, upload.array("images"), (req, res) => {
 });
 
 //PUT method
-router.put("/:id", isAuth, upload.array("images"), (req, res) => {
+router.put("/:id", isAuth, upload.array("files"), (req, res) => {
   let hotelSave = {
     name: req.body.name,
+    description: req.body.description,
     location: req.body.location,
     address: req.body.address,
     postal_code: req.body.postal_code,
-    description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
   };
   if (req.files.length > 0)
-    hotelSave["images"] = req.files.map((file) => file.filename);
+    hotelSave["images"] = req.files.map((file) => [
+      ...req.body.images,
+      file.filename,
+    ]);
   Hotel.findOneAndUpdate({ _id: req.params.id }, hotelSave)
     .then((hotel) => {
-      res.status(200).send(hotel);
+      res
+        .status(200)
+        .json({ Success: true, message: "Hotel atualizado com sucesso" });
     })
     .catch((error) => {
       res.status(400).send({ message: error.message });
