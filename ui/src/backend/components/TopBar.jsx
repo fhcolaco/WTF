@@ -6,11 +6,41 @@ import {
   ArrowRightOnRectangleIcon,
 } from "@heroicons/react/24/outline";
 import { Menu, Transition } from "@headlessui/react";
-import { Link } from "react-router-dom";
-import { adminAvatar } from "../styles/images";
+import { Link, useNavigate } from "react-router-dom";
+import { getUserById } from "../../shared/userApi";
+import { useEffect, useState } from "react";
 
 export const TopBar = (props) => {
   const [sideBar, setSideBar] = props.sideBarState;
+  const [userImage, setUserImage] = useState("");
+  const [session, setSession] = useState({});
+  const navigate = useNavigate();
+  const Logout = (e) => {
+    e.preventDefault();
+    sessionStorage.clear();
+    navigate("/");
+  };
+
+  useEffect(() => {
+    if (!sessionStorage.getItem("token")) {
+      console.log("Não tem token");
+      navigate("/");
+    } else {
+      const session = sessionStorage.getItem("token").split(".")[1];
+      setSession(JSON.parse(atob(session)));
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!session.isAdmin && session.isAdmin !== undefined) {
+      console.log("Não é admin");
+      navigate("/");
+    }
+    getUserById(session.id).then((res) => {
+      setUserImage(res.image);
+    });
+  }, [session]);
+
   return (
     <div
       className={`item-center absolute z-10 flex h-16 w-full justify-between bg-gray-200 transition-all duration-[400ms] ${
@@ -35,12 +65,12 @@ export const TopBar = (props) => {
           <div>
             <Menu.Button className="item-center inline-flex w-full items-center justify-center">
               <img
-                src={adminAvatar}
+                src={`https://wtf-backend.onrender.com/images/${userImage}`}
                 className="h-8 rounded-full border-2 border-white shadow-sm md:mr-4"
                 alt="Avatar"
               />
               <span className="hidden text-gray-700 md:inline-block">
-                #Xavier Otávio
+                {session.name}
               </span>
               <ChevronDownIcon className="ml-2 h-4 w-4 text-gray-700" />
             </Menu.Button>
@@ -57,7 +87,7 @@ export const TopBar = (props) => {
               <div className="p-1 ">
                 <Menu.Item>
                   <Link
-                    to="#"
+                    to={`/dashboard/utilizador/${session.id}`}
                     className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100"
                   >
                     <PencilIcon className="mr-2 h-4 w-4" />
@@ -66,7 +96,7 @@ export const TopBar = (props) => {
                 </Menu.Item>
                 <Menu.Item>
                   <Link
-                    to="#"
+                    onClick={(e) => Logout(e)}
                     className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100 "
                   >
                     <ArrowRightOnRectangleIcon className="mr-2 h-4 w-4" />

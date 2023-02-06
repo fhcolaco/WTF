@@ -6,6 +6,10 @@ const hotelSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      required: false,
+    },
     location: {
       type: String,
       required: true,
@@ -17,10 +21,6 @@ const hotelSchema = new mongoose.Schema(
     postal_code: {
       type: String,
       required: true,
-    },
-    description: {
-      type: String,
-      required: false,
     },
     _hotel_type: {
       type: mongoose.Schema.Types.ObjectId,

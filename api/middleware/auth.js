@@ -12,6 +12,15 @@ const isAuth = async (req, res, next) => {
     console.log(token);
     const verify = await jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(verify.id);
+    if (!req.user) {
+      return next(
+        new Error(
+          "Por favor fazer o login como administrador para aceder a esta página"
+        )
+      );
+    } else if (req.user.is_admin === false) {
+      return next(new Error("Não autorizado"));
+    }
     next();
   } catch (error) {
     return next(error);
