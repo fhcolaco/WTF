@@ -1,4 +1,5 @@
 const express = require("express");
+const isAuth = require("../middleware/auth");
 const router = express.Router();
 const HotelCategory = require("../models/hotel_category");
 
@@ -21,7 +22,7 @@ router.get("/:id", (req, res) => {
 });
 
 //POST method
-router.post("/", (req, res) => {
+router.post("/", isAuth, (req, res) => {
   HotelCategory.create({
     name: req.body.name,
     description: req.body.description,
@@ -35,7 +36,7 @@ router.post("/", (req, res) => {
 });
 
 //PUT method
-router.put("/:id", (req, res) => {
+router.put("/:id", isAuth, (req, res) => {
   HotelCategory.findOneAndUpdate(req.params.id, {
     name: req.body.name,
     description: req.body.description,
@@ -49,7 +50,7 @@ router.put("/:id", (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuth, (req, res) => {
   HotelCategory.findOneAndDelete(req.params.id).then((result) => {
     if (result === null) res.status(400).send("A categoria não foi encontrada");
     else res.status(200).send(result);

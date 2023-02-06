@@ -1,4 +1,5 @@
 const express = require("express");
+const isAuth = require("../middleware/auth");
 const router = express.Router();
 const Services = require("../models/services");
 
@@ -20,7 +21,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", async (req, res) => {
+router.post("/", isAuth, async (req, res) => {
   Services.create({
     _service_type: req.body._service_type,
     _service_room: req.body._service_room,
@@ -33,7 +34,7 @@ router.post("/", async (req, res) => {
 });
 
 //PUT method
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAuth, async (req, res) => {
   Services.findOneAndUpdate(
     { _id: req.params.id },
     {
@@ -53,7 +54,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuth, async (req, res) => {
   Services.findOneAndDelete({ _id: req.params.id }).then((service) => {
     res.status(200).send(service);
   });

@@ -5,6 +5,7 @@ const getRoom = async () =>
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       Accept: "application/json",
     },
   }).then((res) => {
@@ -18,6 +19,7 @@ const getRoomById = async (id) =>
   fetch(`${url}/${id}`, {
     method: "GET",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -32,6 +34,7 @@ const createRoom = async (data) =>
   fetch(url, {
     method: "POST",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -47,6 +50,7 @@ const updateRoom = async (id, data) =>
   fetch(`${url}/${id}`, {
     method: "PUT",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -64,6 +68,7 @@ const deleteRoom = async (id) =>
   fetch(`${url}/${id}`, {
     method: "DELETE",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },

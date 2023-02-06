@@ -20,6 +20,7 @@ export const getHotelById = (id) =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((res) => {
     if (res.status !== 200) {
@@ -31,6 +32,9 @@ export const getHotelById = (id) =>
 export const createHotel = async (data) =>
   await fetch(url, {
     method: "POST",
+    headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
     body: data,
   }).then((res) => {
     if (res.status !== 200) {
@@ -42,6 +46,9 @@ export const createHotel = async (data) =>
 export const updateHotel = async (id, data) => {
   await fetch(`${url}/${id}`, {
     method: "PUT",
+    headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
     body: data,
   }).then((res) => {
     if (res.status !== 200) {
@@ -59,6 +66,8 @@ export const deleteHotel = (id) =>
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+
       Accept: "application/json",
     },
   }).then((res) => {

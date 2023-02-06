@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Room = require("../models/room");
 const upload = require("../middleware/upload");
+const isAuth = require("../middleware/auth");
 
 //GET ALL method
 router.get("/", (req, res) => {
@@ -20,7 +21,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", upload.array("images"), (req, res) => {
+router.post("/", isAuth, upload.array("images"), (req, res) => {
   let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
@@ -43,7 +44,7 @@ router.post("/", upload.array("images"), (req, res) => {
 });
 
 //PUT method
-router.put("/:id", upload.array("images"), (req, res) => {
+router.put("/:id", isAuth, upload.array("images"), (req, res) => {
   let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
@@ -66,7 +67,7 @@ router.put("/:id", upload.array("images"), (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuth, async (req, res) => {
   Room.findOneAndDelete({ _id: req.params.id }).then((result) => {
     if (result === null) res.status(400).send("O quarto não foi encontrado");
     else res.status(200).send(result.name + " foi removido da base de dados");

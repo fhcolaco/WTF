@@ -4,9 +4,8 @@ import { getServices } from "../../shared/servicesApi";
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../Loader";
-import Geocode from "react-geocode";
+import locationList from "../../shared/locationList";
 import { CheckIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
 
 //falta criar o handler para a loacalização e acabar o carousel
 
@@ -15,8 +14,8 @@ export default function HotelDetail(props) {
   const [services, setServices] = useState([]);
   const [hotelType, setHotelType] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [address, setAddress] = useState();
   const [images, setImages] = useState([]);
+  const [state, setState] = useState("");
   const [files, setFiles] = useState([]);
   const params = useParams();
   const navigate = useNavigate();
@@ -34,6 +33,7 @@ export default function HotelDetail(props) {
       });
     } else {
       getHotelById(params.id).then((res) => {
+        console.log(res);
         setHotel(res);
       });
     }
@@ -45,34 +45,28 @@ export default function HotelDetail(props) {
     getServices().then((res) => {
       setServices(res);
     });
-  }, [hotel.location, params.id]);
+  }, []);
 
   useEffect(() => {
-    if (
-      hotelType.length !== 0 &&
-      services.length !== 0 &&
-      hotel.length !== 0 &&
-      address.length !== 0 &&
-      (address.city !== "" || hotel.location === "")
-    ) {
+    if (hotelType.length !== 0 && services.length !== 0 && hotel.length !== 0) {
+      if (hotel.location !== "") {
+        setState(
+          locationList.map((state) => {
+            if (state.concelho.includes(hotel.location))
+              console.log(state.distrito);
+            return state.distrito;
+          })
+        );
+      }
       setLoading(false);
     }
-  }, [hotelType, services, hotel, address]);
+  }, [hotelType, services, hotel]);
 
   useEffect(() => {}, [hotel._services]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    if (
-      name === "city" ||
-      name === "country" ||
-      name === "street" ||
-      name === "zip"
-    ) {
-      setAddress({ [name]: value });
-    } else {
-      setHotel({ ...hotel, [name]: value });
-    }
+    setHotel({ ...hotel, [name]: value });
   };
 
   const isChecked = (e) => {
@@ -196,7 +190,7 @@ export default function HotelDetail(props) {
               </div>
               <div className="relative z-0 my-8 w-full">
                 <input
-                  value={address.street}
+                  value={hotel.address}
                   name="street"
                   id="street"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
@@ -207,46 +201,20 @@ export default function HotelDetail(props) {
                   htmlFor="address"
                   className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
                 >
-                  Localização
+                  Endereço
                 </label>
               </div>
             </div>
             <div className="grid md:grid-cols-3 md:gap-6">
               <div className="group relative z-0 my-8 w-full">
-                <input
-                  value={address.city}
-                  name={"city"}
-                  id={"city"}
-                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
-                  placeholder=" "
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="city"
-                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
-                >
-                  Cidade
-                </label>
+                <select required></select>
+              </div>
+              <div className="relative z-0 my-8 w-full">
+                <select required></select>
               </div>
               <div className="group relative z-0 my-8 w-full">
                 <input
-                  value={address.country}
-                  name="country"
-                  id="country"
-                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
-                  placeholder=" "
-                  onChange={handleChange}
-                />
-                <label
-                  htmlFor="country"
-                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
-                >
-                  País
-                </label>
-              </div>
-              <div className="group relative z-0 my-8 w-full">
-                <input
-                  value={address.zip}
+                  value={hotel.postal_code}
                   name="zip"
                   id="zip"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "

@@ -5,6 +5,7 @@ export const getBookings = () =>
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       Accept: "application/json",
     },
   }).then((res) => {
@@ -19,6 +20,7 @@ export const getBookingById = (id) =>
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((response) => {
     if (response.status !== 200) {
@@ -32,6 +34,7 @@ export const createBooking = (data) =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: JSON.stringify(data),
   }).then((response) => {
@@ -46,6 +49,7 @@ export const updateBooking = (id, data) =>
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: JSON.stringify(data),
   }).then((response) => {
@@ -60,6 +64,7 @@ export const deleteBooking = (id) =>
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((response) => {
     if (response.status !== 200) {

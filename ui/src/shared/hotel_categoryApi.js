@@ -5,6 +5,7 @@ export const getHotelCategory = async () =>
     method: "GET",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       Accept: "application/json",
     },
   }).then((res) => {
@@ -20,6 +21,7 @@ export const getHotelCategoryById = async (id) =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((res) => {
     if (res.status !== 200) {
@@ -34,6 +36,7 @@ export const createHotelCategory = async (data) =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: JSON.stringify(data),
   }).then((res) => {
@@ -49,6 +52,7 @@ export const updateHotelCategory = async (id, data) =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
     body: JSON.stringify(data),
   }).then((res) => {
@@ -64,6 +68,7 @@ export const deleteHotelCategory = async (id) =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((res) => {
     if (res.status !== 200) {

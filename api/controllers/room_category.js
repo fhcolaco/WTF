@@ -1,4 +1,5 @@
 const express = require("express");
+const isAuth = require("../middleware/auth");
 const router = express.Router();
 const RoomCategory = require("../models/room_category");
 
@@ -21,7 +22,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", async (req, res) => {
+router.post("/", isAuth, async (req, res) => {
   RoomCategory.create({
     name: req.body.name,
     description: req.body.description,
@@ -31,7 +32,7 @@ router.post("/", async (req, res) => {
 });
 
 //PUT method
-router.put("/:id", async (req, res) => {
+router.put("/:id", isAuth, async (req, res) => {
   RoomCategory.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     description: req.body.description,
@@ -41,7 +42,7 @@ router.put("/:id", async (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", isAuth, async (req, res) => {
   RoomCategory.findByIdAndDelete(req.params.id).then((room_category) => {
     res.status(200).send(room_category);
   });

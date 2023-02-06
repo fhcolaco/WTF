@@ -1,10 +1,82 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React, { useEffect } from "react";
+import { login } from "../shared/sessionApi";
 import { useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+import axios from "axios";
 
 export default function Login() {
   const navigate = useNavigate();
+  const [hasError, setHasError] = React.useState(false);
+  const [data, setData] = React.useState({
+    user: "",
+    pass: "",
+    toHome: false,
+  });
+
+  const tstLogin = (e, data) => {
+    e.preventDefault();
+    console.log(data);
+    login(data).then((res) => {
+      console.log(res);
+      if (res.success) {
+        console.log("Login com sucesso");
+        sessionStorage.setItem("token", res.data.token);
+        console.log(sessionStorage.getItem("token"));
+        if (data.toHome) navigate("/");
+        else navigate("/login");
+      } else {
+        console.log("Erro no login");
+        setHasError(true);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (hasError) {
+      setTimeout(() => {
+        alert("Utilizador ou password incorretos");
+        setHasError(false);
+      }, 500);
+    }
+  }, [hasError]);
+
+  const tstLogout = (e) => {
+    e.preventDefault();
+    sessionStorage.clear();
+    console.log("Logout com sucesso");
+    navigate("/login");
+  };
+
+  const tstGetUserInfo = (e) => {
+    e.preventDefault();
+    const check = axios.get("http://localhost:4000/verifyUser", {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    if (check === true) {
+      console.log(
+        JSON.parse(atob(sessionStorage.getItem("token").split(".")[1]))
+      );
+    } else {
+      console.log("Erro");
+    }
+  };
+  const tstUserAdmin = (e) => {
+    e.preventDefault();
+    const check = axios.get("http://localhost:4000/verifyUser", {
+      headers: {
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+      },
+    });
+    if (check === true) {
+      console.log(
+        JSON.parse(atob(sessionStorage.getItem("token").split(".")[1])).isAdmin
+      );
+    } else {
+      console.log("Erro");
+    }
+  };
 
   return (
     <section className="bg-white">
@@ -45,7 +117,10 @@ export default function Login() {
             <div className="col-span-6">
               <h1 className="text-3xl font-medium">Account Login</h1>
             </div>
-            <form action="#" className="mt-8 grid grid-cols-6 gap-6">
+            <form
+              onSubmit={(e) => tstLogin(e, data)}
+              className="mt-8 grid grid-cols-6 gap-6"
+            >
               <div className="col-span-6">
                 <label
                   for="Email"
@@ -55,9 +130,10 @@ export default function Login() {
                 </label>
 
                 <input
-                  type="email"
+                  type="text"
                   id="Email"
                   name="email"
+                  onChange={(e) => setData({ ...data, user: e.target.value })}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                 />
                 {/* <p id="helperUser" classNameName="ml-5 text-sm text-slate-300">
@@ -76,7 +152,25 @@ export default function Login() {
                   type="password"
                   id="Password"
                   name="password"
+                  onChange={(e) => setData({ ...data, pass: e.target.value })}
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                />
+              </div>
+              <div className="col-span-1">
+                <label
+                  for="toHome"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                >
+                  Ir para a Home
+                </label>
+                <input
+                  type="checkbox"
+                  id="toHome"
+                  name="toHome"
+                  onChange={(e) =>
+                    setData({ ...data, toHome: e.target.checked })
+                  }
+                  className="mt-1  w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                 />
               </div>
               <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
@@ -133,6 +227,31 @@ export default function Login() {
             <button onClick={() => navigate(-1)}>
               <XMarkIcon className="h-6 w-6"></XMarkIcon>
             </button>
+          </div>
+          {/*Tiago isto serve para verificar o login se está a funcionar. De momento, já envia para a sessão como podes testar. Agora falta só modificar o aspeto*/}
+          <div className="absolute bottom-0 right-0 m-10 flex flex-row lg:bg-white">
+            <button
+              onClick={(e) => tstLogout(e)}
+              className="m-10 rounded border-2 bg-red-500"
+            >
+              <span>
+                <XMarkIcon className="h-6 w-6" />
+                TESTE LOGOUT
+              </span>
+            </button>
+            <div
+              className={`m-10 flex h-24 w-24 items-center justify-center p-10 ${
+                sessionStorage.getItem("token") !== null
+                  ? "bg-green-400"
+                  : "bg-black"
+              }`}
+            >
+              <p className="text-white">
+                {sessionStorage.getItem("token") !== null
+                  ? "LOGGED IN"
+                  : "NOT LOGGED IN"}
+              </p>
+            </div>
           </div>
         </main>
       </div>

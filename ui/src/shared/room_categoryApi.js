@@ -6,6 +6,7 @@ const getRoomCategory = () =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((res) => {
     if (res.status !== 200) {
@@ -20,6 +21,7 @@ const getRoomCategoryById = async (id) =>
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
     },
   }).then((res) => {
     if (res.status !== 200) {
@@ -33,6 +35,7 @@ const createRoomCategory = async (data) =>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       Accept: "application/json",
     },
     body: JSON.stringify(data),
@@ -47,6 +50,7 @@ const updateRoomCategory = async (id, data) =>
   fetch(`${url}/${id}`, {
     method: "PUT",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -64,6 +68,7 @@ const deleteRoomCategory = async (id) =>
   fetch(`${url}/${id}`, {
     method: "DELETE",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },

@@ -1,39 +1,41 @@
 const mongoose = require("mongoose");
+const bcrypt = require("bcryptjs");
 
 const userSchema = new mongoose.Schema(
   {
     user: {
-      required: false,
+      required: true,
       type: String,
       unique: true,
     },
     pass: {
-      required: false,
+      required: true,
       type: String,
     },
     is_admin: {
-      required: false,
+      required: true,
       type: Boolean,
     },
     name: {
-      required: false,
+      required: true,
       type: String,
     },
     email: {
-      required: false,
+      required: true,
       type: String,
+      unique: true,
     },
     location: {
       type: String,
-      required: true,
+      required: false,
     },
     address: {
       type: String,
-      required: true,
+      required: false,
     },
     postal_code: {
       type: String,
-      required: true,
+      required: false,
     },
     phone: {
       required: false,
@@ -50,11 +52,24 @@ const userSchema = new mongoose.Schema(
     image: {
       required: false,
       type: String,
+      default: "default.svg",
     },
   },
   {
     timestamps: true,
   }
 );
+
+userSchema.methods.matchPassword = async function (enteredPass) {
+  return await bcrypt.compare(enteredPass, this.pass);
+};
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified) {
+    next();
+  }
+  const salt = await bcrypt.genSalt(10);
+  this.pass = await bcrypt.hash(this.pass, salt);
+});
 
 module.exports = mongoose.model("users", userSchema);

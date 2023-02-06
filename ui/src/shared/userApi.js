@@ -4,6 +4,7 @@ export const getUsers = () =>
   fetch(url, {
     method: "GET",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -18,6 +19,7 @@ export const getUserById = (id) =>
   fetch(`${url}/${id}`, {
     method: "GET",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -31,6 +33,9 @@ export const getUserById = (id) =>
 export const createUser = async (data) =>
   await fetch(url, {
     method: "POST",
+    headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
     body: data,
   }).then((res) => {
     if (res.status !== 200) {
@@ -42,6 +47,9 @@ export const createUser = async (data) =>
 export const updateUser = async (id, data) => {
   await fetch(`${url}/${id}`, {
     method: "PUT",
+    headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
+    },
     body: data,
   }).then((res) => {
     if (res.status !== 200) {
@@ -58,6 +66,7 @@ export const deleteUser = (id) =>
   fetch(`${url}/${id}`, {
     method: "DELETE",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },

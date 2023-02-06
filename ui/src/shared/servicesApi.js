@@ -18,6 +18,7 @@ export const getServicesById = async (id) =>
   fetch(`${url}/${id}`, {
     method: "GET",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -32,6 +33,7 @@ export const createServices = async (data) =>
   fetch(url, {
     method: "POST",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -47,6 +49,7 @@ export const updateServices = async (id, data) =>
   fetch(`${url}/${id}`, {
     method: "PUT",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },
@@ -62,6 +65,7 @@ export const deleteServices = async (id) =>
   fetch(`${url}/${id}`, {
     method: "DELETE",
     headers: {
+      Authorization: "Bearer " + sessionStorage.getItem("token"),
       "Content-Type": "application/json",
       Accept: "application/json",
     },

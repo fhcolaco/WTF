@@ -1,4 +1,5 @@
 const express = require("express");
+const isAuth = require("../middleware/auth");
 const router = express.Router();
 const Booking = require("../models/booking");
 
@@ -19,7 +20,7 @@ router.get("/:id", (req, res) => {
 });
 
 //POST method
-router.post("/", (req, res) => {
+router.post("/", isAuth, (req, res) => {
   Booking.create({
     _hotel: req.body._hotel,
     _user: req.body._user,
@@ -40,7 +41,7 @@ router.post("/", (req, res) => {
 });
 
 //PUT method
-router.put("/:id", (req, res) => {
+router.put("/:id", isAuth, (req, res) => {
   Booking.findByIdAndUpdate(req.params.id, {
     _hotel: req.body._hotel,
     _user: req.body._user,
@@ -61,7 +62,7 @@ router.put("/:id", (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuth, (req, res) => {
   Booking.findByIdAndDelete(req.params.id).then((result) => {
     if (result === null) res.status(400).send("A reserva não foi encontrada");
     else res.status(200).send(result);

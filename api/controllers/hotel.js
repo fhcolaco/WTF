@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const Hotel = require("../models/hotel");
 const upload = require("../middleware/upload");
+const isAuth = require("../middleware/auth");
 
 //GET ALL method
 router.get("/", (req, res) => {
@@ -22,10 +23,12 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", upload.array("images"), (req, res) => {
+router.post("/", isAuth, upload.array("images"), (req, res) => {
   Hotel.create({
     name: req.body.name,
     location: req.body.location,
+    address: req.body.address,
+    postal_code: req.body.postal_code,
     description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
@@ -40,7 +43,7 @@ router.post("/", upload.array("images"), (req, res) => {
 });
 
 //PUT method
-router.put("/:id", upload.array("images"), (req, res) => {
+router.put("/:id", isAuth, upload.array("images"), (req, res) => {
   let hotelSave = {
     name: req.body.name,
     location: req.body.location,
@@ -62,7 +65,7 @@ router.put("/:id", upload.array("images"), (req, res) => {
 });
 
 //DELETE method
-router.delete("/:id", (req, res) => {
+router.delete("/:id", isAuth, (req, res) => {
   Hotel.findOneAndDelete({ _id: req.params.id })
     .then((hotel) => {
       res.status(200).send(hotel);
