@@ -15,6 +15,40 @@ export default function About() {
         <br></br>
 
         <div class="space-y-4 ">
+
+        <details
+          class="group border-l-4 border-orange-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden"
+        >
+          <summary class="flex items-center justify-between cursor-pointer">
+            <h2 class="text-lg font-medium text-gray-900">
+            Apresentação
+            </h2>
+            <span
+              class="ml-1.5 flex-shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="flex-shrink-0 w-5 h-5 transition duration-300 group-open:-rotate-45"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </span>
+          </summary>
+
+          <p class="mx-8 leading-relaxed text-gray-700 text-justify">
+          O nome do site de reservas de quartos WTF é uma sigla que pode ser interpretada de várias maneiras diferentes.
+          Algumas pessoas podem interpretá-lo como "Bem, isso é divertido", outras como "Viagem pelo mundo e diversão" e ainda outras como "Atenção, viajante maluco a caminho!".
+          O importante é que o nome do site é uma sigla versátil e pode significar o que o utilizador quiser.
+          Isso torna o site acessível e atrativo para uma ampla gama de viajantes, cada um com a sua própria percepção e imaginação.
+          Então, o próximo passo é escolher o significado que mais se adequa a si e aproveitar todas as vantagens do site WTF para reservar o seu próximo quarto de hotel!
+          </p>
+        </details>
         <details
           class="group border-l-4 border-orange-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden"
         >
@@ -22,7 +56,6 @@ export default function About() {
             <h2 class="text-lg font-medium text-gray-900">
             Como surgimos?
             </h2>
-
             <span
               class="ml-1.5 flex-shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3"
             >
@@ -46,7 +79,7 @@ export default function About() {
           A equipa envolvida no projeto, composta por estudantes apaixonados por viagens e novas experiências, decidiu tornar o WTF uma plataforma intuitiva e
           acessível para as pessoas encontrarem quartos inusitados em todo o mundo.
 
-          Desde então, temos vindo a crescer em popularidade e somos agora um dos principais sites de reservas de quartos do mundo,
+          Desde então, temos vindo a crescer e somos agora um dos principais sites de reservas de quartos do mundo,
           oferecendo a conveniência de uma plataforma de reservas simples e eficiente.
           </p>
         </details>
