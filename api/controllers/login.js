@@ -17,6 +17,7 @@ router.post(
             id: checkUser._id,
             name: checkUser.name,
             isAdmin: checkUser.is_admin,
+            avatar: checkUser.image,
           });
           return res.status(200).json({
             success: true,
@@ -25,6 +26,7 @@ router.post(
               name: checkUser.name,
               id: checkUser._id,
               isAdmin: checkUser.is_admin,
+              avatar: checkUser.image,
               token: token,
             },
           });
