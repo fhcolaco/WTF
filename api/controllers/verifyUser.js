@@ -22,10 +22,13 @@ router.get(
         new Error("Por favor fazer o login para aceder a esta página")
       );
     }
-    console.log(process.env.JWT_SECRET);
     const verify = await jwt.verify(token, process.env.JWT_SECRET);
+    if (!verify) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Não autorizado" });
+    }
     req.user = await User.findById(verify.id);
-    console.log(req.user);
     return res.status(200).json({ success: true, message: "Autorizado" });
   })
 );
