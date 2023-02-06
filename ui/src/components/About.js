@@ -17,7 +17,6 @@ export default function About() {
         <div class="space-y-4 ">
         <details
           class="group border-l-4 border-orange-500 bg-gray-50 p-6 [&_summary::-webkit-details-marker]:hidden"
-          open
         >
           <summary class="flex items-center justify-between cursor-pointer">
             <h2 class="text-lg font-medium text-gray-900">
@@ -44,7 +43,7 @@ export default function About() {
 
           <p class="mx-8 leading-relaxed text-gray-700 text-justify">
           O WTF, surgiu como resultado de um projeto universitário que tinha como objetivo criar um site de reservas de quartos simples e fácil de usar. 
-          A equipa envolvida no projeto, composta por estudantes apaixonados por viagens e novas experiências, decidiu tornar-nos uma plataforma intuitiva e
+          A equipa envolvida no projeto, composta por estudantes apaixonados por viagens e novas experiências, decidiu tornar o WTF uma plataforma intuitiva e
           acessível para as pessoas encontrarem quartos inusitados em todo o mundo.
 
           Desde então, temos vindo a crescer em popularidade e somos agora um dos principais sites de reservas de quartos do mundo,
@@ -91,7 +90,6 @@ export default function About() {
             <h2 class="text-lg font-medium text-gray-900">
             Contatos
             </h2>
-
             <span
               class="ml-1.5 flex-shrink-0 rounded-full bg-white p-1.5 text-gray-900 sm:p-3"
             >
@@ -119,7 +117,7 @@ export default function About() {
               </svg>
             </span>
             <span class="mr-2">+351 232 456 789</span>
-            <p class="mx-1 leading-relaxed text-gray-700 text-justify">| (Atendimento 24h)</p>
+            <p class="mx-1 leading-relaxed text-gray-700 text-justify">| Atendimento 24h</p>
           </div>
           <div class="flex items-center mb-2">
             <span class="inline-block w-6 h-6 mr-2">
