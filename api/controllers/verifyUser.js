@@ -22,14 +22,15 @@ router.get(
         new Error("Por favor fazer o login para aceder a esta página")
       );
     }
-    const verify = await jwt.verify(token, process.env.JWT_SECRET);
-    if (!verify) {
+    try {
+      const verify = await jwt.verify(token, process.env.JWT_SECRET);
+      req.user = await User.findById(verify.id);
+      return res.status(200).json({ success: true, message: "Autorizado" });
+    } catch (err) {
       return res
         .status(401)
         .json({ success: false, message: "Não autorizado" });
     }
-    req.user = await User.findById(verify.id);
-    return res.status(200).json({ success: true, message: "Autorizado" });
   })
 );
 
