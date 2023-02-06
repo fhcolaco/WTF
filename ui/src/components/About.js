@@ -1,5 +1,4 @@
 import React from "react";
-import { warningTravelFreak } from "../backend/styles/images";
 
 export default function About() {
   return (
