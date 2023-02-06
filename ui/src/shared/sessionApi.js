@@ -1,4 +1,4 @@
-const url = "http://localhost:4000/";
+const url = "https://wtf-backend.onrender.com/";
 
 export const login = async (data) =>
   await fetch(`${url}login`, {

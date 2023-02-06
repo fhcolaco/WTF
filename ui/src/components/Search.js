@@ -83,7 +83,7 @@ export default function Search() {
           <div className=" mr-6 h-full w-4/12 rounded-lg border border-gray-300 bg-white p-4">
             <p className="text-2xl font-bold">Filtros</p>
             <form className="mt-6">
-              <h6>Destino</h6>
+              <h6 className="mb-0.5">Destino</h6>
               <Combobox
                 as="div"
                 onChange={setSelectedLocation}
@@ -112,10 +112,10 @@ export default function Search() {
                   ))}
                 </Combobox.Options>
               </Combobox>
-              <h6 className="mt-3">Check-in/Check-out</h6>
+              <h6 className="mt-3 mb-0.5">Check-in/Check-out</h6>
               <button
                 type="button"
-                className={` flex h-10 w-72 flex-row rounded bg-white px-4 py-2 align-middle text-gray-500  hover:cursor-pointer ${
+                className={` flex h-10 w-72 flex-row rounded bg-white py-2 pl-4 align-middle text-gray-500  hover:cursor-pointer ${
                   openDate
                     ? "ring-1 ring-orange-500"
                     : "outline outline-1 outline-black"
@@ -134,12 +134,12 @@ export default function Search() {
                   onChange={(item) => setDate([item.selection])}
                   moveRangeOnFirstSelection={false}
                   ranges={date}
-                  className="absolute top-36 z-40 mr-5"
+                  className="absolute top-56 z-40 mr-5 -mt-1.5 rounded-md border border-gray-300 p-2 shadow-md"
                 />
               )}
-              <h6 className="mt-3">Hóspedes/Quartos</h6>
+              <h6 className="mt-3 mb-0.5">Hóspedes/Quartos</h6>
               <button
-                className={`flex h-10 w-72 rounded bg-white py-2 px-8 align-middle text-gray-500 hover:cursor-pointer ${
+                className={`flex h-10 w-72 rounded bg-white py-2 pl-4 align-middle text-gray-500 hover:cursor-pointer ${
                   openQuantityOptions
                     ? "ring-1 ring-orange-500"
                     : "outline outline-1 outline-black"
@@ -152,7 +152,7 @@ export default function Search() {
                 Quartos
               </button>
               {openQuantityOptions && (
-                <div className="absolute top-32 left-2/4 ml-24 mt-0.5 w-60 rounded bg-white p-2">
+                <div className="absolute top-72 mt-2 w-72 rounded border border-gray-300 bg-white p-2 shadow-md">
                   <div className="m-2 flex justify-between">
                     <p>Pessoas</p>
                     <div className="flex items-center gap-5">

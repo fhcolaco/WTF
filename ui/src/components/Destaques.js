@@ -130,6 +130,7 @@ export default function Destaques(props) {
           {topHoteis.map((index) => {
             return (
               <NavLink
+                to={`/hoteldetail/${hotel[index]._id}`}
                 key={index}
                 className="carousel-item relative z-0 mx-2 block aspect-video w-full snap-start rounded-xl bg-white bg-[url(https://www.kayak.pt/rimg/himg/9f/e7/f6/arbisoftimages-59430-Facade-lower-image.jpg?width=1366&height=768&xhint=832&yhint=377&crop=true)] bg-cover bg-left-top bg-no-repeat bg-origin-padding"
               >

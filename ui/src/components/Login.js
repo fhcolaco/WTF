@@ -47,35 +47,49 @@ export default function Login() {
     navigate("/login");
   };
 
-  const tstGetUserInfo = (e) => {
+  const tstGetUserInfo = async (e) => {
     e.preventDefault();
-    const check = axios.get("http://localhost:4000/verifyUser", {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-    });
-    if (check === true) {
-      console.log(
-        JSON.parse(atob(sessionStorage.getItem("token").split(".")[1]))
-      );
-    } else {
-      console.log("Erro");
-    }
+    console.log("A verificar...");
+    const check = axios
+      .get("https://wtf-backend.onrender.com/verifyUser", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.success === true) {
+          console.log(
+            JSON.parse(atob(sessionStorage.getItem("token").split(".")[1]))
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
   };
   const tstUserAdmin = (e) => {
     e.preventDefault();
-    const check = axios.get("http://localhost:4000/verifyUser", {
-      headers: {
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-    });
-    if (check === true) {
-      console.log(
-        JSON.parse(atob(sessionStorage.getItem("token").split(".")[1])).isAdmin
-      );
-    } else {
-      console.log("Erro");
-    }
+    console.log("A verificar...");
+    const check = axios
+      .get("https://wtf-backend.onrender.com/verifyUser", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.success === true) {
+          if (
+            JSON.parse(atob(sessionStorage.getItem("token").split(".")[1]))
+              .isAdmin
+          )
+            console.log("<.>");
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
   };
 
   return (
@@ -237,6 +251,24 @@ export default function Login() {
               <span>
                 <XMarkIcon className="h-6 w-6" />
                 TESTE LOGOUT
+              </span>
+            </button>
+            <button
+              onClick={(e) => tstUserAdmin(e)}
+              className="m-10 rounded border-2 bg-red-500"
+            >
+              <span>
+                <XMarkIcon className="h-6 w-6" />
+                TESTE Admin
+              </span>
+            </button>
+            <button
+              onClick={(e) => tstGetUserInfo(e)}
+              className="m-10 rounded border-2 bg-red-500"
+            >
+              <span>
+                <XMarkIcon className="h-6 w-6" />
+                TESTE User
               </span>
             </button>
             <div

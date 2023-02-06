@@ -167,7 +167,7 @@ export default function Content() {
                   onChange={(item) => setDate([item.selection])}
                   moveRangeOnFirstSelection={false}
                   ranges={date}
-                  className="absolute top-36 z-40 mr-5"
+                  className="absolute top-36 z-40 mr-5 -mt-3.5 rounded-md border border-gray-600 p-2 outline-red-500"
                 />
               )}
               <button
