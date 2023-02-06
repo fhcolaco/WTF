@@ -43,7 +43,7 @@ export default function About() {
             </span>
           </summary>
 
-          <p class="mx-4 leading-relaxed text-gray-700 text-justify">
+          <p class="mx-8 leading-relaxed text-gray-700 text-justify">
           O WTF, surgiu como resultado de um projeto universitário que tinha como objetivo criar um site de reservas de quartos simples e fácil de usar. 
           A equipa envolvida no projeto, composta por estudantes apaixonados por viagens e novas experiências, decidiu tornar-nos uma plataforma intuitiva e
           acessível para as pessoas encontrarem quartos inusitados em todo o mundo.
@@ -79,7 +79,7 @@ export default function About() {
             </span>
           </summary>
 
-          <p class="mx-4 leading-relaxed text-gray-700 text-justify">
+          <p class="mx-8 leading-relaxed text-gray-700 text-justify">
             O nosso objetivo é oferecer ao nosso público um site de reservas de quartos fácil de usar e intuitivo, 
             que permite às pessoas encontrar e reservar facilmente quartos inusitados em todo o mundo aos melhores preços.
           </p>
@@ -111,7 +111,7 @@ export default function About() {
             </span>
           </summary>
 
-          <p class="mx-4 leading-relaxed text-gray-700 text-justify">
+          <p class="mx-8 leading-relaxed text-gray-700 text-justify">
           <div class="flex flex-col text-lg font-medium">
           <div class="flex items-center mb-2">
             <span class="inline-block w-6 h-6 mr-2">
@@ -120,7 +120,7 @@ export default function About() {
               </svg>
             </span>
             <span class="mr-2">+351 232 456 789</span>
-            <p class="mx-1 leading-relaxed text-gray-700 text-justify">|  (Atendimento 24h)</p>
+            <p class="mx-1 leading-relaxed text-gray-700 text-justify">| (Atendimento 24h)</p>
           </div>
           <div class="flex items-center mb-2">
             <span class="inline-block w-6 h-6 mr-2">
@@ -132,8 +132,9 @@ export default function About() {
           </div>
           <div class="flex items-center">
             <span class="inline-block w-6 h-6 mr-2">
-            <svg fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" stroke="currentColor" className="map-icon">
-              <path d="M3 10l6-4.8a1 1 0 011.44 0L13 10m-2-4a2 2 0 10 4 0 2 2 0 00-4 0zm7 4a2 2 0 11-4 0 2 2 0 014 0z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
             </span>
             <span>Av. Cor. José Maria Vale de Andrade <br></br> Campus Politécnico Santa Maria  <br></br> 3504-510 Viseu</span>
