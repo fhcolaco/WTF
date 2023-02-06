@@ -6,7 +6,7 @@ export default function About() {
     <div>
         <img
           src={warningTravelFreak}
-          alt="Warning: Travel Freak on the way"
+          alt="Warning: Tral Freak on the way"
           className="ml-auto h-48 text-right"
         />
         <br></br>
