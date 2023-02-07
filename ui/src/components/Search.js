@@ -25,7 +25,7 @@ export default function Search(props) {
   const [date, setDate] = props.date;
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
-  // const availableRooms = [];
+  const availableRooms = [];
   // const [hotelSearch, setHotelSearch] = useState([0, 1]);
   const [hotelSearch, setHotelSearch] = useState([]);
   const [roomList, setRoomList] = useState([]);
@@ -83,128 +83,47 @@ export default function Search(props) {
     });
   };
 
-  // {
-  //   // const availableRooms = roomList
-  //   //   .filter((room) => {
-  //   //     return !room.bookingList.some((booking) => {
-  //   //       return booking.startDate <= date && booking.endDate > date;
-  //   //     });
-  //   //   })
-  //   //   .map((room) => room.id);
-
-  //   roomList.map((room) => {
-  //     console.log(room);
-  //     bookingsList.map((booking) => {
-  //       if (booking._room.includes(room._id)) {
-  //         console.log("TEM RESERVA");
-  //         console.log(
-  //           "START:",
-  //           format(new Date(booking.start_date), "dd/MM/yyyy"),
-  //           "END:",
-  //           format(new Date(booking.end_date), "dd/MM/yyyy")
-  //         );
-
-  //         console.log(
-  //           "INPUT Start:",
-  //           format(date[0].startDate, "dd/MM/yyyy"),
-  //           "INPUT End:",
-  //           format(date[0].endDate, "dd/MM/yyyy")
-  //         );
-  //         // console.log(
-  //         //   `JHGK: ${
-  //         //     format(new Date(booking.end_date), "dd/MM/yyyy") <
-  //         //     format(new Date(), "dd/MM/yyyy")
-  //         //   }`
-  //         // );
-
-  //         // console.log(`TODAY: ${format(new Date(), "dd/MM/yyyy")}`);
-
-  //         // if (
-  //         //   format(date[0].endDate, "dd/MM/yyyy") <
-  //         //     format(new Date(booking.start_date), "dd/MM/yyyy") ||
-  //         //   format(date[0].startDate, "dd/MM/yyyy") >
-  //         //     format(new Date(booking.end_date), "dd/MM/yyyy") ||
-  //         //   (format(date[0].endDate, "dd/MM/yyyy") <
-  //         //     format(new Date(booking.start_date), "dd/MM/yyyy") &&
-  //         //     format(date[0].startDate, "dd/MM/yyyy") >
-  //         //       format(new Date(booking.end_date), "dd/MM/yyyy"))
-  //         // )
-  //         if (
-  //           (format(new Date(booking.start_date), "dd/MM/yyyy") <
-  //             format(date[0].startDate, "dd/MM/yyyy") &&
-  //             format(date[0].startDate, "dd/MM/yyyy") <
-  //               format(new Date(booking.end_date), "dd/MM/yyyy")) ||
-  //           (format(new Date(booking.start_date), "dd/MM/yyyy") <
-  //             format(date[0].endtDate, "dd/MM/yyyy") &&
-  //             format(date[0].endDate, "dd/MM/yyyy") <
-  //               format(new Date(booking.end_date), "dd/MM/yyyy")) ||
-  //           (format(new Date(booking.start_date), "dd/MM/yyyy") <
-  //             format(date[0].startDate, "dd/MM/yyyy") &&
-  //             format(date[0].startDate, "dd/MM/yyyy") <
-  //               format(new Date(booking.end_date), "dd/MM/yyyy") &&
-  //             format(new Date(booking.start_date), "dd/MM/yyyy") <
-  //               format(date[0].endtDate, "dd/MM/yyyy") &&
-  //             format(date[0].endDate, "dd/MM/yyyy") <
-  //               format(new Date(booking.end_date), "dd/MM/yyyy"))
-  //         ) {
-  //           console.log("NAO PODE RESERVAR");
-  //         } else {
-  //           console.log("PODE RESERVAR");
-  //         }
-  //       } else {
-  //         console.log("NAO TEM RESERVA");
-  //       }
-  //       // console.log("TESTESTIAHKJLHBSDKLHSDJLVA");
-  //       // console.log(availableRooms);
-  //     });
-  //   });
-  // }
-
   {
     roomList.map((room) => {
-      console.log(room);
+      console.log("Quarto: ", room);
       bookingsList.map((booking) => {
         if (booking._room.includes(room._id)) {
           console.log("TEM RESERVA");
+          console.log(room._id);
           console.log(
-            "START:",
+            "START: ",
             format(new Date(booking.start_date), "dd/MM/yyyy"),
-            "END:",
+            "END: ",
             format(new Date(booking.end_date), "dd/MM/yyyy")
           );
           console.log(
             "INPUT Start:",
-            format(date[0].startDate, "dd/MM/yyyy"),
+            format(new Date(date[0].startDate), "dd/MM/yyyy"),
             "INPUT End:",
-            format(date[0].endDate, "dd/MM/yyyy")
+            format(new Date(date[0].endDate), "dd/MM/yyyy")
           );
           if (
-            (format(new Date(booking.start_date), "dd/MM/yyyy").getTime() <
-              format(date[0].startDate, "dd/MM/yyyy").getTime() &&
-              format(date[0].startDate, "dd/MM/yyyy").getTime() <
-                format(new Date(booking.end_date), "dd/MM/yyyy").getTime()) ||
-            (format(new Date(booking.start_date), "dd/MM/yyyy").getTime() <
-              format(date[0].endDate, "dd/MM/yyyy").getTime() &&
-              format(date[0].endDate, "dd/MM/yyyy").getTime() <
-                format(new Date(booking.end_date), "dd/MM/yyyy").getTime()) ||
-            (format(new Date(booking.start_date), "dd/MM/yyyy").getTime() <
-              format(date[0].startDate, "dd/MM/yyyy").getTime() &&
-              format(date[0].startDate, "dd/MM/yyyy").getTime() <
-                format(new Date(booking.end_date), "dd/MM/yyyy").getTime() &&
-              format(new Date(booking.start_date), "dd/MM/yyyy").getTime() <
-                format(date[0].endDate, "dd/MM/yyyy").getTime() &&
-              format(date[0].endDate, "dd/MM/yyyy").getTime() <
-                format(new Date(booking.end_date), "dd/MM/yyyy").getTime())
+            (new Date(booking.start_date).getTime() <
+              new Date(date[0].startDate).getTime() &&
+              new Date(date[0].startDate).getTime() <
+                new Date(booking.end_date).getTime()) ||
+            (new Date(booking.start_date).getTime() <
+              new Date(date[0].endDate).getTime() &&
+              new Date(date[0].endDate).getTime() <
+                new Date(booking.end_date).getTime())
           ) {
             console.log("NAO PODE RESERVAR");
           } else {
             console.log("PODE RESERVAR");
+            availableRooms.push(room._id);
           }
         } else {
           console.log("NAO TEM RESERVA");
+          console.log(room._id);
         }
       });
     });
+    console.log("Avaliable Rooms: ", availableRooms);
   }
 
   return (
