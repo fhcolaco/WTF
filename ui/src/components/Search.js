@@ -25,9 +25,11 @@ export default function Search(props) {
   const [date, setDate] = props.date;
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
-  const availableRooms = [];
+  const [filteredRooms, setFilteredRooms] = useState([]);
+  // const availableRooms = [];
+  // const isAvaliable = [];
   // const [hotelSearch, setHotelSearch] = useState([0, 1]);
-  const [hotelSearch, setHotelSearch] = useState([]);
+  const hotelSearch = [];
   const [roomList, setRoomList] = useState([]);
   const [hotel, setHotel] = useState([]);
   const [hotelCategory, setHotelCategory] = useState([]);
@@ -50,26 +52,25 @@ export default function Search(props) {
     getHotelCategory().then((res) => {
       setHotelCategory(res);
     });
-
     getBookings().then((res) => {
       setBookingsList(res);
     });
 
     getRoom().then((res) => {
-      setRoomList(res);
+      setRoomList(res.filter((r) => r.isAvailable));
     });
   }, []);
 
   useEffect(() => {
     if (
       hotel.length !== 0 &&
-      hotelCategory.length !== 0
+      hotelCategory.length !== 0 &&
       // && bookingsList.length !== 0 &&
-      // roomList.length !== 0
+      roomList.length !== 0
     ) {
       setloading(false);
     }
-  }, [hotel, hotelCategory]);
+  }, [hotel, hotelCategory, roomList]);
 
   const handleQuantityOption = (item, operacao) => {
     setQuantityOptions((prev) => {
@@ -82,49 +83,103 @@ export default function Search(props) {
       };
     });
   };
-
-  {
-    roomList.map((room) => {
-      console.log("Quarto: ", room);
+  useEffect(() => {
+    roomList.map((item) => {
       bookingsList.map((booking) => {
-        if (booking._room.includes(room._id)) {
-          console.log("TEM RESERVA");
-          console.log(room._id);
-          console.log(
-            "START: ",
-            format(new Date(booking.start_date), "dd/MM/yyyy"),
-            "END: ",
-            format(new Date(booking.end_date), "dd/MM/yyyy")
-          );
-          console.log(
-            "INPUT Start:",
-            format(new Date(date[0].startDate), "dd/MM/yyyy"),
-            "INPUT End:",
-            format(new Date(date[0].endDate), "dd/MM/yyyy")
-          );
-          if (
-            (new Date(booking.start_date).getTime() <
-              new Date(date[0].startDate).getTime() &&
-              new Date(date[0].startDate).getTime() <
-                new Date(booking.end_date).getTime()) ||
-            (new Date(booking.start_date).getTime() <
-              new Date(date[0].endDate).getTime() &&
-              new Date(date[0].endDate).getTime() <
-                new Date(booking.end_date).getTime())
-          ) {
-            console.log("NAO PODE RESERVAR");
-          } else {
-            console.log("PODE RESERVAR");
-            availableRooms.push(room._id);
+        console.log(new Date(booking.start_date));
+        console.log(">=");
+        console.log(new Date(date[0].startDate));
+        console.log("=");
+        console.log(
+          new Date(booking.start_date).getTime() >=
+            new Date(date[0].startDate).getTime()
+        );
+        console.log(new Date(booking.end_date));
+        console.log(">=");
+        console.log(new Date(date[0].endDate));
+        console.log("=");
+        console.log(
+          new Date(booking.end_date).getTime() >=
+            new Date(date[0].endDate).getTime()
+        );
+        if (
+          new Date(booking.start_date).getTime() >=
+            new Date(date[0].startDate).getTime() &&
+          new Date(booking.end_date) >= new Date(date[0].endDate)
+        ) {
+          if (!filteredRooms.includes(item)) {
+            console.log(321);
+            setFilteredRooms([...filteredRooms, item]);
           }
-        } else {
-          console.log("NAO TEM RESERVA");
-          console.log(room._id);
         }
       });
     });
-    console.log("Avaliable Rooms: ", availableRooms);
-  }
+  }, [roomList, date]);
+
+  useEffect(() => {
+    for (let room of filteredRooms) {
+      if (!hotelSearch?.includes(room._hotel))
+        hotelSearch.push(room.data._hotel);
+    }
+
+    console.log("room", filteredRooms);
+    console.log("hotel", hotelSearch);
+  }, [filteredRooms]);
+
+  // {
+  //   roomList.map((room) => {
+  //     console.log("Quarto: ", room);
+  //     bookingsList.map((booking) => {
+  //       if (booking._room.includes(room._id)) {
+  //         console.log("TEM RESERVAS");
+  //         console.log(room._id);
+  //         console.log(
+  //           "START: ",
+  //           format(new Date(booking.start_date), "dd/MM/yyyy"),
+  //           "END: ",
+  //           format(new Date(booking.end_date), "dd/MM/yyyy")
+  //         );
+  //         console.log(
+  //           "INPUT Start:",
+  //           format(new Date(date[0].startDate), "dd/MM/yyyy"),
+  //           "INPUT End:",
+  //           format(new Date(date[0].endDate), "dd/MM/yyyy")
+  //         );
+  //         if (
+  //           (new Date(booking.start_date).getTime() <
+  //             new Date(date[0].startDate).getTime() &&
+  //             new Date(date[0].startDate).getTime() <
+  //               new Date(booking.end_date).getTime()) ||
+  //           (new Date(booking.start_date).getTime() <
+  //             new Date(date[0].endDate).getTime() &&
+  //             new Date(date[0].endDate).getTime() <
+  //               new Date(booking.end_date).getTime())
+  //         ) {
+  //           console.log("NAO PODE RESERVAR");
+  //           isAvaliable.push(false);
+  //         } else {
+  //           console.log("PODE RESERVAR");
+  //           isAvaliable.push(true);
+  //         }
+  //       } else {
+  //         console.log("NAO TEM RESERVAS");
+  //         if (availableRooms.includes(room._id)) {
+  //           availableRooms.push(room._id);
+  //         }
+  //       }
+  //     });
+  //     if (!isAvaliable.includes(false) && !availableRooms.includes(room._id)) {
+  //       availableRooms.push(room._id);
+  //     }
+
+  //     if (availableRooms.includes(room._id)) {
+  //       hotelSearch.push(room._hotel);
+  //     }
+  //   });
+  //   console.log("hotelSearch: ", hotelSearch);
+  //   console.log("isAvaliable: ", isAvaliable);
+  //   console.log("Avaliable Rooms: ", availableRooms);
+  // }
 
   return (
     <>
@@ -282,57 +337,63 @@ export default function Search(props) {
             </form>
           </div>
           <div className="w-full flex-col">
-            {hotelSearch.map((index) => {
-              return (
-                <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
-                  <img
-                    class="h-full w-96 rounded-l-lg object-cover"
-                    src="https://aquashowpark.com/wp-content/uploads/2022/03/Hotelae%CC%81rio-65-e1646846021885.jpg"
-                    alt=""
-                  />
-                  <div className="grid w-full flex-col p-4">
-                    <div>
-                      <h5 class="mb-3 text-2xl font-bold text-gray-900">
-                        {hotel[index].name}
-                      </h5>
-                      {hotelCategory.map((category) => {
-                        // console.log(category.name, category);
-                        if (hotel[index]._hotel_type.includes(category._id))
-                          return <p>{category.name} - Location</p>;
-                      })}
-                      <div className="flex">
-                        <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
-                        <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
-                        <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
-                        <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
+            {hotel.map((hotel) => {
+              if (hotelSearch.includes(hotel._id)) {
+                return (
+                  <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
+                    <img
+                      class="h-full w-96 rounded-l-lg object-cover"
+                      src="https://aquashowpark.com/wp-content/uploads/2022/03/Hotelae%CC%81rio-65-e1646846021885.jpg"
+                      alt=""
+                    />
+                    <div className="grid w-full flex-col p-4">
+                      <div>
+                        <h5 class="mb-3 text-2xl font-bold text-gray-900">
+                          {hotel.name}
+                        </h5>
+                        {hotelCategory.map((category) => {
+                          // console.log(category.name, category);
+                          if (hotel._hotel_type.includes(category._id))
+                            return <p>{category.name} - Location</p>;
+                        })}
+                        <div className="flex">
+                          <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
+                          <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
+                          <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
+                          <StarIcon className="stroke h-6 w-6 fill-yellow-300 stroke-none" />
+                        </div>
+                      </div>
+                      <p className="h-12 overflow-hidden text-clip">
+                        {hotel.description}
+                      </p>
+                      (...)
+                      <div className="inset-0 flex items-end">
+                        <div class="flex w-full items-center">
+                          <span class=" rounded-lg bg-gray-800 p-4">
+                            <p className="h-6 w-6 text-center text-white">
+                              8,9
+                            </p>
+                          </span>
+                          <h2 class="ml-4 text-lg font-bold">
+                            demo evaluation
+                          </h2>
+                        </div>
+                        <div className="grid w-full justify-items-end">
+                          <p>demo price €</p>
+                          <NavLink to={`/hoteldetail/${hotel._id}`}>
+                            <button
+                              type="button"
+                              class="rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl"
+                            >
+                              Ver Oferta
+                            </button>
+                          </NavLink>
+                        </div>
                       </div>
                     </div>
-                    <p className="h-12 overflow-hidden text-clip">
-                      {hotel[index].description}
-                    </p>
-                    (...)
-                    <div className="inset-0 flex items-end">
-                      <div class="flex w-full items-center">
-                        <span class=" rounded-lg bg-gray-800 p-4">
-                          <p className="h-6 w-6 text-center text-white">8,9</p>
-                        </span>
-                        <h2 class="ml-4 text-lg font-bold">demo evaluation</h2>
-                      </div>
-                      <div className="grid w-full justify-items-end">
-                        <p>demo price €</p>
-                        <NavLink to={`/hoteldetail/${hotel[index]._id}`}>
-                          <button
-                            type="button"
-                            class="rounded-lg bg-gradient-to-br from-pink-500 to-orange-400 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-gradient-to-bl"
-                          >
-                            Ver Oferta
-                          </button>
-                        </NavLink>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              );
+                  </a>
+                );
+              }
             })}
           </div>
         </div>
