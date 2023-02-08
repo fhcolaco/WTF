@@ -26,6 +26,7 @@ export default function HotelDetail(props) {
   useEffect(() => {
     if (!id) {
       setHotel({
+        _id: "",
         name: "",
         description: "",
         location: "",
