@@ -1,12 +1,13 @@
 import { getHotelById } from "../../shared/hotelApi";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
 import { getServices } from "../../shared/servicesApi";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../Loader";
 import locationList from "../../shared/locationList";
 import { CheckIcon } from "@heroicons/react/24/solid";
-
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
+import axios from "axios";
 //falta criar o handler para a loacalização e acabar o carousel
 
 export default function HotelDetail(props) {
@@ -14,9 +15,11 @@ export default function HotelDetail(props) {
   const [services, setServices] = useState([]);
   const [hotelType, setHotelType] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [images, setImages] = useState([]);
   const [state, setState] = useState("");
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState([]);
+  const maxScrollWidth = useRef(0);
+  const carousel = useRef(null);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -84,16 +87,6 @@ export default function HotelDetail(props) {
     }
   };
 
-  useEffect(() => {
-    if (loading === true && hotel.images !== undefined) {
-      let aux = [];
-      hotel.images.map((image) => {
-        return aux.push(`https://wtf-backend.onrender.com/images/${image}`);
-      });
-      setImages(aux);
-    }
-  }, [hotel.images, loading]);
-
   const send = (event) => {
     event.preventDefault();
     const data = new FormData();
@@ -108,7 +101,8 @@ export default function HotelDetail(props) {
       data.append("_services", service);
     });
     data.append("images", hotel.images);
-    if (files.length !== 0) {
+
+    if (files) {
       data.append("files", files);
     }
 
@@ -223,7 +217,11 @@ export default function HotelDetail(props) {
                   required
                   name="distrito"
                   id="distrito"
-                  defaultValue={"default"}
+                  defaultValue={
+                    locationList.find((element) =>
+                      element.concelho.includes(hotel.location)
+                    )?.distrito || "default"
+                  }
                   onChange={(event) => setState(event.target.value)}
                 >
                   <option value="default" disabled>
@@ -248,7 +246,7 @@ export default function HotelDetail(props) {
                   required
                   name="location"
                   id="location"
-                  defaultValue={"default"}
+                  defaultValue={hotel.location || "default"}
                   onChange={handleChange}
                 >
                   <option value="default" disabled>
@@ -342,117 +340,65 @@ export default function HotelDetail(props) {
           </form>
           <div className="col-span-4 mx-5 mb-5 sm:px-0">
             <h1 className="mb-8 text-4xl font-extrabold">Imagens do Hotel</h1>
-            <div id="carousel" className="relative" data-carousel="static">
-              <div className="relative h-96 overflow-hidden rounded-lg">
-                {hotel.images?.length > 0 ? (
-                  hotel.images.map((image) => (
+            <div className="relative h-96 overflow-hidden rounded-lg">
+              <div className="relative grid place-items-center overflow-hidden">
+                <div className="top left absolute flex  w-full justify-between">
+                  <button
+                    onClick={() => {
+                      if (currentIndex > 0) {
+                        setCurrentIndex((prevState) => prevState - 1);
+                      }
+                    }}
+                    className="z-10 w-16 rounded-lg text-center text-white transition-all duration-300 ease-in-out hover:bg-black/50 hover:opacity-100"
+                  >
+                    <ChevronLeftIcon className="rounded-lg shadow-2xl" />
+                    <span className="sr-only">Prev</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (
+                        carousel.current !== null &&
+                        carousel.current.offsetWidth * currentIndex <=
+                          maxScrollWidth.current
+                      ) {
+                        setCurrentIndex((prevState) => prevState + 1);
+                      }
+                    }}
+                    className="z-10 w-16 rounded-lg text-center text-white transition-all duration-300 ease-in-out hover:bg-black/50 hover:opacity-100"
+                  >
+                    <ChevronRightIcon className="rounded-lg shadow-2xl" />
+                    <span className="sr-only">Next</span>
+                  </button>
+                </div>
+                <div
+                  ref={carousel}
+                  className="relative z-0 flex h-full w-full touch-pan-x snap-x snap-mandatory scroll-smooth"
+                >
+                  {hotel.images?.map((image) => (
                     <div
-                      className="hidden duration-700 ease-in-out"
-                      data-carousel-item
                       key={image}
+                      className="carousel-item relative h-64 w-full"
                     >
                       <img
-                        src={`https://wtf-backend.onrender.com/images/${image}`}
-                        alt="hotel"
-                        className="absolute top-0 left-0 h-full w-full object-cover"
+                        src={image}
+                        className="absolute h-full w-full object-cover"
+                        alt={image}
                       />
                     </div>
-                  ))
-                ) : (
-                  <div
-                    className="hidden duration-700 ease-in-out"
-                    data-carousel-item
-                  >
-                    <img
-                      src="https://img.freepik.com/free-vector/glitch-error-404-page-background_23-2148090410.jpg"
-                      alt="hotel"
-                      className="absolute top-0 left-0 h-full w-full object-cover"
-                    />
-                  </div>
-                )}
+                  ))}
+                </div>
               </div>
-              <div className="absolute bottom-5 left-1/2 z-30 flex -translate-x-1/2 space-x-3">
-                <button
-                  type="button"
-                  className="h-3 w-3 rounded-full"
-                  aria-current="false"
-                  aria-label="Slide 1"
-                  data-carousel-slide-to="0"
-                ></button>
-                <button
-                  type="button"
-                  className="h-3 w-3 rounded-full"
-                  aria-current="false"
-                  aria-label="Slide 2"
-                  data-carousel-slide-to="1"
-                ></button>
-                <button
-                  type="button"
-                  className="h-3 w-3 rounded-full"
-                  aria-current="false"
-                  aria-label="Slide 3"
-                  data-carousel-slide-to="2"
-                ></button>
-              </div>
-              <button
-                type="button"
-                className="group absolute top-0 left-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-                data-carousel-prev
-              >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70 sm:h-10 sm:w-10">
-                  <svg
-                    aria-hidden="true"
-                    className="h-5 w-5 text-white dark:text-gray-800 sm:h-6 sm:w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15 19l-7-7 7-7"
-                    ></path>
-                  </svg>
-                  <span className="sr-only">Previous</span>
-                </span>
-              </button>
-              <button
-                type="button"
-                className="group absolute top-0 right-0 z-30 flex h-full cursor-pointer items-center justify-center px-4 focus:outline-none"
-                data-carousel-next
-              >
-                <span className="inline-flex h-8 w-8 items-center justify-center rounded-full bg-white/30 group-hover:bg-white/50 group-focus:outline-none group-focus:ring-4 group-focus:ring-white dark:bg-gray-800/30 dark:group-hover:bg-gray-800/60 dark:group-focus:ring-gray-800/70 sm:h-10 sm:w-10">
-                  <svg
-                    aria-hidden="true"
-                    className="h-5 w-5 text-white dark:text-gray-800 sm:h-6 sm:w-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5l7 7-7 7"
-                    ></path>
-                  </svg>
-                  <span className="sr-only">Next</span>
-                </span>
-              </button>
             </div>
             <div className="group relative z-0 my-8 w-full">
               <input
                 name="images"
                 id="images"
                 type="file"
+                multiple
                 onChange={(e) => {
-                  setFiles(e.target.files[0]);
+                  setFiles(e.target.files);
                 }}
                 accept="image/*"
-                multiple
                 className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
               />
               <label
@@ -463,7 +409,6 @@ export default function HotelDetail(props) {
               </label>
             </div>
           </div>
-          <script src="../path/to/flowbite/dist/flowbite.min.js"></script>
         </div>
       )}
     </>

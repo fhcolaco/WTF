@@ -43,7 +43,7 @@ router.post("/", isAuth, upload.array("files"), (req, res) => {
 });
 
 //PUT method
-router.put("/:id", isAuth, upload.array("files"), (req, res) => {
+router.put("/:id", upload.array("files"), (req, res) => {
   let hotelSave = {
     name: req.body.name,
     description: req.body.description,
@@ -53,13 +53,15 @@ router.put("/:id", isAuth, upload.array("files"), (req, res) => {
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
   };
-  if (req.files.length > 0)
-    hotelSave["images"] = req.files.map((file) => [
-      ...req.body.images,
-      file.filename,
-    ]);
+  if (req.files.length > 0) {
+    hotelSave["images"] = [
+      ...req.body.images?.split(","),
+      ...req.files.map((file) => file.filename),
+    ];
+  }
+  console.log(hotelSave["images"]);
   Hotel.findOneAndUpdate({ _id: req.params.id }, hotelSave)
-    .then((hotel) => {
+    .then(() => {
       res
         .status(200)
         .json({ Success: true, message: "Hotel atualizado com sucesso" });

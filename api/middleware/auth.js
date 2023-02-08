@@ -9,7 +9,6 @@ const isAuth = async (req, res, next) => {
         new Error("Por favor fazer o login para aceder a esta página")
       );
     }
-    console.log(token);
     const verify = await jwt.verify(token, process.env.JWT_SECRET);
     req.user = await User.findById(verify.id);
     if (!req.user) {
