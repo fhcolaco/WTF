@@ -86,6 +86,7 @@ export default function Search(props) {
 
   useEffect(() => {
     let aux = [];
+    let aux2 = [];
     roomList.map((room) => {
       console.log("Quarto", room);
       bookingsList.map((booking) => {
@@ -100,6 +101,10 @@ export default function Search(props) {
           ) {
             isRommDateAvaliable = false;
           }
+
+          if (!booking._room.includes(room._id)) {
+            aux2.push(room);
+          }
         }
       });
       if (isRommDateAvaliable && !aux.includes(room)) {
@@ -107,11 +112,17 @@ export default function Search(props) {
       } else {
         aux.push(aux.filter((filtRoom) => filtRoom._id !== room._id));
       }
-
       console.log("Room Date Avaliable", isRommDateAvaliable);
     });
     console.log("AUX: ", aux);
     setFilteredRooms(...aux);
+    console.log("Aux2222: ", aux2);
+
+    aux2.map((a2) => {
+      if (!filteredRooms?.includes(a2)) {
+        setFilteredRooms((filt) => [...filt, a2]);
+      }
+    });
   }, [roomList, date]);
 
   useEffect(() => {
@@ -120,9 +131,10 @@ export default function Search(props) {
       for (let room of filteredRooms) {
         if (!aux?.includes(room._hotel)) aux.push(room._hotel);
       }
-    setHotelSearch(...aux);
+    setHotelSearch(aux);
     console.log("FilteredRoom", filteredRooms);
-    console.log("hotelSearch", aux);
+    // console.log("hotelSearch", aux);
+    console.log("hotelSearch", hotelSearch);
   }, [filteredRooms]);
 
   return (
@@ -281,6 +293,7 @@ export default function Search(props) {
             </form>
           </div>
           <div className="w-full flex-col">
+            {console.log("Hotel Search Final: ", hotelSearch)}
             {hotel.map((hotel) => {
               if (hotelSearch?.includes(hotel._id)) {
                 return (
