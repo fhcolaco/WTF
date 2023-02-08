@@ -40,58 +40,6 @@ export default function Login() {
     }
   }, [hasError]);
 
-  const tstLogout = (e) => {
-    e.preventDefault();
-    sessionStorage.clear();
-    console.log("Logout com sucesso");
-    navigate("/login");
-  };
-
-  const tstGetUserInfo = async (e) => {
-    e.preventDefault();
-    console.log("A verificar...");
-    const check = axios
-      .get("https://wtf-backend.onrender.com/verifyUser", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.message);
-        if (res.data.success === true) {
-          console.log(
-            JSON.parse(atob(sessionStorage.getItem("token").split(".")[1]))
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-      });
-  };
-  const tstUserAdmin = (e) => {
-    e.preventDefault();
-    console.log("A verificar...");
-    const check = axios
-      .get("https://wtf-backend.onrender.com/verifyUser", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.message);
-        if (res.data.success === true) {
-          if (
-            JSON.parse(atob(sessionStorage.getItem("token").split(".")[1]))
-              .isAdmin
-          )
-            console.log("<.>");
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-      });
-  };
-
   return (
     <section className="bg-white">
       <div className="lg:grid lg:min-h-screen lg:grid-cols-12">
@@ -172,79 +120,19 @@ export default function Login() {
                   className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
                 />
               </div>
-              {/* <div className="col-span-1">
-                <label
-                  for="toHome"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
-                >
-                  Ir para a Home
-                </label>
-                <input
-                  type="checkbox"
-                  id="toHome"
-                  name="toHome"
-                  onChange={(e) =>
-                    setData({ ...data, toHome: e.target.checked })
-                  }
-                  className="mt-1  w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
-                />
-              </div> */}
               <div className="col-span-6 flex items-center gap-4">
                 <button className="inline-block shrink-0 rounded-full border border-orange-500 bg-orange-500 px-48 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-orange-500 focus:outline-none active:text-orange-400">
                   Login
                 </button>
               </div>
-              <NavLink>
-                <div className="col-span-6 text-center text-sm text-gray-600 hover:cursor-pointer hover:underline">
-                  Ainda não tem conta WTF? Clica para criar.
-                </div>
+              <NavLink
+                to={"/register"}
+                className="col-span-6 text-center text-sm text-gray-600 hover:cursor-pointer hover:underline"
+              >
+                <div>Ainda não tem conta WTF? Clica para criar.</div>
               </NavLink>
             </form>
           </div>
-
-          {/*Tiago isto serve para verificar o login se está a funcionar. De momento, já envia para a sessão como podes testar. Agora falta só modificar o aspeto*/}
-          {/* <div className="absolute bottom-0 right-0 m-10 flex flex-row lg:bg-white">
-            <button
-              onClick={(e) => tstLogout(e)}
-              className="m-10 rounded border-2 bg-red-500"
-            >
-              <span>
-                <XMarkIcon className="h-6 w-6" />
-                TESTE LOGOUT
-              </span>
-            </button>
-            <button
-              onClick={(e) => tstUserAdmin(e)}
-              className="m-10 rounded border-2 bg-red-500"
-            >
-              <span>
-                <XMarkIcon className="h-6 w-6" />
-                TESTE Admin
-              </span>
-            </button>
-            <button
-              onClick={(e) => tstGetUserInfo(e)}
-              className="m-10 rounded border-2 bg-red-500"
-            >
-              <span>
-                <XMarkIcon className="h-6 w-6" />
-                TESTE User
-              </span>
-            </button>
-            <div
-              className={`m-10 flex h-24 w-24 items-center justify-center p-10 ${
-                sessionStorage.getItem("token") !== null
-                  ? "bg-green-400"
-                  : "bg-black"
-              }`}
-            >
-              <p className="text-white">
-                {sessionStorage.getItem("token") !== null
-                  ? "LOGGED IN"
-                  : "NOT LOGGED IN"}
-              </p>
-            </div>
-          </div> */}
         </main>
       </div>
     </section>
