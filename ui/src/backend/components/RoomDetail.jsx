@@ -11,7 +11,7 @@ import {
   ChevronRightIcon,
 } from "@heroicons/react/24/solid";
 
-export default function RoomDetail() {
+export default function RoomDetail(props) {
   const [room, setRoom] = useState(null);
   const [hotel, setHotel] = useState(null);
   const [roomCategory, setRoomCategory] = useState(null);
@@ -41,7 +41,7 @@ export default function RoomDetail() {
           setRoom(room);
           setImages(room.images);
         })
-      : setRoom({ isAvailable: true });
+      : setRoom({ isAvailable: true, _services: [] });
   }, [id]);
 
   useEffect(() => {
@@ -80,11 +80,25 @@ export default function RoomDetail() {
     console.log(room);
   }, [room]);
 
-  const send = (e) => {
-    e.preventDefault();
-    //
-    //
-    //
+  const send = (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append("_id", room._id);
+    data.append("_hotel", room._hotel);
+    room._services.forEach((service) => {
+      data.append("_services", service);
+    });
+    data.append("price", room.price);
+    data.append("isAvailable", room.isAvailable);
+    data.append("description", room.description);
+    data.append("discount", room.discount);
+    data.append("images", room.images);
+    if (files) {
+      [...files].map((file) => {
+        data.append("files", file);
+      });
+    }
+    props.submit(data, event);
   };
 
   return (
@@ -114,8 +128,8 @@ export default function RoomDetail() {
                 <select
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   required
-                  name="hotel"
-                  id="hotel"
+                  name="_hotel"
+                  id="_hotel"
                   defaultValue={
                     hotel.find((element) => room._hotel === element._id) ||
                     "default"

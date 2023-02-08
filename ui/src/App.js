@@ -31,6 +31,7 @@ import {
   getHotelCategory,
 } from "./shared/hotel_categoryApi";
 import UserRegister from "./components/UserRegister";
+import { updateRoom } from "./shared/roomApi";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -98,6 +99,32 @@ function App() {
       });
     }
     navigate("/dashboard/hotel/categoria");
+  };
+
+  const onSubmitRoom = (data, event) => {
+    event.preventDefault();
+    console.log("inicio");
+    let id = data.get("_id");
+    for (const [key, value] of data.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+    if (id !== "") {
+      updateRoom(id, data)
+        .then((teste) => {
+          getHotel().then((res) => {
+            setHotel(res);
+          });
+        })
+        .catch((err) => {
+          console.log("ERRO", err);
+        });
+    } else {
+      createHotel(data).then((data) => {
+        console.log(data);
+        setHotel([...hotel, data]);
+      });
+    }
+    navigate("/dashboard/room");
   };
 
   // ------------------------- FILTROS DE PESQUISA  -------------------------
@@ -175,8 +202,14 @@ function App() {
               element={<HotelCategory_Detail submit={onSubmitHotelCategory} />}
             />
             <Route path="quarto" element={<Room />} />
-            <Route path="quarto/criar" element={<RoomDetail />} />
-            <Route path="quarto/:id" element={<RoomDetail />} />
+            <Route
+              path="quarto/criar"
+              element={<RoomDetail submit={onSubmitRoom} />}
+            />
+            <Route
+              path="quarto/:id"
+              element={<RoomDetail submit={onSubmitRoom} />}
+            />
             <Route path="quarto/categoria" element={<RoomCategory />} />
             <Route path="reserva" element={<Booking hotel={hotel} />} />
             <Route path="utilizador" element={<Users />} />
