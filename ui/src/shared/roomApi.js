@@ -35,10 +35,9 @@ const createRoom = async (data) =>
     method: "POST",
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
     },
-    body: JSON.stringify(data),
+    body: data,
   }).then((res) => {
     if (res.status !== 200) {
       return res.text().then((text) => {
@@ -53,10 +52,9 @@ const updateRoom = async (id, data) =>
     method: "PUT",
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
-      "Content-Type": "application/json",
-      Accept: "application/json",
+      "Content-Type": "multipart/form-data",
     },
-    body: JSON.stringify(data),
+    body: data,
   }).then((res) => {
     if (res.status !== 200) {
       return res.text().then((text) => {
