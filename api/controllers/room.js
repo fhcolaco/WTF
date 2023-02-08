@@ -21,7 +21,8 @@ router.get("/:id", async (req, res) => {
 });
 
 //POST method
-router.post("/", isAuth, upload.array("images"), (req, res) => {
+router.post("/", isAuth, upload.array("files"), (req, res) => {
+  console.log(req.body);
   let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
@@ -43,7 +44,8 @@ router.post("/", isAuth, upload.array("images"), (req, res) => {
 });
 
 //PUT method
-router.put("/:id", isAuth, upload.array("images"), (req, res) => {
+router.put("/:id", isAuth, upload.array("files"), (req, res) => {
+  console.log();
   let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,

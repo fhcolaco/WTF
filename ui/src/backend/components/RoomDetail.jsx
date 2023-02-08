@@ -10,6 +10,7 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 export default function RoomDetail(props) {
   const [room, setRoom] = useState(null);
@@ -41,7 +42,7 @@ export default function RoomDetail(props) {
           setRoom(room);
           setImages(room.images);
         })
-      : setRoom({ isAvailable: true, _services: [] });
+      : setRoom({ _id: "", isAvailable: true, _services: [] });
   }, [id]);
 
   useEffect(() => {
@@ -85,6 +86,7 @@ export default function RoomDetail(props) {
     const data = new FormData();
     data.append("_id", room._id);
     data.append("_hotel", room._hotel);
+    data.append("_room_category", room._room_category);
     room._services.forEach((service) => {
       data.append("_services", service);
     });
@@ -148,7 +150,7 @@ export default function RoomDetail(props) {
               </div>
               <div className="group group relative z-0 my-8 w-full">
                 <label
-                  htmlFor="category"
+                  htmlFor="_room_category"
                   className="absolute top-0 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
                 >
                   Categoria do quarto
@@ -168,8 +170,8 @@ export default function RoomDetail(props) {
                   <option value="default" disabled>
                     Selecione uma categoria
                   </option>
-                  {roomCategory.map((category, index) => (
-                    <option value={category._id} key={(category, index)}>
+                  {roomCategory.map((category) => (
+                    <option value={category._id} key={category._id}>
                       {category.name}
                     </option>
                   ))}
@@ -184,7 +186,7 @@ export default function RoomDetail(props) {
                 value={room.description}
                 onChange={handleChange}
                 rows="5"
-                className="-transparent peer block w-full appearance-none border-0 border-b-2  border-gray-300 px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                 placeholder=" "
               />
               <label

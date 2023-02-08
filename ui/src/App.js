@@ -31,7 +31,7 @@ import {
   getHotelCategory,
 } from "./shared/hotel_categoryApi";
 import UserRegister from "./components/UserRegister";
-import { updateRoom } from "./shared/roomApi";
+import { createRoom, getRoom, updateRoom } from "./shared/roomApi";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -111,20 +111,21 @@ function App() {
     if (id !== "") {
       updateRoom(id, data)
         .then((teste) => {
-          getHotel().then((res) => {
-            setHotel(res);
-          });
+          console.log("UPDATE", teste);
         })
         .catch((err) => {
           console.log("ERRO", err);
         });
     } else {
-      createHotel(data).then((data) => {
-        console.log(data);
-        setHotel([...hotel, data]);
-      });
+      createRoom(data)
+        .then((data) => {
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log("ERRO", err);
+        });
     }
-    navigate("/dashboard/room");
+    navigate("/dashboard/quarto");
   };
 
   // ------------------------- FILTROS DE PESQUISA  -------------------------

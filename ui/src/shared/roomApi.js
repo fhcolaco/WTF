@@ -41,7 +41,9 @@ const createRoom = async (data) =>
     body: JSON.stringify(data),
   }).then((res) => {
     if (res.status !== 200) {
-      throw new Error("Something went wrong on api server!");
+      return res.text().then((text) => {
+        return text;
+      });
     }
     return res.json();
   });
