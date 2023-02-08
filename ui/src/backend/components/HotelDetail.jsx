@@ -10,12 +10,13 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/solid";
+import axios from "axios";
 
 export default function HotelDetail(props) {
   const [hotel, setHotel] = useState({});
   const [services, setServices] = useState([]);
   const [hotelType, setHotelType] = useState([]);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(null);
   const [loading, setLoading] = useState(true);
   const [state, setState] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -27,14 +28,7 @@ export default function HotelDetail(props) {
     if (!id) {
       setHotel({
         _id: "",
-        name: "",
-        description: "",
-        location: "",
-        address: "",
-        postal_code: "",
-        _hotel_type: "",
-        _services: [""],
-        images: [""],
+        _services: [],
       });
     } else {
       getHotelById(id).then((res) => {
@@ -64,7 +58,7 @@ export default function HotelDetail(props) {
       hotelType.length !== 0 &&
       services.length !== 0 &&
       hotel.length !== 0 &&
-      (images.length !== 0 || !hotel._id)
+      (images || !hotel._id)
     ) {
       setLoading(false);
     }
@@ -109,7 +103,7 @@ export default function HotelDetail(props) {
     hotel._services.forEach((service) => {
       data.append("_services", service);
     });
-    data.append("images", images);
+    data.append("images", images || "");
 
     if (files) {
       [...files].map((file) => {
@@ -118,6 +112,19 @@ export default function HotelDetail(props) {
     }
 
     props.submit(data, event);
+    // axios
+    //   .post("http://localhost:4000/hotel", data, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //       Authorization: "Bearer " + sessionStorage.getItem("token"),
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (
@@ -355,7 +362,7 @@ export default function HotelDetail(props) {
           </form>
           <div className="col-span-4 mx-5 mb-5 sm:px-0">
             <h1 className="mb-8 text-4xl font-extrabold">Imagens do Hotel</h1>
-            {images.length > 0 && (
+            {images?.length > 0 && (
               <div className="group relative m-auto h-96 w-full py-16 px-4">
                 <img
                   src={`https://wtf-backend.onrender.com/images/${images[currentIndex]}`}

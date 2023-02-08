@@ -38,7 +38,9 @@ export const createHotel = async (data) =>
     body: data,
   }).then((res) => {
     if (res.status !== 200) {
-      throw new Error("Something went wrong on api server!");
+      return res.text().then((text) => {
+        throw new Error(text);
+      });
     }
     return res.json();
   });
