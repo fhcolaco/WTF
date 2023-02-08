@@ -25,7 +25,6 @@ router.post("/", isAuth, upload.array("images"), (req, res) => {
   let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
-    _room_details: req.body._room_details,
     _services: req.body._services,
     price: req.body.price,
     discount: req.body.discount,
@@ -48,7 +47,6 @@ router.put("/:id", isAuth, upload.array("images"), (req, res) => {
   let roomSave = {
     _hotel: req.body._hotel,
     _room_category: req.body._room_category,
-    _room_details: req.body._room_details,
     _services: req.body._services,
     price: req.body.price,
     discount: req.body.discount,

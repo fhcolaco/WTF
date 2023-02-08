@@ -15,7 +15,7 @@ export default function HotelCategoryDetail(props) {
           setHotelCategory(data);
         })
       : setHotelCategory({ _id: "", name: "", description: "" });
-  }, [id]);
+  }, []);
 
   useEffect(() => {
     if (hotelCategory.length !== 0) {

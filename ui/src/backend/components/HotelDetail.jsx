@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../Loader";
 import locationList from "../../shared/locationList";
-import { CheckIcon } from "@heroicons/react/24/solid";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-//falta criar o handler para a loacalização e acabar o carousel
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/solid";
 
 export default function HotelDetail(props) {
   const [hotel, setHotel] = useState({});
@@ -18,11 +20,11 @@ export default function HotelDetail(props) {
   const [state, setState] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState([]);
-  const params = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (params.id === undefined) {
+    if (!id) {
       setHotel({
         _id: "",
         name: "",
@@ -35,7 +37,7 @@ export default function HotelDetail(props) {
         images: [""],
       });
     } else {
-      getHotelById(params.id).then((res) => {
+      getHotelById(id).then((res) => {
         setHotel(res);
         if (res.location) {
           locationList.map((location) => {
@@ -62,9 +64,8 @@ export default function HotelDetail(props) {
       hotelType.length !== 0 &&
       services.length !== 0 &&
       hotel.length !== 0 &&
-      (images.length !== 0 || hotel.images === [""])
+      (images.length !== 0 || !hotel._id)
     ) {
-      console.log(images);
       setLoading(false);
     }
   }, [hotelType, services, hotel, images]);
@@ -76,10 +77,6 @@ export default function HotelDetail(props) {
   const nextSlide = () => {
     setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
   };
-
-  useEffect(() => {
-    console.log(currentIndex);
-  }, [currentIndex]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
