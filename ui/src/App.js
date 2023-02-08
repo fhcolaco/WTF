@@ -34,6 +34,7 @@ import UserRegister from "./components/UserRegister";
 import { createRoom, getRoom, updateRoom } from "./shared/roomApi";
 import { getBookings } from "./shared/bookingApi";
 import { getUsers } from "./shared/userApi";
+import BookingDetail from "./backend/components/BookingDetail";
 
 function App() {
   const [loading, setLoading] = useState(true);
