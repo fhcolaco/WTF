@@ -1,34 +1,133 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useParams } from "react";
 import { login } from "../shared/sessionApi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 import locationList from "../shared/locationList";
+import { getUserById, getUsers } from "../shared/userApi";
+import { check } from "prettier";
+import { createUser, updateUser } from "../shared/userApi";
 
 export default function UserRegister() {
   const navigate = useNavigate();
   const [hasError, setHasError] = React.useState(false);
+  const [user, setUser] = useState({});
   const [state, setState] = useState("");
   const [files, setFiles] = useState([]);
+  const [session, setSession] = useState();
   const [data, setData] = React.useState({
     user: "",
     pass: "",
     toHome: true,
   });
 
-  // useEffect(() => {
-  //   if (!id) {
-  //     setHotelCategory({
-  //       _id: "",
-  //       name: "",
-  //       description: "",
-  //     });
-  //   } else {
-  //     getHotelCategoryById(id).then((data) => {
-  //       setHotelCategory(data);
-  //     });
-  //   }
-  // }, []);
+  useEffect(() => {
+    console.log("A verificar...");
+    const check = axios
+      .get("https://wtf-backend.onrender.com/verifyUser", {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res.data.message);
+        if (res.data.success === true) {
+          setSession(
+            JSON.parse(atob(sessionStorage.getItem("token").split(".")[1])).id
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
+  }, []);
+
+  useEffect(() => {
+    getUserById(session).then((res) => setUser(res));
+  }, [session]);
+
+  useEffect(() => {
+    console.log(user);
+  }, [user]);
+
+  useEffect(() => {
+    if (!session) {
+      setUser({
+        _id: "",
+        user: "",
+        pass: "",
+        is_admin: false,
+        name: "",
+        email: "",
+        location: "",
+        address: "",
+        postal_code: "",
+        phone: null,
+        fiscal_number: null,
+        credit_card: null,
+        image: "default.svg",
+      });
+    } else {
+      getUserById(user._id).then((data) => {
+        setUser(data);
+      });
+    }
+  }, []);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUser({ ...user, [name]: value });
+  };
+
+  const send = (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append("name", `${user.first_name} ${user.last_name}`);
+    data.append("_id", user._id);
+    data.append("user", user.user);
+    data.append("pass", user.pass);
+    data.append("is_admin", user.is_admin);
+    data.append("email", user.email);
+    data.append("location", user.location);
+    data.append("address", user.address);
+    data.append("postal_code", user.postal_code);
+    data.append("phone", user.phone);
+    data.append("fiscal_number", user.fiscal_number);
+    data.append("credit_card", user.credit_card);
+    data.append("image", user.image);
+    data.append("files", files);
+
+    for (let pair of data.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
+    }
+    onSubmitUser(data, event);
+  };
+
+  const onSubmitUser = (data, event) => {
+    event.preventDefault();
+    console.log("inicio");
+    let id = data.get("_id");
+    // for (const [key, value] of data.entries()) {
+    //   console.log(`${key}: ${value}`);
+    // }
+    if (id !== "") {
+      updateUser(id, data)
+        .then((teste) => {
+          getUsers().then((res) => {
+            setUser(res);
+          });
+        })
+        .catch((err) => {
+          console.log("ERRO", err);
+        });
+    } else {
+      createUser(data).then((data) => {
+        console.log(data);
+        setUser([...user, data]);
+      });
+    }
+    navigate("/login");
+  };
 
   return (
     <div>
@@ -71,21 +170,26 @@ export default function UserRegister() {
                 <div className="">
                   <h1 className="text-3xl font-medium">Criar Conta</h1>
                 </div>
-                <form action="#" class="mt-8 grid grid-cols-6 gap-6">
+                <form
+                  onSubmit={(e) => send(e)}
+                  class="mt-8 grid grid-cols-6 gap-6"
+                >
                   <div class="col-span-6 mt-9 -mb-5 text-2xl">Avatar</div>
                   <hr class="col-span-6 mb-3 h-px border-0 bg-black" />
 
                   <div className="col-span-6 flex flex-row items-end">
-                    <img className="aspect-square h-24 w-24" />
+                    <img
+                      className="h-24 w-24 rounded-full border border-gray-200 bg-gray-100"
+                      src={`https://wtf-backend.onrender.com/images/${user.image}`}
+                    />
                     <div className="group relative z-0 ml-8 w-full">
                       <input
                         name="images"
                         id="images"
                         type="file"
-                        multiple
-                        // onChange={(e) => {
-                        //   setFiles(e.target.files);
-                        // }}
+                        onChange={(e) => {
+                          setFiles(e.target.files[0]);
+                        }}
                         accept="image/*"
                         className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                       />
@@ -105,16 +209,18 @@ export default function UserRegister() {
 
                   <div class="col-span-6 sm:col-span-3">
                     <label
-                      for="FirstName"
+                      for="first_name"
                       class="block text-sm font-medium text-gray-700"
                     >
                       Primeiro Nome
                     </label>
-
+                    {console.log(user)}
                     <input
                       type="text"
-                      id="FirstName"
+                      id="first_name"
                       name="first_name"
+                      value={user.first_name}
+                      onChange={handleChange}
                       placeholder="Primeiro Nome"
                       required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
@@ -131,8 +237,10 @@ export default function UserRegister() {
 
                     <input
                       type="text"
-                      id="LastName"
+                      id="last_name"
                       name="last_name"
+                      value={user.last_name}
+                      onChange={handleChange}
                       placeholder="Último Nome"
                       required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
@@ -149,8 +257,10 @@ export default function UserRegister() {
 
                     <input
                       type="number"
-                      id="LastName"
-                      name="last_name"
+                      id="phone"
+                      name="phone"
+                      value={user.phone}
+                      onChange={handleChange}
                       placeholder="XXXXXXXXX"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
@@ -165,9 +275,11 @@ export default function UserRegister() {
                     </label>
 
                     <input
-                      type="text"
-                      id="LastName"
-                      name="last_name"
+                      type="number"
+                      id="fiscal_number"
+                      name="fiscal_number"
+                      value={user.fiscal_number}
+                      onChange={handleChange}
                       placeholder="XXXXXXXXX"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
@@ -185,10 +297,11 @@ export default function UserRegister() {
                     </label>
 
                     <input
-                      // value={hotel.postal_code}
                       type="text"
-                      name="postal_code"
-                      id="postal_code"
+                      name="address"
+                      id="address"
+                      value={user.address}
+                      onChange={handleChange}
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                       placeholder="Rua, Nº, Localidade"
                       // onChange={handleChange}
@@ -204,7 +317,8 @@ export default function UserRegister() {
                     </label>
 
                     <input
-                      // value={hotel.postal_code}
+                      value={user.postal_code}
+                      onChange={handleChange}
                       type="text"
                       name="postal_code"
                       id="postal_code"
@@ -225,15 +339,16 @@ export default function UserRegister() {
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                       name="distrito"
                       id="distrito"
-                      // defaultValue={
-                      //   locationList.find((element) =>
-                      //     element.concelho.includes(hotel.location)
-                      //   )?.distrito || "default"
-                      // }
+                      defaultValue={
+                        locationList.find((element) =>
+                          element.concelho.includes(user.location)
+                        )?.distrito || "default"
+                      }
                       onChange={(event) => setState(event.target.value)}
                     >
-                      {/* disabled */}
-                      <option value="default">Distrito</option>
+                      <option value="default" disabled>
+                        Distrito
+                      </option>
                       {locationList.map((distrito, index) => (
                         <option
                           value={distrito.distrito}
@@ -256,10 +371,12 @@ export default function UserRegister() {
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                       name="location"
                       id="location"
-                      // defaultValue={hotel.location || "default"}
-                      // onChange={handleChange}
+                      defaultValue={user.location || "default"}
+                      onChange={handleChange}
                     >
-                      <option value="default">Concelho</option>
+                      <option value="default" disabled>
+                        Concelho
+                      </option>
                       {locationList.map((location) => {
                         if (location.distrito === state) {
                           return location.concelho.map((concelho, index) => (
@@ -271,7 +388,6 @@ export default function UserRegister() {
                       })}
                     </select>
                   </div>
-
                   <div class="col-span-6 mt-9 -mb-5 text-2xl">
                     Dados de Acesso
                   </div>
@@ -289,6 +405,8 @@ export default function UserRegister() {
                       type="email"
                       id="Email"
                       name="email"
+                      value={user.email}
+                      onChange={handleChange}
                       required
                       placeholder="exemplo@wtf.dev"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
@@ -305,8 +423,10 @@ export default function UserRegister() {
 
                     <input
                       type="text"
-                      id="FirstName"
-                      name="first_name"
+                      id="user"
+                      name="user"
+                      value={user.user}
+                      onChange={handleChange}
                       placeholder="Mínimo 3 caracteres"
                       required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
@@ -324,7 +444,8 @@ export default function UserRegister() {
                     <input
                       type="password"
                       id="Password"
-                      name="password"
+                      name="pass"
+                      onChange={handleChange}
                       placeholder="Mínimo 8 caracteres"
                       required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
@@ -361,9 +482,11 @@ export default function UserRegister() {
                       .
                     </p>
                   </div>
-
                   <div class="col-span-6 mb-28 sm:flex sm:items-center sm:gap-4">
-                    <button class="inline-block shrink-0 rounded-md border border-orange-500 bg-orange-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-orange-500 focus:outline-none focus:ring active:text-orange-500">
+                    <button
+                      type="submit"
+                      class="inline-block shrink-0 rounded-md border border-orange-500 bg-orange-500 px-12 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-orange-500 focus:outline-none focus:ring active:text-orange-500"
+                    >
                       Create an account
                     </button>
 

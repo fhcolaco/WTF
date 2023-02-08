@@ -137,7 +137,7 @@ export default function Header() {
                     <div className="p-1 ">
                       <Menu.Item>
                         <Link
-                          to={`/profile/${session.id}`}
+                          to="/profile"
                           className="flex items-center p-2 text-sm text-gray-700 transition-colors hover:bg-orange-100"
                         >
                           <PencilIcon className="mr-2 h-4 w-4" />
