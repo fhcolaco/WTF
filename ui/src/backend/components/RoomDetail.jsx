@@ -10,8 +10,9 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
 } from "@heroicons/react/24/solid";
+import axios from "axios";
 
-export default function RoomDetail() {
+export default function RoomDetail(props) {
   const [room, setRoom] = useState(null);
   const [hotel, setHotel] = useState(null);
   const [roomCategory, setRoomCategory] = useState(null);
@@ -41,7 +42,7 @@ export default function RoomDetail() {
           setRoom(room);
           setImages(room.images);
         })
-      : setRoom({ isAvailable: true });
+      : setRoom({ _id: "", isAvailable: true, _services: [] });
   }, [id]);
 
   useEffect(() => {
@@ -80,11 +81,26 @@ export default function RoomDetail() {
     console.log(room);
   }, [room]);
 
-  const send = (e) => {
-    e.preventDefault();
-    //
-    //
-    //
+  const send = (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append("_id", room._id);
+    data.append("_hotel", room._hotel);
+    data.append("_room_category", room._room_category);
+    room._services.forEach((service) => {
+      data.append("_services", service);
+    });
+    data.append("price", room.price);
+    data.append("isAvailable", room.isAvailable);
+    data.append("description", room.description);
+    data.append("discount", room.discount);
+    data.append("images", images);
+    if (files) {
+      [...files].map((file) => {
+        data.append("files", file);
+      });
+    }
+    props.submit(data, event);
   };
 
   return (
@@ -111,13 +127,14 @@ export default function RoomDetail() {
                 >
                   Hotel
                 </label>
+
                 <select
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   required
-                  name="hotel"
-                  id="hotel"
+                  name="_hotel"
+                  id="_hotel"
                   defaultValue={
-                    hotel.find((element) => room._hotel === element._id) ||
+                    hotel.find((element) => room._hotel === element._id)._id ||
                     "default"
                   }
                   onChange={handleChange}
@@ -125,16 +142,18 @@ export default function RoomDetail() {
                   <option value="default" disabled>
                     Selecione um hotel
                   </option>
-                  {hotel.map((hotel, index) => (
-                    <option value={hotel._id} key={(hotel, index)}>
-                      {hotel.name}
-                    </option>
-                  ))}
+                  {hotel.map((hotel, index) => {
+                    return (
+                      <option value={hotel._id} key={(hotel, index)}>
+                        {hotel.name}
+                      </option>
+                    );
+                  })}
                 </select>
               </div>
               <div className="group group relative z-0 my-8 w-full">
                 <label
-                  htmlFor="category"
+                  htmlFor="_room_category"
                   className="absolute top-0 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
                 >
                   Categoria do quarto
@@ -146,16 +165,16 @@ export default function RoomDetail() {
                   id="_room_category"
                   defaultValue={
                     roomCategory.find(
-                      (element) => room._hotel === element._id
-                    ) || "default"
+                      (element) => room._room_category === element._id
+                    )._id || "default"
                   }
                   onChange={handleChange}
                 >
                   <option value="default" disabled>
                     Selecione uma categoria
                   </option>
-                  {roomCategory.map((category, index) => (
-                    <option value={category._id} key={(category, index)}>
+                  {roomCategory.map((category) => (
+                    <option value={category._id} key={category._id}>
                       {category.name}
                     </option>
                   ))}
@@ -170,7 +189,7 @@ export default function RoomDetail() {
                 value={room.description}
                 onChange={handleChange}
                 rows="5"
-                className="-transparent peer block w-full appearance-none border-0 border-b-2  border-gray-300 px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                 placeholder=" "
               />
               <label

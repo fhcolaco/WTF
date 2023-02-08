@@ -27,7 +27,6 @@ router.get("/:id", async (req, res) => {
 // REGISTER method
 router.post(
   "/",
-  isAuth,
   upload.single("image"),
   asyncHandler(async (req, res) => {
     const user = req.body.user;
@@ -74,7 +73,7 @@ router.post(
 );
 
 //PUT method
-router.put("/:id", isAuth, upload.single("image"), async (req, res) => {
+router.put("/:id", upload.single("image"), async (req, res) => {
   let userSave = {
     user: req.body.user,
     pass: req.body.pass,

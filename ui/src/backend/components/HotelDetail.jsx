@@ -115,10 +115,6 @@ export default function HotelDetail(props) {
         data.append("files", file);
       });
     }
-    for (let pair of data.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
     props.submit(data, event);
   };
 
