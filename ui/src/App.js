@@ -190,7 +190,6 @@ function App() {
           <Route path="*" element={<h1>NOT FOUND</h1>} />
         </Routes>
       )}
-      ;
     </>
   );
 }

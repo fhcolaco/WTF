@@ -107,7 +107,7 @@ export default function Login() {
               <div className="col-span-6">
                 <label
                   for="Password"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-200"
+                  className="block text-sm font-medium text-gray-700"
                 >
                   Password
                 </label>
@@ -126,7 +126,7 @@ export default function Login() {
                 </button>
               </div>
               <NavLink
-                to={"/register"}
+                to="/register"
                 className="col-span-6 text-center text-sm text-gray-600 hover:cursor-pointer hover:underline"
               >
                 <div>Ainda não tem conta WTF? Clica para criar.</div>
