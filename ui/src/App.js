@@ -178,6 +178,7 @@ function App() {
           </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<UserRegister />} />
+          <Route path="/profile" element={<UserRegister />} />
           <Route path="/dashboard" element={<Layout />}>
             <Route path="" element={<Dashboard />} />
             <Route path="hotel" element={<Hotel hotel={hotel} />} />

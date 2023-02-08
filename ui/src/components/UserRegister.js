@@ -1,44 +1,34 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { login } from "../shared/sessionApi";
 import { NavLink, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
+import locationList from "../shared/locationList";
 
 export default function UserRegister() {
   const navigate = useNavigate();
   const [hasError, setHasError] = React.useState(false);
+  const [state, setState] = useState("");
+  const [files, setFiles] = useState([]);
   const [data, setData] = React.useState({
     user: "",
     pass: "",
     toHome: true,
   });
 
-  // const tstLogin = (e, data) => {
-  //   e.preventDefault();
-  //   console.log(data);
-  //   login(data).then((res) => {
-  //     console.log(res);
-  //     if (res.success) {
-  //       console.log("Login com sucesso");
-  //       sessionStorage.setItem("token", res.data.token);
-  //       console.log(sessionStorage.getItem("token"));
-  //       if (data.toHome) navigate("/");
-  //       else navigate("/login");
-  //     } else {
-  //       console.log("Erro no login");
-  //       setHasError(true);
-  //     }
-  //   });
-  // };
-
   // useEffect(() => {
-  //   if (hasError) {
-  //     setTimeout(() => {
-  //       alert("Utilizador ou password incorretos");
-  //       setHasError(false);
-  //     }, 500);
+  //   if (!id) {
+  //     setHotelCategory({
+  //       _id: "",
+  //       name: "",
+  //       description: "",
+  //     });
+  //   } else {
+  //     getHotelCategoryById(id).then((data) => {
+  //       setHotelCategory(data);
+  //     });
   //   }
-  // }, [hasError]);
+  // }, []);
 
   return (
     <div>
@@ -125,6 +115,8 @@ export default function UserRegister() {
                       type="text"
                       id="FirstName"
                       name="first_name"
+                      placeholder="Primeiro Nome"
+                      required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -141,6 +133,8 @@ export default function UserRegister() {
                       type="text"
                       id="LastName"
                       name="last_name"
+                      placeholder="Último Nome"
+                      required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -157,6 +151,7 @@ export default function UserRegister() {
                       type="number"
                       id="LastName"
                       name="last_name"
+                      placeholder="XXXXXXXXX"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -173,6 +168,7 @@ export default function UserRegister() {
                       type="text"
                       id="LastName"
                       name="last_name"
+                      placeholder="XXXXXXXXX"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -194,8 +190,7 @@ export default function UserRegister() {
                       name="postal_code"
                       id="postal_code"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
-                      required
-                      placeholder=" "
+                      placeholder="Rua, Nº, Localidade"
                       // onChange={handleChange}
                     />
                   </div>
@@ -214,8 +209,7 @@ export default function UserRegister() {
                       name="postal_code"
                       id="postal_code"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
-                      required
-                      placeholder=" "
+                      placeholder="XXXX-XXX"
                       // onChange={handleChange}
                     />
                   </div>
@@ -229,7 +223,6 @@ export default function UserRegister() {
                     </label>
                     <select
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
-                      required
                       name="distrito"
                       id="distrito"
                       // defaultValue={
@@ -237,16 +230,18 @@ export default function UserRegister() {
                       //     element.concelho.includes(hotel.location)
                       //   )?.distrito || "default"
                       // }
-                      // onChange={(event) => setState(event.target.value)}
+                      onChange={(event) => setState(event.target.value)}
                     >
-                      <option value="default" disabled>
-                        Distrito
-                      </option>
-                      {/* {locationList.map((distrito, index) => (
-                    <option value={distrito.distrito} key={(distrito, index)}>
-                      {distrito.distrito}
-                    </option>
-                  ))} */}
+                      {/* disabled */}
+                      <option value="default">Distrito</option>
+                      {locationList.map((distrito, index) => (
+                        <option
+                          value={distrito.distrito}
+                          key={(distrito, index)}
+                        >
+                          {distrito.distrito}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -259,24 +254,21 @@ export default function UserRegister() {
                     </label>
                     <select
                       className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
-                      required
                       name="location"
                       id="location"
                       // defaultValue={hotel.location || "default"}
                       // onChange={handleChange}
                     >
-                      <option value="default" disabled>
-                        Concelho
-                      </option>
-                      {/* {locationList.map((location) => {
-                    if (location.distrito === state) {
-                      return location.concelho.map((concelho, index) => (
-                        <option value={concelho} key={(concelho, index)}>
-                          {concelho}
-                        </option>
-                      ));
-                    }
-                  })} */}
+                      <option value="default">Concelho</option>
+                      {locationList.map((location) => {
+                        if (location.distrito === state) {
+                          return location.concelho.map((concelho, index) => (
+                            <option value={concelho} key={(concelho, index)}>
+                              {concelho}
+                            </option>
+                          ));
+                        }
+                      })}
                     </select>
                   </div>
 
@@ -297,6 +289,8 @@ export default function UserRegister() {
                       type="email"
                       id="Email"
                       name="email"
+                      required
+                      placeholder="exemplo@wtf.dev"
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -313,6 +307,8 @@ export default function UserRegister() {
                       type="text"
                       id="FirstName"
                       name="first_name"
+                      placeholder="Mínimo 3 caracteres"
+                      required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -329,6 +325,8 @@ export default function UserRegister() {
                       type="password"
                       id="Password"
                       name="password"
+                      placeholder="Mínimo 8 caracteres"
+                      required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -345,6 +343,8 @@ export default function UserRegister() {
                       type="password"
                       id="PasswordConfirmation"
                       name="password_confirmation"
+                      placeholder="Mínimo 8 caracteres"
+                      required
                       class="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                     />
                   </div>
@@ -352,7 +352,10 @@ export default function UserRegister() {
                   <div class="col-span-6">
                     <p class="text-sm text-gray-500">
                       Ao criar uma conta, você concorda com os nossos{" "}
-                      <a href="#" class="text-gray-700 underline">
+                      <a
+                        href="https://ajuda.sapo.pt/condicoes-de-utilizacao-portal-sapo-60556"
+                        class="text-gray-700 underline"
+                      >
                         termos e condições
                       </a>
                       .

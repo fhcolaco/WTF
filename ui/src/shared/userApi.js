@@ -33,9 +33,6 @@ export const getUserById = (id) =>
 export const createUser = async (data) =>
   await fetch(url, {
     method: "POST",
-    headers: {
-      Authorization: "Bearer " + sessionStorage.getItem("token"),
-    },
     body: data,
   }).then((res) => {
     if (res.status !== 200) {
