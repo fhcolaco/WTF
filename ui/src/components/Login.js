@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { login } from "../shared/sessionApi";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import axios from "axios";
 
@@ -10,7 +10,7 @@ export default function Login() {
   const [data, setData] = React.useState({
     user: "",
     pass: "",
-    toHome: false,
+    toHome: true,
   });
 
   const tstLogin = (e, data) => {
@@ -117,6 +117,11 @@ export default function Login() {
           aria-label="Main"
           className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:py-12 lg:px-16 xl:col-span-6"
         >
+          <div className="absolute inset-y-0 right-0 m-10 lg:bg-white">
+            <button onClick={() => navigate(-1)}>
+              <XMarkIcon className="h-6 w-6"></XMarkIcon>
+            </button>
+          </div>
           <div className="max-w-xl lg:max-w-3xl">
             <div className="relative -mt-16 block lg:hidden">
               <h1 className="mt-20 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">
@@ -148,11 +153,8 @@ export default function Login() {
                   id="Email"
                   name="email"
                   onChange={(e) => setData({ ...data, user: e.target.value })}
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm focus:border-orange-500 focus:ring-orange-500"
                 />
-                {/* <p id="helperUser" classNameName="ml-5 text-sm text-slate-300">
-                  Usar o email ou utilizador
-                </p> */}
               </div>
               <div className="col-span-6">
                 <label
@@ -167,10 +169,10 @@ export default function Login() {
                   id="Password"
                   name="password"
                   onChange={(e) => setData({ ...data, pass: e.target.value })}
-                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
+                  className="mt-1 w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm  focus:border-orange-500 focus:ring-orange-500"
                 />
               </div>
-              <div className="col-span-1">
+              {/* <div className="col-span-1">
                 <label
                   for="toHome"
                   className="block text-sm font-medium text-gray-700 dark:text-gray-200"
@@ -186,64 +188,22 @@ export default function Login() {
                   }
                   className="mt-1  w-full rounded-md border-gray-200 bg-white text-sm text-gray-700 shadow-sm"
                 />
-              </div>
-              <div className="col-span-6 sm:flex sm:items-center sm:gap-4">
-                <button className="inline-block shrink-0 rounded-full border border-blue-600 bg-blue-600 px-48 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none active:text-blue-500">
+              </div> */}
+              <div className="col-span-6 flex items-center gap-4">
+                <button className="inline-block shrink-0 rounded-full border border-orange-500 bg-orange-500 px-48 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-orange-500 focus:outline-none active:text-orange-400">
                   Login
                 </button>
               </div>
-              <hr class="col-span-6 h-px border-0 bg-gray-300" />
-              <button
-                type="button"
-                class=" col-span-6 inline-flex items-center rounded-lg bg-[#f44242] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#f44242]/90"
-              >
-                <svg
-                  class="mr-2 -ml-1 h-4 w-4"
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fab"
-                  data-icon="google"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 488 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
-                  ></path>
-                </svg>
-                Login com Google
-              </button>
-              <button
-                type="button"
-                class=" col-span-6 inline-flex items-center rounded-lg bg-[#3b5998] px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-[#3b5998]/90"
-              >
-                <svg
-                  class="mr-2 -ml-1 h-4 w-4"
-                  aria-hidden="true"
-                  focusable="false"
-                  data-prefix="fab"
-                  data-icon="facebook-f"
-                  role="img"
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 320 512"
-                >
-                  <path
-                    fill="currentColor"
-                    d="M279.1 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.4 0 225.4 0c-73.22 0-121.1 44.38-121.1 124.7v70.62H22.89V288h81.39v224h100.2V288z"
-                  ></path>
-                </svg>
-                Login com Facebook
-              </button>
+              <NavLink>
+                <div className="col-span-6 text-center text-sm text-gray-600 hover:cursor-pointer hover:underline">
+                  Ainda não tem conta WTF? Clica para criar.
+                </div>
+              </NavLink>
             </form>
           </div>
-          <div className="absolute inset-y-0 right-0 m-10 lg:bg-white">
-            <button onClick={() => navigate(-1)}>
-              <XMarkIcon className="h-6 w-6"></XMarkIcon>
-            </button>
-          </div>
+
           {/*Tiago isto serve para verificar o login se está a funcionar. De momento, já envia para a sessão como podes testar. Agora falta só modificar o aspeto*/}
-          <div className="absolute bottom-0 right-0 m-10 flex flex-row lg:bg-white">
+          {/* <div className="absolute bottom-0 right-0 m-10 flex flex-row lg:bg-white">
             <button
               onClick={(e) => tstLogout(e)}
               className="m-10 rounded border-2 bg-red-500"
@@ -284,7 +244,7 @@ export default function Login() {
                   : "NOT LOGGED IN"}
               </p>
             </div>
-          </div>
+          </div> */}
         </main>
       </div>
     </section>

@@ -340,10 +340,9 @@ export default function Search(props) {
             {!hotelSearch ? (
               <div className="flex flex-row items-center justify-center bg-white p-10 text-2xl">
                 <MagnifyingGlassIcon className="mr-4 h-12 w-12" />
-                Sem hoteis correspondentes!
+                Sem alojamento correspondente!
               </div>
             ) : null}
-            }
           </div>
         </div>
       )}

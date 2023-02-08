@@ -2,7 +2,6 @@ import { useState, useRef, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import { geocodeAPIKEY } from "../backend/components/Hotel";
 import Geocode from "react-geocode";
-import { getHotel } from "../shared/hotelApi";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import { Calendar, DateRange } from "react-date-range";
@@ -32,7 +31,7 @@ export default function Content(props) {
   const [loading, setloading] = useState(true);
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
-  const [hotel, setHotel] = useState([]);
+  const [hotel, setHotel] = useState(props.hotel);
   const [hotelCategory, setHotelCategory] = useState([]);
   const [openDate, setOpenDate] = useState(false);
   const [openQuantityOptions, setOpenQuantityOptions] = useState(false);
@@ -56,24 +55,14 @@ export default function Content(props) {
         });
 
   useEffect(() => {
-    getHotel().then((res) => {
-      setHotel(res);
-    });
-
     getHotelCategory().then((res) => {
       setHotelCategory(res);
     });
   }, []);
 
   useEffect(() => {
-    console.log("HOTEL");
-    console.log(hotel);
-    console.log("CATEGORY");
-    console.log(hotelCategory);
-  }, [hotel, hotelCategory]);
-
-  useEffect(() => {
-    if (hotel.length !== 0 && hotelCategory.length !== 0) {
+    if (hotel.length > 0 && hotelCategory.length > 0) {
+      console.log(hotel);
       setloading(false);
     }
   }, [hotel, hotelCategory]);
@@ -234,7 +223,7 @@ export default function Content(props) {
                 : "opacity-0 transition-opacity duration-500"
             } mt-44`}
           >
-            <Destaques hotel_list={[hotel, setHotel]} />
+            <Destaques hotel_list={hotel} />
 
             <Hotel_Category
               hotel_category={[hotelCategory, setHotelCategory]}

@@ -7,8 +7,8 @@ import {
 import { NavLink } from "react-router-dom";
 
 export default function Destaques(props) {
-  const [hotel, setHotel] = props.hotel_list;
-  const [topHoteis, setTopHoteis] = useState([0, 1]);
+  const hotel = props.hotel_list;
+  const [topHoteis, setTopHoteis] = useState([0]);
   const maxScrollWidth = useRef(0);
   const [currentIndex, setCurrentIndex] = useState(0);
   const carousel = useRef(null);
