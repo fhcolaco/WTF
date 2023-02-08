@@ -59,10 +59,10 @@ router.put("/:id", isAuth, upload.array("files"), (req, res) => {
     roomSave["images"] = req.files.map((file) => file.filename);
   Room.findOneAndUpdate({ _id: req.params.id }, roomSave)
     .then((result) => {
-      res.status(200).send("Quarto atualizado");
+      res.status(200).json({ Success: true, message: "Quarto atualizado" });
     })
     .catch((err) => {
-      res.status(400).send("O quarto não foi encontrado");
+      res.status(400).json({ message: err.message });
     });
 });
 
