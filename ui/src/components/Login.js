@@ -66,9 +66,11 @@ export default function Login() {
           className="flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:py-12 lg:px-16 xl:col-span-6"
         >
           <div className="absolute inset-y-0 right-0 m-10 lg:bg-white">
-            <button onClick={() => navigate(-1)}>
-              <XMarkIcon className="h-6 w-6"></XMarkIcon>
-            </button>
+            <NavLink to="/">
+              <button>
+                <XMarkIcon className="h-6 w-6"></XMarkIcon>
+              </button>
+            </NavLink>
           </div>
           <div className="max-w-xl lg:max-w-3xl">
             <div className="relative -mt-16 block lg:hidden">
