@@ -35,7 +35,6 @@ const createRoom = async (data) =>
     method: "POST",
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
-      "Content-Type": "multipart/form-data",
     },
     body: data,
   }).then((res) => {
@@ -52,7 +51,6 @@ const updateRoom = async (id, data) =>
     method: "PUT",
     headers: {
       Authorization: "Bearer " + sessionStorage.getItem("token"),
-      "Content-Type": "multipart/form-data",
     },
     body: data,
   }).then((res) => {

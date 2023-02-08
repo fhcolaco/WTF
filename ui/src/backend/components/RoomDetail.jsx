@@ -134,7 +134,7 @@ export default function RoomDetail(props) {
                   name="_hotel"
                   id="_hotel"
                   defaultValue={
-                    hotel.find((element) => room._hotel === element._id)._id ||
+                    hotel.find((element) => room._hotel === element._id)?._id ||
                     "default"
                   }
                   onChange={handleChange}
@@ -166,7 +166,7 @@ export default function RoomDetail(props) {
                   defaultValue={
                     roomCategory.find(
                       (element) => room._room_category === element._id
-                    )._id || "default"
+                    )?._id || "default"
                   }
                   onChange={handleChange}
                 >

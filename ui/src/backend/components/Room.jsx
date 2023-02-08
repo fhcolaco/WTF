@@ -6,11 +6,11 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { getRoom, deleteRoom } from "../../shared/roomApi";
+import { deleteRoom } from "../../shared/roomApi";
 import { getHotel } from "../../shared/hotelApi";
 import { getRoomCategory } from "../../shared/room_categoryApi";
 
-export default function Room() {
+export default function Room(props) {
   const [loading, setLoading] = useState(true);
   const [hotel, setHotel] = useState([]);
   const [room, setRoom] = useState([]);
@@ -18,9 +18,7 @@ export default function Room() {
   const [search, setSearch] = useState("");
 
   useEffect(() => {
-    getRoom().then((res) => {
-      setRoom(res);
-    });
+    setRoom(props.room);
     getHotel().then((res) => {
       setHotel(res);
     });
@@ -105,7 +103,7 @@ export default function Room() {
                   Desconto
                 </th>
                 <th className="px-6 py-4" scope="col">
-                  Preço
+                  Preço/Noite
                 </th>
                 <th className="px-6 py-4" scope="col">
                   Ações

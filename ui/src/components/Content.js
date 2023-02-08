@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Combobox } from "@headlessui/react";
 import { geocodeAPIKEY } from "../backend/components/Hotel";
 import Geocode from "react-geocode";

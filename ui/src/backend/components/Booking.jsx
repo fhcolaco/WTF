@@ -10,9 +10,7 @@ import {
   PhoneIcon,
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
-import { getBookings } from "../../shared/bookingApi";
 import { Combobox } from "@headlessui/react";
-import { getUsers } from "../../shared/userApi";
 import { getRoomById } from "../../shared/roomApi";
 import { getRoomCategoryById } from "../../shared/room_categoryApi";
 
@@ -26,22 +24,24 @@ export default function Booking(props) {
   const [countRoom, setCountRoom] = useState({});
 
   useEffect(() => {
-    getBookings().then((res) => {
-      setBooking(res);
-    });
-    getUsers().then((res) => {
-      setUsers(res);
-    });
-  }, []);
+    setBooking(props.booking);
+  }, [props.booking]);
+
+  useEffect(() => {
+    setHotel(props.hotel);
+  }, [props.hotel]);
+
+  useEffect(() => {
+    setUsers(props.users);
+  }, [props.users]);
 
   useEffect(() => {
     if (
       booking.length !== [] &&
       Object.keys(countRoom).length !== booking.length
     ) {
-      let aux = {};
+      let aux = [];
       booking.map((book) => {
-        let exist = false;
         let count = [];
         book._room.map((r) => {
           getRoomById(r).then((room) => {
@@ -54,21 +54,9 @@ export default function Booking(props) {
                 ][1] += 1;
             });
           });
-          let id = book._id;
-          console.log(countRoom);
-          console.log(id);
-          console.log(count);
-          if (!countRoom[id] === undefined) {
-            console.log("existe");
-            exist = true;
-          } else {
-            console.log("n existe");
-            exist = false;
-          }
-          if (!exist) {
-            aux[id] = count;
-          }
         });
+        let id = book._id;
+        aux = [...aux, { room: id, count: count }];
       });
       setCountRoom(aux);
     }
@@ -84,14 +72,13 @@ export default function Booking(props) {
       booking.length !== 0 &&
       hotel.length !== 0 &&
       users.length !== 0 &&
-      Object.keys(countRoom).length === booking.length &&
-      Object.keys(countRoom).length !== 0
+      countRoom.length === booking.length
     ) {
-      setLoading(false);
-    } else {
-      console.log(Object.keys(countRoom).length);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
-  }, [booking, countRoom, hotel, users]);
+  }, [booking, countRoom, hotel, loading, users]);
 
   const filt = (rows) => {
     return rows.filter(
@@ -102,6 +89,14 @@ export default function Booking(props) {
   useEffect(() => {
     console.log(selected);
   }, [selected]);
+
+  const deleteBooking = (id) => {
+    deleteBooking(id).then((res) => {
+      if (res.status === 200) {
+        setBooking(booking.filter((book) => book._id !== id));
+      }
+    });
+  };
 
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -131,7 +126,11 @@ export default function Booking(props) {
                 name="search-table"
                 className="block w-full rounded-md  border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-orange-500 focus:ring-orange-500"
                 placeholder="Procurar"
-                value={search}
+                value={
+                  search.length < selected.length
+                    ? hotel.find((hotel) => hotel._id === selected)?.name
+                    : search
+                }
                 onChange={(e) => setSearch(e.target.value)}
               />
               <Combobox.Options className="absolute z-10 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
@@ -174,7 +173,10 @@ export default function Booking(props) {
                 className={`absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 ${
                   selected === "" ? "hidden" : ""
                 }`}
-                onClick={() => setSelected("")}
+                onClick={() => {
+                  setSelected("");
+                  setSearch("");
+                }}
               >
                 <XMarkIcon className=" h-5 w-5 text-gray-400" />
               </button>
@@ -219,14 +221,14 @@ export default function Booking(props) {
             <tbody className="divide-y divide-gray-200 bg-white">
               {booking
                 .filter((book) => {
+                  console.log(book);
                   return book._hotel === selected || selected === "";
                 })
                 .map((book, index) => (
                   <tr key={book._id}>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {hotel.map((hotel) =>
-                        hotel._id === book._hotel ? hotel.name : ""
-                      )}
+                      {hotel.find((hotel) => hotel._id === book._hotel)?.name ||
+                        "..."}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {users.map((user) =>
@@ -234,9 +236,13 @@ export default function Booking(props) {
                       )}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
-                      {countRoom[book._id].map(
-                        (room) => `${room[0]} - ${room[1]}x`
-                      )}
+                      {`${
+                        countRoom?.find((cnt) => cnt.room === book._id)
+                          ?.count[0][1]
+                      }x ${
+                        countRoom?.find((cnt) => cnt.room === book._id)
+                          ?.count[0][0]
+                      }`}
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {new Date(book.start_date).toLocaleDateString("pt-PT")} -{" "}
@@ -244,6 +250,58 @@ export default function Booking(props) {
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {book.total_price}€
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {book.is_cancelled ? (
+                        <span class="mr-2 rounded border border-red-400 bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-gray-700 dark:text-red-400">
+                          Cancelado
+                        </span>
+                      ) : book.is_paid ? (
+                        <span class="mr-2 rounded border border-green-400 bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-gray-700 dark:text-green-400">
+                          Confirmado
+                        </span>
+                      ) : (
+                        <span class="mr-2 rounded border border-yellow-300 bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800 dark:bg-gray-700 dark:text-yellow-300">
+                          Pendente
+                        </span>
+                      )}
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="flex items-baseline space-x-4 text-sm">
+                        <a
+                          className="text-indigo-600 hover:text-indigo-900"
+                          href={`tel:${
+                            users.find((usr) => book._user === usr._id)
+                              ?.phone || "911234567"
+                          }`}
+                        >
+                          <PhoneIcon className="h-5 w-5" />
+                        </a>
+                        <a
+                          className="text-indigo-600 hover:text-indigo-900"
+                          href={`mailto:${
+                            users.find((usr) => book._user === usr._id).email ||
+                            "example@wtf.dev"
+                          }`}
+                        >
+                          <EnvelopeIcon className="h-5 w-5" />
+                        </a>
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      <div className="flex items-baseline space-x-4 text-sm">
+                        <Link to={`${book._id}`}>
+                          <button className="text-indigo-600 hover:text-indigo-900">
+                            <PencilSquareIcon className="h-5 w-5" />
+                          </button>
+                        </Link>
+                        <button
+                          className="text-indigo-600 hover:text-indigo-900"
+                          onClick={() => deleteBooking(book._id)}
+                        >
+                          <TrashIcon className="h-5 w-5" />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
