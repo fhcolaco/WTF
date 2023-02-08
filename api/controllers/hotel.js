@@ -43,7 +43,9 @@ router.post("/", isAuth, upload.array("files"), (req, res) => {
 });
 
 //PUT method
-router.put("/:id", upload.array("files"), (req, res) => {
+router.put("/:id", isAuth, upload.array("files"), (req, res) => {
+  console.log(req.body);
+  console.log(req.files.map((file) => file.filename));
   let hotelSave = {
     name: req.body.name,
     description: req.body.description,
@@ -54,12 +56,13 @@ router.put("/:id", upload.array("files"), (req, res) => {
     _services: req.body._services,
   };
   if (req.files.length > 0) {
+    console.log("entrei");
     hotelSave["images"] = [
       ...req.body.images?.split(","),
       ...req.files.map((file) => file.filename),
     ];
   }
-  console.log(hotelSave["images"]);
+  console.log(hotelSave);
   Hotel.findOneAndUpdate({ _id: req.params.id }, hotelSave)
     .then(() => {
       res

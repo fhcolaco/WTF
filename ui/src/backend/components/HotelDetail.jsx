@@ -14,12 +14,11 @@ export default function HotelDetail(props) {
   const [hotel, setHotel] = useState({});
   const [services, setServices] = useState([]);
   const [hotelType, setHotelType] = useState([]);
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [state, setState] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
   const [files, setFiles] = useState([]);
-  const maxScrollWidth = useRef(0);
-  const carousel = useRef(null);
   const params = useParams();
   const navigate = useNavigate();
 
@@ -38,19 +37,15 @@ export default function HotelDetail(props) {
       });
     } else {
       getHotelById(params.id).then((res) => {
-        console.log(res);
         setHotel(res);
-        if (
-          res.location !== "" &&
-          res.location !== null &&
-          res.location !== undefined
-        ) {
+        if (res.location) {
           locationList.map((location) => {
             if (location.concelho.includes(res.location)) {
               setState(location.distrito);
             }
           });
         }
+        setImages(res.images);
       });
     }
 
@@ -64,10 +59,28 @@ export default function HotelDetail(props) {
   }, []);
 
   useEffect(() => {
-    if (hotelType.length !== 0 && services.length !== 0 && hotel.length !== 0) {
+    if (
+      hotelType.length !== 0 &&
+      services.length !== 0 &&
+      hotel.length !== 0 &&
+      (images.length !== 0 || hotel.images === [""])
+    ) {
+      console.log(images);
       setLoading(false);
     }
-  }, [hotelType, services, hotel]);
+  }, [hotelType, services, hotel, images]);
+
+  const prevSlide = () => {
+    setCurrentIndex(
+      currentIndex === 0 ? hotel.images.length - 1 : currentIndex - 1
+    );
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex(
+      currentIndex === hotel.images.length - 1 ? 0 : currentIndex + 1
+    );
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -100,13 +113,30 @@ export default function HotelDetail(props) {
     hotel._services.forEach((service) => {
       data.append("_services", service);
     });
-    data.append("images", hotel.images);
+    data.append("images", images);
 
     if (files) {
-      data.append("files", files);
+      [...files].map((file) => {
+        data.append("files", file);
+      });
     }
 
-    props.submit(data, event);
+    // props.submit(data, event);
+
+    axios
+      .put(`http://localhost:4000/hotel/${hotel._id}`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        console.log(res);
+        navigate("/dashboard/hotel");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -227,8 +257,8 @@ export default function HotelDetail(props) {
                   <option value="default" disabled>
                     Distrito
                   </option>
-                  {locationList.map((distrito) => (
-                    <option value={distrito.distrito} key={distrito}>
+                  {locationList.map((distrito, index) => (
+                    <option value={distrito.distrito} key={(distrito, index)}>
                       {distrito.distrito}
                     </option>
                   ))}
@@ -254,8 +284,8 @@ export default function HotelDetail(props) {
                   </option>
                   {locationList.map((location) => {
                     if (location.distrito === state) {
-                      return location.concelho.map((concelho) => (
-                        <option value={concelho} key={concelho}>
+                      return location.concelho.map((concelho, index) => (
+                        <option value={concelho} key={(concelho, index)}>
                           {concelho}
                         </option>
                       ));
@@ -340,56 +370,50 @@ export default function HotelDetail(props) {
           </form>
           <div className="col-span-4 mx-5 mb-5 sm:px-0">
             <h1 className="mb-8 text-4xl font-extrabold">Imagens do Hotel</h1>
-            <div className="relative h-96 overflow-hidden rounded-lg">
-              <div className="relative grid place-items-center overflow-hidden">
-                <div className="top left absolute flex  w-full justify-between">
-                  <button
-                    onClick={() => {
-                      if (currentIndex > 0) {
-                        setCurrentIndex((prevState) => prevState - 1);
-                      }
-                    }}
-                    className="z-10 w-16 rounded-lg text-center text-white transition-all duration-300 ease-in-out hover:bg-black/50 hover:opacity-100"
-                  >
-                    <ChevronLeftIcon className="rounded-lg shadow-2xl" />
-                    <span className="sr-only">Prev</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      if (
-                        carousel.current !== null &&
-                        carousel.current.offsetWidth * currentIndex <=
-                          maxScrollWidth.current
-                      ) {
-                        setCurrentIndex((prevState) => prevState + 1);
-                      }
-                    }}
-                    className="z-10 w-16 rounded-lg text-center text-white transition-all duration-300 ease-in-out hover:bg-black/50 hover:opacity-100"
-                  >
-                    <ChevronRightIcon className="rounded-lg shadow-2xl" />
-                    <span className="sr-only">Next</span>
-                  </button>
-                </div>
+            {images.length > 0 && (
+              <div className="group relative m-auto h-96 w-full py-16 px-4">
                 <div
-                  ref={carousel}
-                  className="relative z-0 flex h-full w-full touch-pan-x snap-x snap-mandatory scroll-smooth"
-                >
-                  {hotel.images?.map((image) => (
+                  className={`h-full w-full rounded-2xl ${`bg-[url(https://wtf-backend.onrender.com/images/${images[currentIndex]})]`} bg-cover bg-center duration-500`}
+                ></div>
+                <div className="absolute top-1/2 left-5 hidden h-10 w-10 -translate-x-0 -translate-y-1/2 cursor-pointer rounded-full bg-black/20 p-2 text-white group-hover:block">
+                  <ChevronLeftIcon
+                    className="inset-0"
+                    onClick={() => prevSlide()}
+                  />
+                </div>
+                <div className="absolute top-1/2 right-5 hidden h-10 w-10 -translate-x-0 -translate-y-1/2 cursor-pointer rounded-full bg-black/20 p-2 text-white  group-hover:block">
+                  <ChevronRightIcon
+                    className="inset-0"
+                    onClick={() => nextSlide()}
+                  />
+                </div>
+                <div className="top-4 hidden justify-center py-2 group-hover:flex">
+                  {images.map((image, index) => (
                     <div
-                      key={image}
-                      className="carousel-item relative h-64 w-full"
-                    >
-                      <img
-                        src={image}
-                        className="absolute h-full w-full object-cover"
-                        alt={image}
-                      />
-                    </div>
+                      key={index}
+                      className={`mx-1 h-2 w-2 cursor-pointer rounded-full ${
+                        currentIndex === index ? "bg-orange-500" : "bg-gray-300"
+                      }`}
+                      onClick={() => setCurrentIndex(index)}
+                    ></div>
                   ))}
                 </div>
+                <div className="absolute inset-x-0  bottom-5 hidden h-0 group-hover:block">
+                  <button
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    onClick={() => {
+                      setImages(
+                        images.filter((image, index) => index !== currentIndex)
+                      );
+                      prevSlide();
+                    }}
+                  >
+                    Eliminar Imagem
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="group relative z-0 my-8 w-full">
+            )}
+            <div className="group relative z-0 my-16 w-full">
               <input
                 name="images"
                 id="images"
