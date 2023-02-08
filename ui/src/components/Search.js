@@ -18,6 +18,7 @@ import { format } from "date-fns";
 import { getBookings } from "../shared/bookingApi";
 import { getRoom } from "../shared/roomApi";
 import getTime from "date-fns/getTime";
+import getDate from "date-fns/getDate";
 
 export default function Search(props) {
   const [selectedLocation, setSelectedLocation] = props.selectedLocation;
@@ -26,10 +27,8 @@ export default function Search(props) {
   const [query, setQuery] = useState("");
   const [locationList, setLocationList] = useState([]);
   const [filteredRooms, setFilteredRooms] = useState([]);
-  // const availableRooms = [];
-  // const isAvaliable = [];
-  // const [hotelSearch, setHotelSearch] = useState([0, 1]);
-  const hotelSearch = [];
+  let isRommDateAvaliable = true;
+  const [hotelSearch, setHotelSearch] = useState([]);
   const [roomList, setRoomList] = useState([]);
   const [hotel, setHotel] = useState([]);
   const [hotelCategory, setHotelCategory] = useState([]);
@@ -65,12 +64,12 @@ export default function Search(props) {
     if (
       hotel.length !== 0 &&
       hotelCategory.length !== 0 &&
-      // && bookingsList.length !== 0 &&
+      bookingsList.length !== 0 &&
       roomList.length !== 0
     ) {
       setloading(false);
     }
-  }, [hotel, hotelCategory, roomList]);
+  }, [hotel, hotelCategory, roomList, bookingsList]);
 
   const handleQuantityOption = (item, operacao) => {
     setQuantityOptions((prev) => {
@@ -83,103 +82,47 @@ export default function Search(props) {
       };
     });
   };
+
   useEffect(() => {
-    roomList.map((item) => {
+    let aux = [];
+    roomList.map((room) => {
+      console.log("Quarto", room);
       bookingsList.map((booking) => {
-        console.log(new Date(booking.start_date));
-        console.log(">=");
-        console.log(new Date(date[0].startDate));
-        console.log("=");
-        console.log(
-          new Date(booking.start_date).getTime() >=
-            new Date(date[0].startDate).getTime()
-        );
-        console.log(new Date(booking.end_date));
-        console.log(">=");
-        console.log(new Date(date[0].endDate));
-        console.log("=");
-        console.log(
-          new Date(booking.end_date).getTime() >=
-            new Date(date[0].endDate).getTime()
-        );
-        if (
-          new Date(booking.start_date).getTime() >=
-            new Date(date[0].startDate).getTime() &&
-          new Date(booking.end_date) >= new Date(date[0].endDate)
-        ) {
-          if (!filteredRooms.includes(item)) {
-            console.log(321);
-            setFilteredRooms([...filteredRooms, item]);
+        let i = 24 * 60 * 60 * 1000;
+        let endInputAux = new Date(date[0].endDate).getTime();
+        let startInputAux = new Date(date[0].startDate).getTime() - i;
+        while (startInputAux < endInputAux) {
+          startInputAux = startInputAux + i;
+          if (
+            new Date(booking.start_date).getTime() < startInputAux &&
+            startInputAux < new Date(booking.end_date).getTime()
+          ) {
+            isRommDateAvaliable = false;
           }
         }
       });
+      if (isRommDateAvaliable && !aux.includes(room)) {
+        aux.push([...aux, room]);
+      } else {
+        aux.push(aux.filter((filtRoom) => filtRoom._id !== room._id));
+      }
+
+      console.log("Room Date Avaliable", isRommDateAvaliable);
     });
+    console.log("AUX: ", aux);
+    setFilteredRooms(...aux);
   }, [roomList, date]);
 
   useEffect(() => {
-    for (let room of filteredRooms) {
-      if (!hotelSearch?.includes(room._hotel))
-        hotelSearch.push(room.data._hotel);
-    }
-
-    console.log("room", filteredRooms);
-    console.log("hotel", hotelSearch);
+    let aux = [];
+    if (filteredRooms)
+      for (let room of filteredRooms) {
+        if (!aux?.includes(room._hotel)) aux.push(room._hotel);
+      }
+    setHotelSearch(...aux);
+    console.log("FilteredRoom", filteredRooms);
+    console.log("hotelSearch", aux);
   }, [filteredRooms]);
-
-  // {
-  //   roomList.map((room) => {
-  //     console.log("Quarto: ", room);
-  //     bookingsList.map((booking) => {
-  //       if (booking._room.includes(room._id)) {
-  //         console.log("TEM RESERVAS");
-  //         console.log(room._id);
-  //         console.log(
-  //           "START: ",
-  //           format(new Date(booking.start_date), "dd/MM/yyyy"),
-  //           "END: ",
-  //           format(new Date(booking.end_date), "dd/MM/yyyy")
-  //         );
-  //         console.log(
-  //           "INPUT Start:",
-  //           format(new Date(date[0].startDate), "dd/MM/yyyy"),
-  //           "INPUT End:",
-  //           format(new Date(date[0].endDate), "dd/MM/yyyy")
-  //         );
-  //         if (
-  //           (new Date(booking.start_date).getTime() <
-  //             new Date(date[0].startDate).getTime() &&
-  //             new Date(date[0].startDate).getTime() <
-  //               new Date(booking.end_date).getTime()) ||
-  //           (new Date(booking.start_date).getTime() <
-  //             new Date(date[0].endDate).getTime() &&
-  //             new Date(date[0].endDate).getTime() <
-  //               new Date(booking.end_date).getTime())
-  //         ) {
-  //           console.log("NAO PODE RESERVAR");
-  //           isAvaliable.push(false);
-  //         } else {
-  //           console.log("PODE RESERVAR");
-  //           isAvaliable.push(true);
-  //         }
-  //       } else {
-  //         console.log("NAO TEM RESERVAS");
-  //         if (availableRooms.includes(room._id)) {
-  //           availableRooms.push(room._id);
-  //         }
-  //       }
-  //     });
-  //     if (!isAvaliable.includes(false) && !availableRooms.includes(room._id)) {
-  //       availableRooms.push(room._id);
-  //     }
-
-  //     if (availableRooms.includes(room._id)) {
-  //       hotelSearch.push(room._hotel);
-  //     }
-  //   });
-  //   console.log("hotelSearch: ", hotelSearch);
-  //   console.log("isAvaliable: ", isAvaliable);
-  //   console.log("Avaliable Rooms: ", availableRooms);
-  // }
 
   return (
     <>
@@ -338,7 +281,7 @@ export default function Search(props) {
           </div>
           <div className="w-full flex-col">
             {hotel.map((hotel) => {
-              if (hotelSearch.includes(hotel._id)) {
+              if (hotelSearch?.includes(hotel._id)) {
                 return (
                   <a class="mb-4 flex h-72 w-full rounded-lg bg-white">
                     <img
@@ -352,7 +295,6 @@ export default function Search(props) {
                           {hotel.name}
                         </h5>
                         {hotelCategory.map((category) => {
-                          // console.log(category.name, category);
                           if (hotel._hotel_type.includes(category._id))
                             return <p>{category.name} - Location</p>;
                         })}
@@ -395,6 +337,13 @@ export default function Search(props) {
                 );
               }
             })}
+            {!hotelSearch ? (
+              <div className="flex flex-row items-center justify-center bg-white p-10 text-2xl">
+                <MagnifyingGlassIcon className="mr-4 h-12 w-12" />
+                Sem hoteis correspondentes!
+              </div>
+            ) : null}
+            }
           </div>
         </div>
       )}
