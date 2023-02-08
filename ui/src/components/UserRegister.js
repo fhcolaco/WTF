@@ -22,24 +22,26 @@ export default function UserRegister() {
   });
 
   useEffect(() => {
-    console.log("A verificar...");
-    const check = axios
-      .get("https://wtf-backend.onrender.com/verifyUser", {
-        headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res.data.message);
-        if (res.data.success === true) {
-          setSession(
-            JSON.parse(atob(sessionStorage.getItem("token").split(".")[1])).id
-          );
-        }
-      })
-      .catch((err) => {
-        console.log(err.response.data.message);
-      });
+    if (sessionStorage.getItem("token")) {
+      console.log("A verificar...");
+      const check = axios
+        .get("https://wtf-backend.onrender.com/verifyUser", {
+          headers: {
+            Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+          },
+        })
+        .then((res) => {
+          console.log(res.data.message);
+          if (res.data.success === true) {
+            setSession(
+              JSON.parse(atob(sessionStorage.getItem("token").split(".")[1])).id
+            );
+          }
+        })
+        .catch((err) => {
+          console.log(err.response.data.message);
+        });
+    }
   }, []);
 
   useEffect(() => {
@@ -62,9 +64,9 @@ export default function UserRegister() {
         location: "",
         address: "",
         postal_code: "",
-        phone: null,
-        fiscal_number: null,
-        credit_card: null,
+        phone: 0,
+        fiscal_number: 0,
+        credit_card: 0,
         image: "default.svg",
       });
     } else {
@@ -100,7 +102,19 @@ export default function UserRegister() {
     for (let pair of data.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
-    onSubmitUser(data, event);
+    // onSubmitUser(data, event);
+    axios
+      .post("http://localhost:4000/user", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   const onSubmitUser = (data, event) => {

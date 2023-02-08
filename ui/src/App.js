@@ -32,25 +32,40 @@ import {
 } from "./shared/hotel_categoryApi";
 import UserRegister from "./components/UserRegister";
 import { createRoom, getRoom, updateRoom } from "./shared/roomApi";
+import { getBookings } from "./shared/bookingApi";
+import { getUsers } from "./shared/userApi";
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [hotel, setHotel] = useState([]);
+  const [room, setRoom] = useState([]);
   const [hotelCategory, setHotelCategory] = useState([]);
+  const [booking, setBooking] = useState([]);
+  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    getBookings().then((data) => {
+      setBooking(data);
+    });
     getHotel().then((data) => {
       setHotel(data);
     });
     getHotelCategory().then((data) => {
       setHotelCategory(data);
     });
+    getRoom().then((data) => {
+      setRoom(data);
+    });
+    getUsers().then((data) => {
+      setUsers(data);
+    });
   }, []);
 
   useEffect(() => {
-    if (hotel.length > 0 && hotelCategory.length > 0) setLoading(false);
-  }, [hotel, hotelCategory]);
+    if (hotel.length > 0 && hotelCategory.length > 0 && booking.length > 0)
+      setLoading(false);
+  }, [hotel, hotelCategory, booking]);
 
   const onSubmitHotel = (data, event) => {
     event.preventDefault();
@@ -61,7 +76,7 @@ function App() {
     }
     if (id !== "") {
       updateHotel(id, data)
-        .then((teste) => {
+        .then(() => {
           getHotel().then((res) => {
             setHotel(res);
           });
@@ -80,7 +95,7 @@ function App() {
 
   const onSubmitHotelCategory = (data, event) => {
     event.preventDefault();
-    console.log("inicio2");
+    console.log(data);
     if (data._id !== "") {
       updateHotelCategory(data._id, data)
         .then((data) => {
@@ -93,10 +108,14 @@ function App() {
           console.log("ERRO", err);
         });
     } else {
-      createHotelCategory(data).then((data) => {
-        console.log("CREATE", data);
-        setHotelCategory([...hotelCategory, data]);
-      });
+      createHotelCategory(data)
+        .then((data) => {
+          console.log("CREATE", data);
+          setHotelCategory([...hotelCategory, data]);
+        })
+        .catch((err) => {
+          console.log("ERRO2", err);
+        });
     }
     navigate("/dashboard/hotel/categoria");
   };
@@ -110,8 +129,10 @@ function App() {
     }
     if (id !== "") {
       updateRoom(id, data)
-        .then((teste) => {
-          console.log("UPDATE", teste);
+        .then(() => {
+          getRoom().then((res) => {
+            setRoom(res);
+          });
         })
         .catch((err) => {
           console.log("ERRO", err);
@@ -119,7 +140,7 @@ function App() {
     } else {
       createRoom(data)
         .then((data) => {
-          console.log(data);
+          setRoom([...room, data]);
         })
         .catch((err) => {
           console.log("ERRO", err);
@@ -144,7 +165,6 @@ function App() {
   ]);
 
   // -----------------------------------------------------------------------------
-
   return (
     <>
       {loading ? (
@@ -160,6 +180,7 @@ function App() {
                   quantityOptions={[quantityOptions, setQuantityOptions]}
                   date={[date, setDate]}
                   hotel={hotel}
+                  hotelCategory={hotelCategory}
                 />
               }
             />
@@ -203,7 +224,7 @@ function App() {
               path="hotel/categoria/criar"
               element={<HotelCategory_Detail submit={onSubmitHotelCategory} />}
             />
-            <Route path="quarto" element={<Room />} />
+            <Route path="quarto" element={<Room room={room} />} />
             <Route
               path="quarto/criar"
               element={<RoomDetail submit={onSubmitRoom} />}
@@ -213,7 +234,19 @@ function App() {
               element={<RoomDetail submit={onSubmitRoom} />}
             />
             <Route path="quarto/categoria" element={<RoomCategory />} />
-            <Route path="reserva" element={<Booking hotel={hotel} />} />
+            <Route
+              path="reserva"
+              element={
+                <Booking
+                  hotel={hotel}
+                  room={room}
+                  booking={booking}
+                  users={users}
+                />
+              }
+            />
+            <Route path="reserva/:id" element={<BookingDetail />} />
+            <Route path="reserva/criar" element={<BookingDetail />} />
             <Route path="utilizador" element={<Users />} />
             <Route path="servico" element={<Services />} />
             <Route path="servico/criar" element={<ServicesDetail />} />

@@ -26,7 +26,7 @@ router.get("/:id", (req, res) => {
 });
 
 //POST method
-router.post("/", isAuth, (req, res) => {
+router.post("/", (req, res) => {
   HotelCategory.create({
     name: req.body.name,
     description: req.body.description,
