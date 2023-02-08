@@ -12,6 +12,7 @@ import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useNavigate, useParams } from "react-router-dom";
 import { getHotelById } from "../shared/hotelApi";
 import { getHotelCategory } from "../shared/hotel_categoryApi";
+import { getServicesById } from "../shared/servicesApi";
 import Loader from "../Loader";
 
 export default function Hotel_Detail() {
@@ -20,6 +21,7 @@ export default function Hotel_Detail() {
   const params = useParams();
   const [hotel, setHotel] = useState([]);
   const [hotelCategory, setHotelCategory] = useState([]);
+  const [services, setServices] = useState([]);
 
   useEffect(() => {
     getHotelById(params.id).then((res) => {
@@ -28,6 +30,10 @@ export default function Hotel_Detail() {
 
     getHotelCategory().then((res) => {
       setHotelCategory(res);
+    });
+
+    getServicesById().then((res) => {
+      setServices(res);
     });
   }, [params.id]);
 

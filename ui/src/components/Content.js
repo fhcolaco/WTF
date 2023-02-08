@@ -23,6 +23,7 @@ import Loader from "../Loader";
 import Hotel_Category from "./Hotel_Category";
 import Destaques from "./Destaques";
 import Search from "./Search";
+import locationList from "../shared/locationList";
 
 export default function Content(props) {
   const [selectedLocation, setSelectedLocation] = props.selectedLocation;
@@ -30,7 +31,7 @@ export default function Content(props) {
   const [date, setDate] = props.date;
   const [loading, setloading] = useState(true);
   const [query, setQuery] = useState("");
-  const [locationList, setLocationList] = useState([]);
+  // const [locationList, setLocationList] = useState([]);
   const [hotel, setHotel] = useState(props.hotel);
   const [hotelCategory, setHotelCategory] = useState([]);
   const [openDate, setOpenDate] = useState(false);
@@ -47,17 +48,29 @@ export default function Content(props) {
     });
   };
 
-  const filteredLocation =
-    query === ""
-      ? locationList
-      : locationList.filter((loc) => {
-          return loc.toLowerCase().includes(query.toLowerCase());
-        });
+  // const filteredLocation =
+  //   query === ""
+  //     ? locationList.map()
+  //     : locationList.filter((loc) => {
+  //         loc.toLowerCase().includes(query.toLowerCase());
+  //       });
+
+  let filteredLocation = [];
+
+  {
+    if (query === "") {
+      locationList.map((loc) => {
+        filteredLocation.push(loc.distrito);
+      });
+    }
+  }
 
   useEffect(() => {
     getHotelCategory().then((res) => {
       setHotelCategory(res);
     });
+
+    console.log("LOC: ", filteredLocation);
   }, []);
 
   useEffect(() => {
@@ -114,7 +127,7 @@ export default function Content(props) {
                   className="block w-56 rounded border-none pl-10 outline outline-1 outline-black focus:ring-orange-500 "
                   placeholder={"cidade"}
                 ></Combobox.Input>
-                <Combobox.Options className="absolute mt-1 w-56 rounded bg-white">
+                <Combobox.Options className="absolute z-30 mt-1 w-56 rounded bg-white">
                   {filteredLocation.map((location, index) => (
                     <Combobox.Option
                       key={index}

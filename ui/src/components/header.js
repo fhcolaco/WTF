@@ -113,13 +113,13 @@ export default function Header() {
             <div className="flex items-center pr-4 md:pr-16">
               <Menu as="div" className="relative inline-block text-left">
                 <div>
-                  <Menu.Button className="item-center inline-flex w-full items-center justify-center">
+                  <Menu.Button className="item-center inline-flex w-full items-center justify-center rounded-lg  p-2">
                     <img
                       src={`https://wtf-backend.onrender.com/images/${userImage}`}
                       className="h-8 rounded-full border-2 border-white shadow-sm md:mr-4"
                       alt="Avatar"
                     />
-                    <span className="hidden text-gray-700 md:inline-block">
+                    <span className="hidden text-white md:inline-block">
                       {session.name}
                     </span>
                     <ChevronDownIcon className="ml-2 h-4 w-4 text-gray-700" />

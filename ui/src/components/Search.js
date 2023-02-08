@@ -19,6 +19,7 @@ import { getBookings } from "../shared/bookingApi";
 import { getRoom } from "../shared/roomApi";
 import getTime from "date-fns/getTime";
 import getDate from "date-fns/getDate";
+import locationList from "../shared/locationList";
 
 export default function Search(props) {
   const [selectedLocation, setSelectedLocation] = props.selectedLocation;
