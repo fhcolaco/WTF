@@ -24,16 +24,19 @@ router.get("/:id", async (req, res) => {
 
 //POST method
 router.post("/", isAuth, upload.array("files"), (req, res) => {
-  Hotel.create({
+  let hotelSave = {
     name: req.body.name,
+    description: req.body.description,
     location: req.body.location,
     address: req.body.address,
     postal_code: req.body.postal_code,
-    description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
-    images: req.files.map((file) => file.filename),
-  })
+  };
+  if (req.files || false) {
+    hotelSave["images"] = req.files?.map((file) => file.filename);
+  }
+  Hotel.create(hotelSave)
     .then((hotel) => {
       res.status(200).send(hotel);
     })
@@ -59,7 +62,6 @@ router.put("/:id", isAuth, upload.array("files"), (req, res) => {
       ...req.files?.map((file) => file.filename),
     ];
   }
-  console.log(hotelSave);
   Hotel.findOneAndUpdate({ _id: req.params.id }, hotelSave)
     .then(() => {
       res

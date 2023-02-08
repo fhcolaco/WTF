@@ -58,7 +58,7 @@ function App() {
     for (const [key, value] of data.entries()) {
       console.log(`${key}: ${value}`);
     }
-    if (data._id !== "") {
+    if (data.get("_id")) {
       updateHotel(id, data)
         .then((teste) => {
           getHotel().then((res) => {

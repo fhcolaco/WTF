@@ -15,7 +15,7 @@ export default function HotelDetail(props) {
   const [hotel, setHotel] = useState({});
   const [services, setServices] = useState([]);
   const [hotelType, setHotelType] = useState([]);
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(null);
   const [loading, setLoading] = useState(true);
   const [state, setState] = useState("");
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -26,15 +26,13 @@ export default function HotelDetail(props) {
   useEffect(() => {
     if (!id) {
       setHotel({
-        _id: "",
         name: "",
         description: "",
         location: "",
         address: "",
         postal_code: "",
         _hotel_type: "",
-        _services: [""],
-        images: [""],
+        _services: [],
       });
     } else {
       getHotelById(id).then((res) => {
@@ -64,7 +62,7 @@ export default function HotelDetail(props) {
       hotelType.length !== 0 &&
       services.length !== 0 &&
       hotel.length !== 0 &&
-      (images.length !== 0 || !hotel._id)
+      (images || !hotel._id)
     ) {
       setLoading(false);
     }
@@ -109,12 +107,15 @@ export default function HotelDetail(props) {
     hotel._services.forEach((service) => {
       data.append("_services", service);
     });
-    data.append("images", images);
+    data.append("images", images || "");
 
     if (files) {
       [...files].map((file) => {
         data.append("files", file);
       });
+    }
+    for (let pair of data.entries()) {
+      console.log(pair[0] + ", " + pair[1]);
     }
 
     props.submit(data, event);
@@ -133,9 +134,7 @@ export default function HotelDetail(props) {
           >
             <div className="inline-block">
               <h2 className="mb-8 text-4xl font-extrabold">
-                {hotel.name === ""
-                  ? "Criar novo hotel"
-                  : `Editar ${hotel.name}`}
+                {!id ? "Criar novo hotel" : `Editar ${hotel.name}`}
               </h2>
             </div>
             <div className="group relative z-0 my-8 w-full">
@@ -176,16 +175,22 @@ export default function HotelDetail(props) {
             </div>
             <div className="grid md:grid-cols-2 md:gap-6">
               <div className="group relative z-0 my-8 w-full">
+                <label
+                  htmlFor="hotel_type"
+                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
+                >
+                  Tipo de hotel
+                </label>
                 <select
-                  required
-                  value={hotel._hotel_type}
+                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
                   name="_hotel_type"
                   id="_hotel_type"
+                  defaultValue={hotel._hotel_type || "default"}
                   onChange={handleChange}
-                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                  required
                 >
                   <option value="default" disabled>
-                    ...
+                    Selecione um tipo de hotel
                   </option>
                   {hotelType.map((hotelType) => (
                     <option value={hotelType._id} key={hotelType._id}>
@@ -193,12 +198,6 @@ export default function HotelDetail(props) {
                     </option>
                   ))}
                 </select>
-                <label
-                  htmlFor="hotel_type"
-                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
-                >
-                  Tipo de hotel
-                </label>
               </div>
               <div className="relative z-0 my-8 w-full">
                 <input
@@ -355,7 +354,7 @@ export default function HotelDetail(props) {
           </form>
           <div className="col-span-4 mx-5 mb-5 sm:px-0">
             <h1 className="mb-8 text-4xl font-extrabold">Imagens do Hotel</h1>
-            {images.length > 0 && (
+            {images?.length > 0 && (
               <div className="group relative m-auto h-96 w-full py-16 px-4">
                 <img
                   src={`https://wtf-backend.onrender.com/images/${images[currentIndex]}`}
@@ -392,7 +391,7 @@ export default function HotelDetail(props) {
                       setImages(
                         images.filter((image, index) => index !== currentIndex)
                       );
-                      if (currentIndex > images.length - 1) prevSlide();
+                      setCurrentIndex(0);
                     }}
                   >
                     Eliminar Imagem
