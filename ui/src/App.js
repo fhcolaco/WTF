@@ -24,15 +24,24 @@ import Login from "./components/Login";
 import Search from "./components/Search";
 import About from "./components/About";
 import Hotel_Detail from "./components/Hotel_Detail";
+import HotelCategory_Detail from "./backend/components/HotelCategory_Detail";
+import {
+  updateHotelCategory,
+  createHotelCategory,
+  getHotelCategory,
+} from "./shared/hotel_categoryApi";
 
 function App() {
   const [hotel, setHotel] = useState([]);
+  const [hotelCategory, setHotelCategory] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     getHotel().then((data) => {
-      console.log(data);
       setHotel(data);
+    });
+    getHotelCategory().then((data) => {
+      setHotelCategory(data);
     });
   }, []);
 
@@ -46,27 +55,41 @@ function App() {
     if (data._id !== "") {
       updateHotel(id, data)
         .then((teste) => {
-          console.log("update");
-          console.log(teste);
           getHotel().then((res) => {
-            console.log(res);
             setHotel(res);
           });
         })
         .catch((err) => {
-          console.log("error");
-          console.log(err);
+          console.log("ERRO", err);
         });
     } else {
-      console.log("create");
       createHotel(data).then((data) => {
         console.log(data);
         setHotel([...hotel, data]);
       });
     }
-    console.log("fim");
-    console.log(hotel);
     navigate("/dashboard/hotel");
+  };
+
+  const onSubmitHotelCategory = (data, event) => {
+    event.preventDefault();
+    console.log("inicio");
+    if (data._id !== "") {
+      updateHotelCategory(data._id, data)
+        .then((data) => {
+          getHotelCategory().then((res) => {
+            setHotelCategory(res);
+          });
+        })
+        .catch((err) => {
+          console.log("ERRO", err);
+        });
+    } else {
+      createHotelCategory(data).then((data) => {
+        setHotelCategory([...hotelCategory, data]);
+      });
+    }
+    navigate("/dashboard/hotel/categoria");
   };
 
   // ------------------------- FILTROS DE PESQUISA  -------------------------
@@ -126,7 +149,18 @@ function App() {
             path="hotel/:id"
             element={<HotelDetail submit={onSubmitHotel} />}
           />
-          <Route path="hotel/categoria" element={<HotelCategory />} />
+          <Route
+            path="hotel/categoria"
+            element={<HotelCategory hotelCategory={hotelCategory} />}
+          />
+          <Route
+            path="hotel/categoria/:id"
+            element={<HotelCategory_Detail submit={onSubmitHotelCategory} />}
+          />
+          <Route
+            path="hotel/categoria/criar"
+            element={<HotelCategory_Detail submit={onSubmitHotelCategory} />}
+          />
           <Route path="quarto" element={<Room />} />
           <Route path="quarto/criar" element={<RoomDetail />} />
           <Route path="quarto/:id" element={<RoomDetail />} />

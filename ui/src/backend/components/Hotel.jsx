@@ -25,7 +25,6 @@ export default function Hotel(props) {
   useEffect(() => {
     if (hotel.length !== 0 && hotelType.length !== 0) {
       setLoading(false);
-      console.log(`Bearer ${sessionStorage.getItem("token")}`);
     }
   }, [hotel, hotelType]);
 
@@ -44,7 +43,7 @@ export default function Hotel(props) {
   return (
     <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       {loading ? (
-        <Loader />
+        <Loader className="w-screen" />
       ) : (
         <>
           <div className=" flex items-baseline bg-white pb-4">

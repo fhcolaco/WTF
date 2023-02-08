@@ -53,7 +53,7 @@ router.put("/:id", isAuth, upload.array("files"), (req, res) => {
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
   };
-  if (req.files.length > 0) {
+  if (req.files || false) {
     hotelSave["images"] = [
       ...req.body.images?.split(","),
       ...req.files?.map((file) => file.filename),

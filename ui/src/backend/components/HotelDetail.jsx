@@ -121,21 +121,6 @@ export default function HotelDetail(props) {
     }
 
     props.submit(data, event);
-
-    // axios
-    //   .put(`http://localhost:4000/hotel/${hotel._id}`, data, {
-    //     headers: {
-    //       "Content-Type": "multipart/form-data",
-    //       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-    //     },
-    //   })
-    //   .then((res) => {
-    //     console.log(res);
-    //     navigate("/dashboard/hotel");
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   return (
@@ -158,6 +143,7 @@ export default function HotelDetail(props) {
             </div>
             <div className="group relative z-0 my-8 w-full">
               <input
+                required
                 type="text"
                 name="name"
                 id="name"
@@ -176,6 +162,7 @@ export default function HotelDetail(props) {
             <div className="group relative z-0 my-8 w-full">
               <textarea
                 name="description"
+                required
                 id="description"
                 value={hotel.description}
                 onChange={handleChange}
@@ -218,6 +205,7 @@ export default function HotelDetail(props) {
               </div>
               <div className="relative z-0 my-8 w-full">
                 <input
+                  required
                   value={hotel.address}
                   name="address"
                   id="address"
@@ -298,6 +286,7 @@ export default function HotelDetail(props) {
                   name="postal_code"
                   id="postal_code"
                   className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                  required
                   placeholder=" "
                   onChange={handleChange}
                 />
