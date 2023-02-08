@@ -5,7 +5,11 @@ import Loader from "../../Loader";
 import { getRoomCategory } from "../../shared/room_categoryApi";
 import { getRoomById } from "../../shared/roomApi";
 import { getHotel } from "../../shared/hotelApi";
-import { CheckIcon } from "@heroicons/react/24/solid";
+import {
+  CheckIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "@heroicons/react/24/solid";
 
 export default function RoomDetail() {
   const [room, setRoom] = useState(null);
@@ -13,9 +17,11 @@ export default function RoomDetail() {
   const [roomCategory, setRoomCategory] = useState(null);
   const [services, setServices] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [files, setFiles] = useState([]);
   const { id } = useParams();
   const navigate = useNavigate();
-  const params = useParams();
 
   useEffect(() => {
     getRoomCategory().then((roomCategory) => {
@@ -31,7 +37,10 @@ export default function RoomDetail() {
 
   useEffect(() => {
     id
-      ? getRoomById(id).then((room) => setRoom(room))
+      ? getRoomById(id).then((room) => {
+          setRoom(room);
+          setImages(room.images);
+        })
       : setRoom({ isAvailable: true });
   }, [id]);
 
@@ -47,8 +56,24 @@ export default function RoomDetail() {
   };
 
   const isChecked = (e) => {
-    const { name, checked } = e.target;
-    setRoom({ ...room, [name]: checked });
+    if (!room._services.includes(e.target.value)) {
+      setRoom({ ...room, _services: [...room._services, e.target.value] });
+    } else {
+      setRoom({
+        ...room,
+        _services: room._services.filter(
+          (service) => service !== e.target.value
+        ),
+      });
+    }
+  };
+
+  const prevSlide = () => {
+    setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
+  };
+
+  const nextSlide = () => {
+    setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
   };
 
   useEffect(() => {
@@ -75,11 +100,11 @@ export default function RoomDetail() {
           >
             <div className="inline-block">
               <h2 className="mb-8 text-4xl font-extrabold">
-                {room._id === "" ? "Criar novo quarto" : `Editar quarto`}
+                {id === "" ? `Editar quarto` : "Criar novo quarto"}
               </h2>
             </div>
             <div className="grid md:grid-cols-2 md:gap-6">
-              <div className="group relative z-0 my-8 w-full">
+              <div className="group group relative z-0 my-8 w-full">
                 <label
                   htmlFor="hotel"
                   className="absolute top-0 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
@@ -107,7 +132,7 @@ export default function RoomDetail() {
                   ))}
                 </select>
               </div>
-              <div className="group relative z-0 my-8 w-full">
+              <div className="group group relative z-0 my-8 w-full">
                 <label
                   htmlFor="category"
                   className="absolute top-0 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
@@ -136,55 +161,219 @@ export default function RoomDetail() {
                   ))}
                 </select>
               </div>
-              <div className="group relative z-0 my-8 w-full">
-                <textarea
-                  name="description"
-                  required
-                  id="description"
-                  value={room.description}
-                  onChange={handleChange}
-                  rows="5"
-                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
-                  placeholder=" "
-                />
+            </div>
+            <div className="group relative z-0 my-8 w-full">
+              <textarea
+                name="description"
+                required
+                id="description"
+                value={room.description}
+                onChange={handleChange}
+                rows="5"
+                className="-transparent peer block w-full appearance-none border-0 border-b-2  border-gray-300 px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                placeholder=" "
+              />
+              <label
+                htmlFor="description"
+                className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
+              >
+                Descrição do quarto
+              </label>
+            </div>
+            <div className="grid items-center md:grid-cols-3 md:gap-6">
+              <div className="my-30 group relative z-0 w-full gap-6">
                 <label
-                  htmlFor="description"
-                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
+                  className={`flex h-full w-full cursor-pointer select-none flex-row items-center justify-between rounded-lg border-2 border-gray-200 bg-gray-50 p-5 text-xs font-semibold  text-gray-500 hover:text-gray-600 md:grid-cols-3 ${
+                    room.isAvailable
+                      ? "bg-green-300 text-gray-600"
+                      : "bg-gray-300"
+                  }`}
                 >
-                  Descrição do quarto
-                </label>
-              </div>
-              <div className="grid md:grid-cols-3 md:gap-6">
-                <div className="my-30 group relative z-0 h-16 w-full gap-6">
-                  <label
-                    className={`inline-flex h-full w-full cursor-pointer select-none items-center justify-between rounded-lg border-2 border-gray-200 bg-gray-50 p-5 text-xs font-semibold  text-gray-500 hover:text-gray-600 md:grid-cols-3 ${
-                      room.isAvailable
-                        ? "bg-green-300 text-gray-600"
-                        : "bg-gray-300"
-                    }`}
-                  >
-                    Está disponível?
-                  </label>
+                  Está operacional?
                   <input
-                    type="checkbox"
                     name="isAvailable"
-                    id="isAvailable"
-                    value={room.isAvailable}
-                    onChange={(e) => isChecked(e)}
+                    value={!room.isAvailable}
+                    onChange={(e) =>
+                      setRoom({
+                        ...room,
+                        isAvailable: e.target.checked,
+                      })
+                    }
+                    type="checkbox"
                     className="hidden"
                   />
                   <span className="relative">
                     <span className="absolute inset-0 rounded-lg bg-gray-300"></span>
                     <span className="relative flex  h-8 w-8 transform items-center justify-center rounded-lg bg-white shadow duration-200 ease-in-out">
-                      {room.isAvailable && (
+                      {room.isAvailable ? (
                         <CheckIcon className="h-5 w-5 text-green-500" />
+                      ) : (
+                        ""
                       )}
                     </span>
                   </span>
-                </div>
+                </label>
+              </div>
+              <div className="group relative z-0 my-8 w-full">
+                <input
+                  type="number"
+                  name="price"
+                  id="price"
+                  value={room.price}
+                  onChange={handleChange}
+                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="price"
+                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
+                >
+                  Preço por noite
+                </label>
+              </div>
+              <div className="group relative z-0 my-8 w-full">
+                <input
+                  type="number"
+                  name="discount"
+                  id="discount"
+                  value={room.discount}
+                  onChange={handleChange}
+                  className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+                  placeholder=" "
+                />
+                <label
+                  htmlFor="discount"
+                  className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
+                >
+                  % Desconto
+                </label>
               </div>
             </div>
+            <div className="relative z-0 my-8 w-full">
+              <h3 className="text-lg font-medium leading-6 text-gray-900">
+                Serviços:
+              </h3>
+            </div>
+            <div as="div" className="grid md:grid-cols-3 md:gap-6">
+              {services.map((service) => (
+                <div
+                  className="my-30 group relative z-0 h-16 w-full gap-6"
+                  key={service._id}
+                >
+                  <label
+                    className={`inline-flex h-full w-full cursor-pointer select-none items-center justify-between rounded-lg border-2 border-gray-200 bg-gray-50 p-5 text-xs font-semibold  text-gray-500 hover:text-gray-600 md:grid-cols-3 ${
+                      room._services?.includes(service._id)
+                        ? "bg-green-300 text-gray-600"
+                        : "bg-gray-300"
+                    }`}
+                  >
+                    {service.name}
+                    <input
+                      name="_services"
+                      value={service._id}
+                      onChange={(e) => isChecked(e)}
+                      type="checkbox"
+                      className="hidden"
+                    />
+                    <span className="relative">
+                      <span className="absolute inset-0 rounded-lg bg-gray-300"></span>
+                      <span className="relative flex  h-8 w-8 transform items-center justify-center rounded-lg bg-white shadow duration-200 ease-in-out">
+                        {room._services?.includes(service._id) ? (
+                          <CheckIcon className="h-5 w-5 text-green-500" />
+                        ) : (
+                          ""
+                        )}
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              ))}
+            </div>
+            <div className="mt-6 flex justify-end">
+              <button
+                type="submit"
+                className="inline-flex justify-center rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2"
+              >
+                Guardar
+              </button>
+              <button
+                type="button"
+                className="ml-3 inline-flex justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                onClick={() => {
+                  navigate(-1);
+                }}
+              >
+                Cancelar
+              </button>
+            </div>
           </form>
+          <div className="col-span-4 mx-5 mb-5 sm:px-0">
+            <h1 className="mb-8 text-4xl font-extrabold">Imagens do quarto</h1>
+            {images?.length > 0 && (
+              <div className="group relative m-auto h-96 w-full py-16 px-4">
+                <img
+                  src={`https://wtf-backend.onrender.com/images/${images[currentIndex]}`}
+                  className={`h-full w-full rounded-2xl bg-cover bg-center duration-500`}
+                  alt={currentIndex}
+                ></img>
+                <div className="absolute top-1/2 left-5 hidden h-10 w-10 -translate-x-0 -translate-y-1/2 cursor-pointer rounded-full bg-black/20 p-2 text-white group-hover:block">
+                  <ChevronLeftIcon
+                    className="inset-0"
+                    onClick={() => prevSlide()}
+                  />
+                </div>
+                <div className="absolute top-1/2 right-5 hidden h-10 w-10 -translate-x-0 -translate-y-1/2 cursor-pointer rounded-full bg-black/20 p-2 text-white  group-hover:block">
+                  <ChevronRightIcon
+                    className="inset-0"
+                    onClick={() => nextSlide()}
+                  />
+                </div>
+                <div className="top-4 hidden justify-center py-2 group-hover:flex">
+                  {images.map((image, index) => (
+                    <div
+                      key={index}
+                      className={`mx-1 h-2 w-2 cursor-pointer rounded-full ${
+                        currentIndex === index ? "bg-orange-500" : "bg-gray-300"
+                      }`}
+                      onClick={() => setCurrentIndex(index)}
+                    ></div>
+                  ))}
+                </div>
+                <div className="absolute inset-x-0  bottom-5 hidden h-0 group-hover:block">
+                  <button
+                    className="inline-flex w-full justify-center rounded-md border border-transparent bg-red-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                    onClick={() => {
+                      setImages(
+                        images.filter((image, index) => index !== currentIndex)
+                      );
+                      setCurrentIndex(0);
+                    }}
+                  >
+                    Eliminar Imagem
+                  </button>
+                </div>
+              </div>
+            )}
+            <div className="group relative z-0 my-16 w-full">
+              <input
+                name="images"
+                id="images"
+                type="file"
+                multiple
+                onChange={(e) => {
+                  setFiles(e.target.files);
+                }}
+                accept="image/*"
+                className="peer block w-full appearance-none border-0 border-b-2 border-gray-300 bg-transparent px-0 py-2.5 text-sm text-gray-900 focus:border-orange-500 focus:outline-none focus:ring-0 "
+              />
+              <label
+                htmlFor="images"
+                className="absolute top-3 -z-10 origin-[0] -translate-y-6 scale-75 transform text-sm text-gray-500 duration-300 peer-placeholder-shown:translate-y-0 peer-placeholder-shown:scale-100 peer-focus:left-0 peer-focus:-translate-y-6 peer-focus:scale-75 peer-focus:font-medium peer-focus:text-orange-500"
+              >
+                Imagem
+              </label>
+            </div>
+          </div>
         </div>
       )}
     </>

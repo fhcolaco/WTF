@@ -15,16 +15,9 @@ export default function HotelCategoryDetail(props) {
         _id: "",
         name: "",
         description: "",
-        location: "",
-        address: "",
-        postal_code: "",
-        _hotel_type: "",
-        _services: [""],
-        images: [""],
       });
     } else {
-      getHotelCategoryById("63bd489d08fe8b5a6b17484a").then((data) => {
-        console.log(data);
+      getHotelCategoryById(id).then((data) => {
         setHotelCategory(data);
       });
     }
@@ -32,8 +25,9 @@ export default function HotelCategoryDetail(props) {
 
   useEffect(() => {
     if (hotelCategory.length !== 0) {
-      console.log(hotelCategory);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 700);
     }
   }, [hotelCategory]);
 

@@ -10,7 +10,6 @@ import {
   getHotelCategory,
   deleteHotelCategory,
 } from "../../shared/hotel_categoryApi";
-import locationList from "../../shared/locationList";
 
 export default function HotelCategory(props) {
   const [loading, setLoading] = useState(true);

@@ -79,10 +79,11 @@ function App() {
 
   const onSubmitHotelCategory = (data, event) => {
     event.preventDefault();
-    console.log("inicio");
+    console.log("inicio2");
     if (data._id !== "") {
       updateHotelCategory(data._id, data)
         .then((data) => {
+          console.log("UPDATE", data);
           getHotelCategory().then((res) => {
             setHotelCategory(res);
           });
@@ -92,6 +93,7 @@ function App() {
         });
     } else {
       createHotelCategory(data).then((data) => {
+        console.log("CREATE", data);
         setHotelCategory([...hotelCategory, data]);
       });
     }

@@ -88,7 +88,7 @@ export default function Hotel(props) {
                   Categoria
                 </th>
                 <th className="px-6 py-3" scope="col">
-                  Acções
+                  Ações
                 </th>
               </tr>
             </thead>
