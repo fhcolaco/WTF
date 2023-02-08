@@ -30,7 +30,9 @@ export default function RoomDetail() {
   }, []);
 
   useEffect(() => {
-    id ? getRoomById(id).then((room) => setRoom(room)) : setRoom({ _id: "" });
+    id
+      ? getRoomById(id).then((room) => setRoom(room))
+      : setRoom({ isAvailable: true });
   }, [id]);
 
   useEffect(() => {
@@ -43,6 +45,15 @@ export default function RoomDetail() {
     const { name, value } = e.target;
     setRoom({ ...room, [name]: value });
   };
+
+  const isChecked = (e) => {
+    const { name, checked } = e.target;
+    setRoom({ ...room, [name]: checked });
+  };
+
+  useEffect(() => {
+    console.log(room);
+  }, [room]);
 
   const send = (e) => {
     e.preventDefault();
@@ -143,7 +154,7 @@ export default function RoomDetail() {
                   Descrição do quarto
                 </label>
               </div>
-              <div as="div" className="grid md:grid-cols-3 md:gap-6">
+              <div className="grid md:grid-cols-3 md:gap-6">
                 <div className="my-30 group relative z-0 h-16 w-full gap-6">
                   <label
                     className={`inline-flex h-full w-full cursor-pointer select-none items-center justify-between rounded-lg border-2 border-gray-200 bg-gray-50 p-5 text-xs font-semibold  text-gray-500 hover:text-gray-600 md:grid-cols-3 ${
@@ -158,8 +169,8 @@ export default function RoomDetail() {
                     type="checkbox"
                     name="isAvailable"
                     id="isAvailable"
-                    checked={room.isAvailable}
-                    onChange={handleChange}
+                    value={room.isAvailable}
+                    onChange={(e) => isChecked(e)}
                     className="hidden"
                   />
                   <span className="relative">
