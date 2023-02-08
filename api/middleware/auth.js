@@ -18,7 +18,6 @@ const isAuth = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    console.log(2, error);
     return res.status(401).json({ message: error.message });
   }
 };

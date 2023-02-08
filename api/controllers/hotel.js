@@ -32,7 +32,7 @@ router.post("/", isAuth, upload.array("files"), (req, res) => {
     description: req.body.description,
     _hotel_type: req.body._hotel_type,
     _services: req.body._services,
-    images: req.files.map((file) => [...req.body.images, file.filename]),
+    images: req.files.map((file) => file.filename),
   })
     .then((hotel) => {
       res.status(200).send(hotel);
@@ -44,8 +44,6 @@ router.post("/", isAuth, upload.array("files"), (req, res) => {
 
 //PUT method
 router.put("/:id", isAuth, upload.array("files"), (req, res) => {
-  console.log(req.body);
-  console.log(req.files.map((file) => file.filename));
   let hotelSave = {
     name: req.body.name,
     description: req.body.description,
@@ -56,10 +54,9 @@ router.put("/:id", isAuth, upload.array("files"), (req, res) => {
     _services: req.body._services,
   };
   if (req.files.length > 0) {
-    console.log("entrei");
     hotelSave["images"] = [
       ...req.body.images?.split(","),
-      ...req.files.map((file) => file.filename),
+      ...req.files?.map((file) => file.filename),
     ];
   }
   console.log(hotelSave);

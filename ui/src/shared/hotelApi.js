@@ -56,7 +56,6 @@ export const updateHotel = async (id, data) => {
         throw new Error(text);
       });
     }
-    console.log(3);
     return res.json();
   });
 };

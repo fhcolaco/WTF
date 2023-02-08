@@ -1,13 +1,12 @@
 import { getHotelById } from "../../shared/hotelApi";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
 import { getServices } from "../../shared/servicesApi";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Loader from "../../Loader";
 import locationList from "../../shared/locationList";
 import { CheckIcon } from "@heroicons/react/24/solid";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/solid";
-import axios from "axios";
 //falta criar o handler para a loacalização e acabar o carousel
 
 export default function HotelDetail(props) {
@@ -45,7 +44,7 @@ export default function HotelDetail(props) {
             }
           });
         }
-        setImages(res.images);
+        setImages(res.images.filter((image) => image !== ""));
       });
     }
 
@@ -71,16 +70,16 @@ export default function HotelDetail(props) {
   }, [hotelType, services, hotel, images]);
 
   const prevSlide = () => {
-    setCurrentIndex(
-      currentIndex === 0 ? hotel.images.length - 1 : currentIndex - 1
-    );
+    setCurrentIndex(currentIndex === 0 ? images.length - 1 : currentIndex - 1);
   };
 
   const nextSlide = () => {
-    setCurrentIndex(
-      currentIndex === hotel.images.length - 1 ? 0 : currentIndex + 1
-    );
+    setCurrentIndex(currentIndex === images.length - 1 ? 0 : currentIndex + 1);
   };
+
+  useEffect(() => {
+    console.log(currentIndex);
+  }, [currentIndex]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -121,22 +120,22 @@ export default function HotelDetail(props) {
       });
     }
 
-    // props.submit(data, event);
+    props.submit(data, event);
 
-    axios
-      .put(`http://localhost:4000/hotel/${hotel._id}`, data, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      })
-      .then((res) => {
-        console.log(res);
-        navigate("/dashboard/hotel");
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    // axios
+    //   .put(`http://localhost:4000/hotel/${hotel._id}`, data, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+    //     },
+    //   })
+    //   .then((res) => {
+    //     console.log(res);
+    //     navigate("/dashboard/hotel");
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (
@@ -372,9 +371,11 @@ export default function HotelDetail(props) {
             <h1 className="mb-8 text-4xl font-extrabold">Imagens do Hotel</h1>
             {images.length > 0 && (
               <div className="group relative m-auto h-96 w-full py-16 px-4">
-                <div
-                  className={`h-full w-full rounded-2xl ${`bg-[url(https://wtf-backend.onrender.com/images/${images[currentIndex]})]`} bg-cover bg-center duration-500`}
-                ></div>
+                <img
+                  src={`https://wtf-backend.onrender.com/images/${images[currentIndex]}`}
+                  className={`h-full w-full rounded-2xl bg-cover bg-center duration-500`}
+                  alt={currentIndex}
+                ></img>
                 <div className="absolute top-1/2 left-5 hidden h-10 w-10 -translate-x-0 -translate-y-1/2 cursor-pointer rounded-full bg-black/20 p-2 text-white group-hover:block">
                   <ChevronLeftIcon
                     className="inset-0"
@@ -405,7 +406,7 @@ export default function HotelDetail(props) {
                       setImages(
                         images.filter((image, index) => index !== currentIndex)
                       );
-                      prevSlide();
+                      if (currentIndex > images.length - 1) prevSlide();
                     }}
                   >
                     Eliminar Imagem

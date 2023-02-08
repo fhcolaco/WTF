@@ -7,7 +7,6 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router-dom";
 import { deleteHotel } from "../../shared/hotelApi";
-import Geocode from "react-geocode";
 import { getHotelCategory } from "../../shared/hotel_categoryApi";
 import locationList from "../../shared/locationList";
 
@@ -26,6 +25,7 @@ export default function Hotel(props) {
   useEffect(() => {
     if (hotel.length !== 0 && hotelType.length !== 0) {
       setLoading(false);
+      console.log(`Bearer ${sessionStorage.getItem("token")}`);
     }
   }, [hotel, hotelType]);
 
@@ -99,7 +99,9 @@ export default function Hotel(props) {
                   <tr key={hotel._id}>
                     <td className="w-32 p-4">
                       <img
-                        src={`https://wtf-backend.onrender.com/images/${hotel.images[0]}`}
+                        src={`https://wtf-backend.onrender.com/images/${hotel.images.find(
+                          (image) => image !== ""
+                        )}`}
                         alt=""
                         className="w-full"
                       />
@@ -107,7 +109,14 @@ export default function Hotel(props) {
                     <td className="whitespace-nowrap px-6 py-4 font-medium text-gray-900">
                       {hotel.name}
                     </td>
-                    <td className="whitespace-nowrap px-6 py-4">{`askdl`}</td>
+                    <td className="whitespace-nowrap px-6 py-4">
+                      {`${hotel.location}, ${
+                        locationList.find((element) =>
+                          element.concelho.includes(hotel.location)
+                        )?.distrito
+                      }
+                      `}
+                    </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       {hotelType.map((hotelType) =>
                         hotelType._id === hotel._hotel_type
