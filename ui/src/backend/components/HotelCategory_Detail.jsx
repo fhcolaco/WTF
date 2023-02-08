@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getHotelCategory } from "../../shared/hotel_categoryApi";
+import { getHotelCategoryById } from "../../shared/hotel_categoryApi";
 import Loader from "../../Loader";
 import { useParams, useNavigate } from "react-router-dom";
 
@@ -10,15 +10,29 @@ export default function HotelCategoryDetail(props) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    id
-      ? getHotelCategory().then((data) => {
-          setHotelCategory(data);
-        })
-      : setHotelCategory({ _id: "", name: "", description: "" });
+    if (!id) {
+      setHotelCategory({
+        _id: "",
+        name: "",
+        description: "",
+        location: "",
+        address: "",
+        postal_code: "",
+        _hotel_type: "",
+        _services: [""],
+        images: [""],
+      });
+    } else {
+      getHotelCategoryById("63bd489d08fe8b5a6b17484a").then((data) => {
+        console.log(data);
+        setHotelCategory(data);
+      });
+    }
   }, []);
 
   useEffect(() => {
     if (hotelCategory.length !== 0) {
+      console.log(hotelCategory);
       setLoading(false);
     }
   }, [hotelCategory]);
@@ -39,7 +53,7 @@ export default function HotelCategoryDetail(props) {
           >
             <div className="inline-block">
               <h2 className="mb-8 text-4xl font-extrabold">
-                {hotelCategory.name
+                {id
                   ? `Editar ${hotelCategory.name}`
                   : "Criar nova Categoria de Hotel"}
               </h2>

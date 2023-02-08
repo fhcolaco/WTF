@@ -14,11 +14,15 @@ router.get("/", (req, res) => {
 
 //GET ONE method
 router.get("/:id", (req, res) => {
-  HotelCategory.findOne(req.params.id).then((result) => {
-    if (result === null)
-      res.status(400).json({ error: "A categoria não foi encontrada" });
-    else res.status(200).send(result);
-  });
+  HotelCategory.findOne({ _id: req.params.id })
+    .then((result) => {
+      if (result === null)
+        res.status(400).json({ error: "A categoria não foi encontrada" });
+      else res.status(200).send(result);
+    })
+    .catch((error) => {
+      res.status(400).json({ message: error.message });
+    });
 });
 
 //POST method
