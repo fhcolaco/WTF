@@ -30,6 +30,7 @@ import {
   createHotelCategory,
   getHotelCategory,
 } from "./shared/hotel_categoryApi";
+import UserRegister from "./components/UserRegister";
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -146,7 +147,8 @@ function App() {
             <Route path="/hoteldetail/:id" element={<Hotel_Detail />} />
             <Route path="*" element={<NotFound />} />
           </Route>
-          <Route path="/login" element={<Login />}></Route>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<UserRegister />} />
           <Route path="/dashboard" element={<Layout />}>
             <Route path="" element={<Dashboard />} />
             <Route path="hotel" element={<Hotel hotel={hotel} />} />
