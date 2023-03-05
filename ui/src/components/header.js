@@ -81,7 +81,7 @@ export default function Header() {
                   : "hover:outline-outline-white rounded  text-white hover:outline hover:outline-1"
               }`}
             >
-              Inícioooooo
+              Inícioss
             </button>
           </NavLink>
           <NavLink to="/about">
