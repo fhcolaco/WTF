@@ -14,6 +14,7 @@ import { getHotelById } from "../shared/hotelApi";
 import { getHotelCategory } from "../shared/hotel_categoryApi";
 import { getServicesById } from "../shared/servicesApi";
 import Loader from "../Loader";
+import { getBookingById } from "../shared/bookingApi";
 
 export default function Hotel_Detail() {
   const navigate = useNavigate();
@@ -154,10 +155,11 @@ export default function Hotel_Detail() {
                     <td class="px-6 py-4">$1999</td>
                     <td class="px-6 py-4">
                       <div className="w-20">
-                        <select>
+                        <select defaultValue={"100"}>
                           <option>1</option>
                           <option>2</option>
                           <option>3</option>
+                          <option value="100">100</option>
                         </select>
                       </div>
                     </td>
